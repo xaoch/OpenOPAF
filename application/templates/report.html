@@ -1,0 +1,724 @@
+{% extends "baseGeneral.html" %}
+
+{% block title %} Report {% endblock %}
+
+{% block stylesheets %}
+<style>
+		.statistics {
+		display: -moz-flex;
+		display: -webkit-flex;
+		display: -ms-flex;
+		display: flex;
+		width: 100%;
+		margin: 0 0 3em 0;
+		padding: 0;
+		list-style: none;
+		cursor: default;
+	}
+
+		.statistics li {
+			-moz-flex: 1;
+			-webkit-flex: 1;
+			-ms-flex: 1;
+			flex: 1;
+			padding: 1.5em;
+			color: #ffffff;
+			text-align: center;
+		}
+
+			.statistics li.style1 {
+				background-color: #efa8b0;
+			}
+
+			.statistics li.style2 {
+				background-color: #c79cc8;
+			}
+
+			.statistics li.style3 {
+				background-color: #a89cc8;
+			}
+
+			.statistics li.style4 {
+				background-color: #9bb2e1;
+			}
+
+			.statistics li.style5 {
+				background-color: #8cc9f0;
+			}
+
+			.statistics li strong, .statistics li b {
+				display: block;
+				font-size: 2em;
+				line-height: 1.1;
+				color: inherit !important;
+				font-weight: 300;
+				letter-spacing: -0.025em;
+			}
+
+			.statistics li:first-child {
+				border-top-left-radius: 8px;
+				border-bottom-left-radius: 8px;
+			}
+
+			.statistics li:last-child {
+				border-top-right-radius: 8px;
+				border-bottom-right-radius: 8px;
+			}
+
+			.statistics li .icon {
+				display: inline-block;
+			}
+
+				.statistics li .icon:before {
+					font-size: 2.75rem;
+					line-height: 1.3;
+				}
+
+		@media screen and (max-width: 980px) {
+
+			.statistics li strong, .statistics li b {
+				font-size: 1.5em;
+			}
+
+		}
+
+		@media screen and (max-width: 736px) {
+
+			.statistics {
+				display: block;
+				width: 20em;
+				max-width: 100%;
+				margin: 0 auto 2em auto;
+			}
+
+				.statistics li:first-child {
+					border-bottom-left-radius: 0;
+					border-top-right-radius: 8px;
+				}
+
+				.statistics li:last-child {
+					border-top-right-radius: 0;
+					border-bottom-left-radius: 8px;
+				}
+
+				.statistics li .icon:before {
+					font-size: 3.75rem;
+				}
+
+				.statistics li strong, .statistics li b {
+					font-size: 2.5em;
+				}
+
+		}
+
+
+</style>
+<link href="/static/assets/css/vis-timeline-graph2d.min.css" rel="stylesheet" type="text/css" />
+<style type="text/css">
+        body {
+
+        }
+
+        .vis-timeline {
+          border: 2px solid purple;
+          font-size: 12pt;
+          background: #ffffff;
+        }
+
+        .vis-item {
+          border-color: #F991A3;
+          background-color: pink;
+          font-size: 15pt;
+          color: white;
+          box-shadow: 5px 5px 20px rgba(128,128,128, 0.5);
+        }
+
+        .vis-item,
+        .vis-item.vis-line {
+          border-width: 3px;
+        }
+
+        .vis-item.vis-dot {
+          border-width: 10px;
+          border-radius: 10px;
+        }
+
+        .vis-item.vis-selected {
+          border-color: green;
+          background-color: lightgreen;
+        }
+
+        .vis-time-axis .vis-text {
+          color: purple;
+          padding-top: 10px;
+          padding-left: 10px;
+        }
+
+        .vis-time-axis .vis-text.vis-major {
+          font-weight: bold;
+        }
+
+        .vis-time-axis .vis-grid.vis-minor {
+          border-width: 2px;
+          border-color: pink;
+        }
+
+        .vis-time-axis .vis-grid.vis-major {
+          border-width: 2px;
+          border-color: #F991A3;
+        }
+
+				.vis-item.v_high {
+        background-color: #8cc9f0;
+        border-color: #8cc9f0;
+
+      }
+
+			.vis-item.silence {
+				background-color: grey;
+				border-color: darkgrey;
+			}
+
+			.vis-item.v_medium {
+				background-color: #a89cc8;
+				border-color: #a89cc8;
+			}
+
+			.vis-item.v_low {
+				background-color: #efa8b0;
+				border-color: #efa8b0;
+			}
+
+			.vis-item.v_fast {
+				background-color: #efa8b0;
+				border-color: #efa8b0;
+			}
+
+			.vis-item.v_slow {
+				background-color: #efa8b0;
+				border-color: #efa8b0;
+			}
+
+        .vis-item.correct {
+        background-color: #8cc9f0;
+        border-color: #8cc9f0;
+
+      }
+
+      /* create a custom sized dot at the bottom of the red item */
+      .vis-item.incorrect {
+        background-color: #efa8b0;
+        border-color: #efa8b0;
+      }
+      </style>
+
+{% endblock stylesheets %}
+
+{% block content %}
+
+	<!-- [ Main Content ] start -->
+	<div class="pcoded-main-container">
+		<div class="pcoded-content">
+			<!-- [ breadcrumb ] start -->
+			<div class="page-header">
+				<div class="page-block">
+					<div class="row align-items-center">
+						<div class="col-md-12">
+							<div class="page-header-title">
+								<h5 class="m-b-10">{{ name }} - Report</h5>
+							</div>
+							<ul class="breadcrumb">
+								<li class="breadcrumb-item"><a href="#!">Report</a></li>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- [ breadcrumb ] end -->
+			<!-- [ Main Content ] start -->
+			<div class="row">
+				<!-- [ sample-page ] start -->
+				<div class="col-sm-12">
+					<div class="card">
+
+						<div class="card-header">
+							<h3>Presentation Summary</h3>
+							<div class="card-header-right">
+								<div class="btn-group card-option">
+									<button type="button" class="btn dropdown-toggle btn-icon" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+										<i class="feather icon-more-horizontal"></i>
+									</button>
+									<ul class="list-unstyled card-option dropdown-menu dropdown-menu-right">
+										<li class="dropdown-item full-card"><a href="#!"><span><i class="feather icon-maximize"></i> maximize</span><span style="display:none"><i class="feather icon-minimize"></i> Restore</span></a></li>
+										<li class="dropdown-item minimize-card"><a href="#!"><span><i class="feather icon-minus"></i> collapse</span><span style="display:none"><i class="feather icon-plus"></i> expand</span></a></li>
+									</ul>
+								</div>
+							</div>
+						</div>
+						<div class="card-body">
+							<section id="reports" class="main special">
+								<header class="major">
+									<p>This is an automated report from your presentation.  Six dimensions were evaluated:</p>
+									<ul align="left">
+										<li><b>Gaze</b>: If your gaze was directed to the audience.</li>
+										<li><b>Posture</b>: If you mantained an open posture during your presentation.</li>
+										<li><b>Volume</b>: If the volume of your voice was adequate.</li>
+										<li><b>Articulation</b>: If you mantained a adequate articulation rate (talking speed) during the presentation.</li>
+										<li><b>Filled Pauses</b>: If you had filled pauses (e.g. "ehm", "umhh", "aaah") during your presentation.</li>
+										<li><b>Slides</b>: If your slides contained had an adqueate amount of text and the font was big enough to be read.</li>
+									</ul>
+								</header>
+								<ul class="statistics">
+									<li class="{{summary['gazeStyle']}}">
+										<span class="icon solid far fa-eye"></span>
+										  <br/>Gaze <strong>{{summary['gazeValue']}}</strong>
+									</li>
+									<li class="{{summary['postureStyle']}}">
+										<span class="icon solid fas fa-walking"></span>
+										<br/>Posture <strong>{{summary['postureValue']}}</strong>
+									</li>
+									<li class="{{summary['volumeStyle']}}">
+										<span class="icon solid fas fa-signal"></span>
+										<br/>Volume <strong>{{summary['volumeValue']}}</strong>
+									</li>
+									<li class="{{summary['articulationStyle']}}">
+										<span class="icon solid fas fa-tachometer-alt"></span>
+										<br/>Articulation <strong>{{summary['articulationValue']}}</strong>
+									</li>
+									<li class="{{summary['fpStyle']}}">
+										<span class="icon solid fas fa-pause"></span>
+										<br/>Filled Pauses <strong>{{summary['fpValue']}}</strong>
+									</li>
+									{% if includePresentation %}
+									<li class="{{summary['slideFontSizeStyle']}}">
+										<span class="icon solid fas fa-file-powerpoint"></span>
+										<br/>Font Size <strong>{{summary['slideFontSizeValue']}}</strong>
+									</li>
+									<li class="{{summary['slideTextLengthStyle']}}">
+										<span class="icon solid fas fa-file-powerpoint"></span>
+										<br/>Text Length <strong>{{summary['slideTextLengthValue']}}</strong>
+									</li>
+									{% endif%}
+								</ul>
+							</section>
+						</div>
+					</div>
+				</div>
+				<!-- [ sample-page ] end -->
+			</div>
+
+			<!-- [ Main Content ] end -->
+			<div class="row">
+				<!-- [ sample-page ] start -->
+				<div class="col-sm-12">
+					<div class="card">
+
+						<div class="card-header">
+							<h3>Gaze Analysis</h3>
+							<div class="card-header-right">
+								<div class="btn-group card-option">
+									<button type="button" class="btn dropdown-toggle btn-icon" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+										<i class="feather icon-more-horizontal"></i>
+									</button>
+									<ul class="list-unstyled card-option dropdown-menu dropdown-menu-right">
+										<li class="dropdown-item full-card"><a href="#!"><span><i class="feather icon-maximize"></i> maximize</span><span style="display:none"><i class="feather icon-minimize"></i> Restore</span></a></li>
+										<li class="dropdown-item minimize-card"><a href="#!"><span><i class="feather icon-minus"></i> collapse</span><span style="display:none"><i class="feather icon-plus"></i> expand</span></a></li>
+									</ul>
+								</div>
+							</div>
+						</div>
+						<div class="card-body">
+							<center><video id="gazeVideo" width="500px"; class="center" src="{{ url_for('main.videoRecordings', presId=presId) }}"></video></center>
+							<div id="gazeTimeline"></div>
+						</div>
+					</div>
+				</div>
+				<!-- [ sample-page ] end -->
+			</div>
+
+			<div class="row">
+				<!-- [ sample-page ] start -->
+				<div class="col-sm-12">
+					<div class="card">
+
+						<div class="card-header">
+							<h3>Posture Analysis</h3>
+							<div class="card-header-right">
+								<div class="btn-group card-option">
+									<button type="button" class="btn dropdown-toggle btn-icon" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+										<i class="feather icon-more-horizontal"></i>
+									</button>
+									<ul class="list-unstyled card-option dropdown-menu dropdown-menu-right">
+										<li class="dropdown-item full-card"><a href="#!"><span><i class="feather icon-maximize"></i> maximize</span><span style="display:none"><i class="feather icon-minimize"></i> Restore</span></a></li>
+										<li class="dropdown-item minimize-card"><a href="#!"><span><i class="feather icon-minus"></i> collapse</span><span style="display:none"><i class="feather icon-plus"></i> expand</span></a></li>
+									</ul>
+								</div>
+							</div>
+						</div>
+						<div class="card-body">
+							<center><video id="postureVideo" width="500px"; class="center" src="{{ url_for('main.videoRecordings', presId=presId) }}"></video></center>
+							<div id="postureTimeline"></div>
+						</div>
+					</div>
+				</div>
+				<!-- [ sample-page ] end -->
+			</div>
+
+			<div class="row">
+				<!-- [ sample-page ] start -->
+				<div class="col-sm-12">
+					<div class="card">
+
+						<div class="card-header">
+							<h3>Volume Analysis</h3>
+							<div class="card-header-right">
+								<div class="btn-group card-option">
+									<button type="button" class="btn dropdown-toggle btn-icon" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+										<i class="feather icon-more-horizontal"></i>
+									</button>
+									<ul class="list-unstyled card-option dropdown-menu dropdown-menu-right">
+										<li class="dropdown-item full-card"><a href="#!"><span><i class="feather icon-maximize"></i> maximize</span><span style="display:none"><i class="feather icon-minimize"></i> Restore</span></a></li>
+										<li class="dropdown-item minimize-card"><a href="#!"><span><i class="feather icon-minus"></i> collapse</span><span style="display:none"><i class="feather icon-plus"></i> expand</span></a></li>
+									</ul>
+								</div>
+							</div>
+						</div>
+						<div class="card-body">
+							<center>
+								<div id='chartVolume' class='chartVolume'></div>
+								<div id="waveformVolume">
+                    				<div class="progress progress-striped active" id="progress-bar">
+                        				<div class="progress-bar progress-bar-info"></div>
+                    				</div>
+		                    	<!-- Here be waveform -->
+        			        	</div>
+                				<div id="wave-timeline-Volume"></div>
+							</center>
+						</div>
+					</div>
+				</div>
+				<!-- [ sample-page ] end -->
+			</div>
+
+			<div class="row">
+				<!-- [ sample-page ] start -->
+				<div class="col-sm-12">
+					<div class="card">
+
+						<div class="card-header">
+							<h3>Articulation Speed Analysis</h3>
+							<div class="card-header-right">
+								<div class="btn-group card-option">
+									<button type="button" class="btn dropdown-toggle btn-icon" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+										<i class="feather icon-more-horizontal"></i>
+									</button>
+									<ul class="list-unstyled card-option dropdown-menu dropdown-menu-right">
+										<li class="dropdown-item full-card"><a href="#!"><span><i class="feather icon-maximize"></i> maximize</span><span style="display:none"><i class="feather icon-minimize"></i> Restore</span></a></li>
+										<li class="dropdown-item minimize-card"><a href="#!"><span><i class="feather icon-minus"></i> collapse</span><span style="display:none"><i class="feather icon-plus"></i> expand</span></a></li>
+									</ul>
+								</div>
+							</div>
+						</div>
+						<div class="card-body">
+							<center>
+								<div id='chartArticulation' class='chartArticulation'></div>
+								<div id="waveformArticulation">
+                    				<div class="progress progress-striped active" id="progress-bar">
+                        				<div class="progress-bar progress-bar-info"></div>
+                    				</div>
+		                    	<!-- Here be waveform -->
+        			        	</div>
+                				<div id="wave-timeline-Articulation"></div>
+							</center>
+						</div>
+					</div>
+				</div>
+				<!-- [ sample-page ] end -->
+			</div>
+
+			<div class="row">
+				<!-- [ sample-page ] start -->
+				<div class="col-sm-12">
+					<div class="card">
+
+						<div class="card-header">
+							<h3>Slide Analysis</h3>
+							<div class="card-header-right">
+								<div class="btn-group card-option">
+									<button type="button" class="btn dropdown-toggle btn-icon" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+										<i class="feather icon-more-horizontal"></i>
+									</button>
+									<ul class="list-unstyled card-option dropdown-menu dropdown-menu-right">
+										<li class="dropdown-item full-card"><a href="#!"><span><i class="feather icon-maximize"></i> maximize</span><span style="display:none"><i class="feather icon-minimize"></i> Restore</span></a></li>
+										<li class="dropdown-item minimize-card"><a href="#!"><span><i class="feather icon-minus"></i> collapse</span><span style="display:none"><i class="feather icon-plus"></i> expand</span></a></li>
+									</ul>
+								</div>
+							</div>
+						</div>
+						<div class="card-body">
+							<center>
+								<div id='chartArticulation' class='chartArticulation'></div>
+								<div id="waveformArticulation">
+                    				<div class="progress progress-striped active" id="progress-bar">
+                        				<div class="progress-bar progress-bar-info"></div>
+                    				</div>
+		                    	<!-- Here be waveform -->
+        			        	</div>
+                				<div id="wave-timeline-Articulation"></div>
+							</center>
+						</div>
+					</div>
+				</div>
+				<!-- [ sample-page ] end -->
+			</div>
+
+		</div>
+	</div>
+	<!-- [ Main Content ] end -->
+
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}
+
+<script src="/static/assets/js/vis.js"></script>
+
+<script src='https://cdn.plot.ly/plotly-latest.min.js'></script>
+<script type='text/javascript'>
+  var graphVolume = {{graphJSONVolume | safe}};
+  Plotly.plot('chartVolume',graphVolume,{},{responsive: true});
+  var graphArticulation = {{graphJSONArticulation | safe}};
+  Plotly.plot('chartArticulation',graphArticulation,{},{responsive: true});
+
+</script>
+
+<script type="text/javascript">
+           		  function setTimeGaze(properties){
+           		  	console.log(properties)
+      				var video= document.getElementById("gazeVideo");
+      				frame=itemsGaze.get(properties.item).frame;
+      				video.currentTime=frame*5;
+      				video.play();
+      				console.log(video.currentTime);
+      				setInterval(function(){
+   						if(video.currentTime>(frame*5+5)){
+          				    video.pause();
+        				}
+      				},1000);
+    			  }
+
+    			  function setTimePosture(properties){
+           		  	console.log(properties)
+      				var video= document.getElementById("postureVideo");
+      				frame=itemsPosture.get(properties.item).frame;
+      				video.currentTime=frame*5;
+      				video.play();
+      				console.log(video.currentTime);
+      				setInterval(function(){
+   						if(video.currentTime>(frame*5+5)){
+          				    video.pause();
+        				}
+      				},1000);
+    			  }
+
+           		  function multimediaDisplay(properties) {
+  					  multimedia=items.get(properties.item).multimedia;
+					  if(multimedia=="sound")
+					  {
+					    wavfile=items.get(properties.item).soundfile;
+						var audio = new Audio("recordings/fabio_2019_10_6_15_2/Audio/segments/"+wavfile); // define your audio
+                        audio.play();
+					  }
+					  if(multimedia=="fp")
+					  {
+						wavfile=items.get(properties.item).soundfile;
+						var audio = new Audio("recordings/fabio_2019_10_6_15_2/Audio/fp/"+wavfile); // define your audio
+                       	audio.play();
+					  }
+					  if(multimedia=="image")
+					  {
+                        src=items.get(properties.item).image_source;
+						var modal = document.getElementById("myModal");
+					    var img = document.getElementById("myImg");
+						var modalImg = document.getElementById("img01");
+
+						var span = document.getElementsByClassName("close")[0];
+						span.onclick = function() {
+  						  modal.style.display = "none";
+					    }
+					    modal.style.display = "block";
+  					    modalImg.src = src;
+         			  }
+                  }
+                  // DOM element where the Timeline will be attached
+                  var containerGaze = document.getElementById('gazeTimeline');
+                  var containerPosture = document.getElementById('postureTimeline');
+                  var groupsGaze = new vis.DataSet([
+                    {id: 0, content: 'Gaze', value: 1},
+                  ]);
+                  var groupsPosture = new vis.DataSet([
+                    {id: 0, content: 'Posture', value: 1},
+                  ]);
+
+                  var options = {
+                    showMajorLabels: false,
+                    max:{{maxFrame}},
+                    min:0,
+                    stack: false,
+                    stackSubgroups: true,
+                  };
+
+                  // Create a DataSet (allows two way data-binding)
+
+                  dataGaze={{summary['gazeTimeline'] | tojson}};
+                  var itemsGaze = new vis.DataSet(dataGaze);
+                  var timelineGaze= new vis.Timeline(containerGaze, itemsGaze, options);
+                  timelineGaze.setGroups(groupsGaze);
+				  timelineGaze.on('click', setTimeGaze);
+
+                  dataPosture={{summary['postureTimeline'] | tojson}};
+                  var itemsPosture = new vis.DataSet(dataPosture);
+                  var timelinePosture= new vis.Timeline(containerPosture, itemsPosture, options);
+                  timelinePosture.setGroups(groupsPosture);
+				  timelinePosture.on('click',setTimePosture);
+
+
+                </script>
+
+<script src="https://unpkg.com/wavesurfer.js/dist/wavesurfer.js"></script>
+<script src="https://unpkg.com/wavesurfer.js/dist/plugin/wavesurfer.timeline.js"></script>
+<script src="https://unpkg.com/wavesurfer.js/dist/plugin/wavesurfer.regions.js"></script>
+<script>
+var wavesurferV;
+var wavesurferA;
+
+// Init & load
+document.addEventListener('DOMContentLoaded', function() {
+    let options = {
+        container: '#waveformVolume',
+        waveColor: 'violet',
+        progressColor: 'purple',
+        loaderColor: 'purple',
+        cursorColor: 'navy',
+        barWidth: 2,
+    	barHeight: 10, // the height of the wave
+    	barGap: null, // the optional spacing between bars of the wave, if not provided will be calculated in legacy format
+        plugins: [
+            WaveSurfer.timeline.create({
+                container: '#wave-timeline-Volume'
+            }),
+            WaveSurfer.regions.create({
+            regionsMinLength: 2,
+            regions: {{summary['volumeTimeline'] | tojson}}
+        })
+        ]
+    };
+
+    if (location.search.match('scroll')) {
+        options.minPxPerSec = 100;
+        options.scrollParent = true;
+    }
+
+    if (location.search.match('normalize')) {
+        options.normalize = true;
+    }
+
+    // Init wavesurfer
+    wavesurferV = WaveSurfer.create(options);
+
+    /* Progress bar */
+    (function() {
+        const progressDiv = document.querySelector('#progress-bar');
+        const progressBar = progressDiv.querySelector('.progress-bar');
+
+        let showProgress = function(percent) {
+            progressDiv.style.display = 'block';
+            progressBar.style.width = percent + '%';
+        };
+
+        let hideProgress = function() {
+            progressDiv.style.display = 'none';
+        };
+
+        wavesurferV.on('loading', showProgress);
+        wavesurferV.on('ready', hideProgress);
+        wavesurferV.on('destroy', hideProgress);
+        wavesurferV.on('error', hideProgress);
+        wavesurferV.on('region-click', function(region, e) {
+        e.stopPropagation();
+        // Play on click, loop on shift click
+        e.shiftKey ? region.playLoop() : region.play();
+    });
+    })();
+
+    wavesurferV.load("{{ url_for('main.audioRecordings', presId=presId) }}" );
+});
+
+
+// Init & load
+document.addEventListener('DOMContentLoaded', function() {
+    let options = {
+        container: '#waveformArticulation',
+        waveColor: 'violet',
+        progressColor: 'purple',
+        loaderColor: 'purple',
+        cursorColor: 'navy',
+        barWidth: 2,
+    	barHeight: 10, // the height of the wave
+    	barGap: null, // the optional spacing between bars of the wave, if not provided will be calculated in legacy format
+        plugins: [
+            WaveSurfer.timeline.create({
+                container: '#wave-timeline-Articulation'
+            }),
+            WaveSurfer.regions.create({
+            regionsMinLength: 2,
+            regions: {{summary['articulationTimeline'] | tojson}}
+        })
+        ]
+    };
+
+    if (location.search.match('scroll')) {
+        options.minPxPerSec = 100;
+        options.scrollParent = true;
+    }
+
+    if (location.search.match('normalize')) {
+        options.normalize = true;
+    }
+
+    // Init wavesurfer
+    wavesurferA = WaveSurfer.create(options);
+
+    /* Progress bar */
+    (function() {
+        const progressDiv = document.querySelector('#progress-bar');
+        const progressBar = progressDiv.querySelector('.progress-bar');
+
+        let showProgress = function(percent) {
+            progressDiv.style.display = 'block';
+            progressBar.style.width = percent + '%';
+        };
+
+        let hideProgress = function() {
+            progressDiv.style.display = 'none';
+        };
+
+        wavesurferA.on('loading', showProgress);
+        wavesurferA.on('ready', hideProgress);
+        wavesurferA.on('destroy', hideProgress);
+        wavesurferA.on('error', hideProgress);
+        wavesurferA.on('region-click', function(region, e) {
+        e.stopPropagation();
+        // Play on click, loop on shift click
+        e.shiftKey ? region.playLoop() : region.play();
+    });
+    })();
+
+    wavesurferA.load("{{ url_for('main.audioRecordings', presId=presId) }}" );
+});
+
+
+</script>
+
+{% endblock javascripts %}
+

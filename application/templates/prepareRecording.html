@@ -1,0 +1,42 @@
+{% extends "baseLogin.html" %}
+
+{% block title %} Prepare Recording {% endblock %}
+
+{% block content %}
+<!-- [ auth-signin ] start -->
+	<div class="pcoded-main-container" style="margin-left:0; margin-right:0;">
+		<div class="pcoded-content" >
+			<div class="row align-items-center text-center">
+				<div class="col-md-24 col-xl-24">
+					<div class="card">
+						<div class="card-body">
+							<img src="/static/assets/images/presenterTitle.png" alt="" class="img-fluid mb-4">
+							<h4>
+								Position Yourself
+							</h4>
+							<h5>
+								Your hips should be visible in the video.
+							</h5>
+
+							<!-- dummy spacer -->
+                       		<img src="{{ url_for('main.video_feed') }}">
+                       		<p> <br /> </p>
+							<form method="GET" role="form" action="/recording">
+								<button type="submit" name="login" class="btn btn-block btn-primary mb-4">Start Practice Session</button>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- [ auth-signin ] end -->
+
+{% endblock content %}
+
+
+{% block javascripts %}
+
+	<script src="/static/assets/js/waves.min.js"></script>
+
+{% endblock javascripts %}

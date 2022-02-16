@@ -1,0 +1,163 @@
+// These are here just for codepen compatibility
+$primary: hsl(171, 100%, 41%);
+$link:  hsl(217, 71%, 53%);
+$info: hsl(204, 86%, 53%);
+
+
+$success: hsl(141, 71%, 48%);
+$warning: hsl(48, 100%, 67%);
+$danger:  hsl(348, 100%, 61%);
+$white:  hsl(0, 0%, 100%) ;
+$black:  hsl(0, 0%, 4%) ;
+$dark: hsl(0, 0%, 21%);
+$light:  hsl(0, 0%, 96%) ;
+$text: $dark;
+$button-static-color: #7a7a7a !default;
+$button-static-background-color: #f5f5f5 !default;
+$button-static-border-color: #dbdbdb !default;
+$button-border-width: 1px !default;
+$button-padding-vertical: calc(0.375em - #{$button-border-width}) !default;
+$button-padding-horizontal: 0.75em !default;
+$radius-small: 3px;
+
+$size-small: .75rem;
+  $radius-small: 2px;
+  $size-medium: 1.25rem;
+  $size-large: 1.5rem;
+
+
+@mixin button-small {
+  font-size: $size-small;
+}
+@mixin  button-medium {
+  font-size: $size-medium;
+}
+@mixin button-large {
+font-size: $size-large
+}
+
+// Here starts the real code
+label.is-checkbox {
+  background: $link;
+  &.is-primary {
+    background: $primary;
+ }
+  &.is-info {
+    background: $info;
+
+  }
+  &.is-danger {
+    background: $danger;
+  }
+   &.is-warning {
+    background: $warning;
+     color: $text;
+     .checkmark:before {
+       background: rgba($light, 0.8);
+     }
+  }
+  &.is-success {
+    background: $success;
+  }
+  &.is-static {
+    background-color: $button-static-background-color;
+    border-color: $button-static-border-color;
+    color: $button-static-color;
+    box-shadow: none;
+    pointer-events: none;
+         .checkmark:before {
+       background: rgba($button-static-color,0.3);
+     }
+  }
+  border: $button-border-width solid transparent;
+  color: $white;
+  text-align: center;
+  white-space: nowrap;
+  display: inline-flex;
+  justify-content:center;
+  &.is-primary {
+    background: $primary;
+  }
+  padding: $button-padding-vertical $button-padding-horizontal;
+  border-radius: $radius-small;
+  cursor: pointer;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+
+  .checkmark {
+    color: transparent;
+    position: relative;
+    i {
+      z-index: 1;
+
+    }
+    &:before {
+      content: '';
+      position: absolute;
+      right: 0;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      z-index: 0;
+      border-radius: $radius-small;
+      background: rgba($dark, 0.3);
+      border: 1px solid rgba($dark, 0.2);
+    }
+  }
+  input[type="checkbox"] {
+    position: absolute;
+    visibility: hidden;
+    cursor: pointer;
+    &:checked ~ .checkmark {
+      color: inherit;
+
+    }
+  }
+
+  &.is-rounded {
+     border-radius: 9999px;
+    .checkmark:before {
+      border-radius: 9999px;
+    }
+  }
+
+  &:hover {
+    box-shadow: inset 0px 0px 9999px rgba(black, 0.05);
+  }
+  &:active {
+    box-shadow: inset 0px 0px 9999px rgba(black, 0.1);
+  }
+  &.is-small {
+    @include button-small;
+  }
+    &.is-medium {
+    @include button-medium;
+  }
+    &.is-large {
+    @include button-large;
+  }
+ .icon {
+    &, &.is-small, &.is-medium, &.is-large {
+        height: 1.5em;
+        width: 1.5em;
+        margin-left: -0.35em;
+        margin-right: 0.35em;
+    }
+
+
+    &:first-child:not(:last-child) {
+        margin-right: 0.1875em;
+        margin-left:calc(-01.375em - #{$button-border-width});
+    }
+    &:last-child:not(:first-child) {
+        margin-left: 0.1875em;
+
+        margin-right:calc(-0.375em - #{$button-border-width});
+    }
+    &:first-child:last-child {
+        margin-left:calc(-0.575em - #{$button-border-width});
+    }
+}
+}

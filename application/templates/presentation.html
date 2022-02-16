@@ -1,0 +1,97 @@
+{% extends "baseGeneral.html" %}
+
+{% block title %} New Practice Session {% endblock %}
+
+{% block stylesheets %}{% endblock stylesheets %}
+
+
+{% block content %}
+
+<div class="pcoded-main-container">
+		<div class="pcoded-content">
+			<!-- [ breadcrumb ] start -->
+			<div class="page-header">
+				<div class="page-block">
+					<div class="row align-items-center">
+						<div class="col-md-12">
+							<div class="page-header-title">
+								<h5 class="m-b-10">New Practice Session</h5>
+							</div>
+							<ul class="breadcrumb">
+								<li class="breadcrumb-item"><a href="#!">New Practice</a></li>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- [ breadcrumb ] end -->
+			<!-- [ Main Content ] start -->
+			<div class="row">
+				<!-- [ sample-page ] start -->
+				<div class="col-sm-12">
+					<div class="card">
+						<div class="card-header">
+							<h4>Configure new practice session</h4>
+						</div>
+						<div class="card-body">
+							<div class="row">
+                                <div class="col-md-6">
+                                    <form method="POST" action="" enctype="multipart/form-data">
+                                        {{ form.csrf_token }}
+                                        <div class="form-group">
+                                            <label>Duration</label>
+                                            {{ form.duration(class="mb-3 form-control form-control-lg") }}
+                                            <small id="durationHelp" class="form-text text-muted">Enter how long you want the session to be in minutes.</small>
+                                        </div>
+                                        <div class="form-group">
+                                            <div class="custom-control custom-switch">
+                                            {{ form.includePresentation(class="custom-control-input",id="customswitch1",onclick="hideFile();") }}
+                                            <label class="custom-control-label" for="customswitch1">Include a slide presentation</label>
+                                        	</div>
+										</div>
+										<div id="fileContainer" class="form-group custom-file">
+											<label class="custom-file-label" for="presentationFile">Choose file...</label>
+											{{ form.presentationFile(class="custom-file-input") }}
+                                		</div>
+										<br/><br/>
+										<div class="form-group">
+											{{ form.submit(class="btn  btn-primary") }}
+                                		</div>
+
+                                    </form>
+                                </div>
+
+                            </div>
+						</div>
+					</div>
+				</div>
+				<!-- [ sample-page ] end -->
+			</div>
+			<!-- [ Main Content ] end -->
+		</div>
+	</div>
+	<!-- [ Main Content ] end -->
+
+{% endblock %}
+{% block javascripts %}
+<script>
+$('#presentationFile').change(function() {
+  var i = $(this).prev('label').clone();
+  var file = $('#presentationFile')[0].files[0].name;
+  $(this).prev('label').text(file);
+});
+
+function hideFile()
+{
+  if (document.getElementById('customswitch1').checked)
+  {
+      document.getElementById('fileContainer').style.visibility = 'visible';
+  } else {
+      document.getElementById('fileContainer').style.visibility = 'hidden';
+  }
+}
+
+
+</script>
+{% endblock javascripts %}
+
