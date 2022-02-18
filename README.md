@@ -9,6 +9,8 @@ Update repositories and install pip
     
     sudo apt-get update
     sudo apt-get install -y python3-pip
+    sudo apt-get install python-venv
+    sudo apt-get install curl
     pip3 install --upgrade pip
     cd OpenOPAF
 

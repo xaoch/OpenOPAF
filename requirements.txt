@@ -7,10 +7,11 @@ matplotlib
 numpy
 opencv_python
 pandas
-parselmouth
+praat-parselmouth
 plotly
 python_pptx
 sounddevice
 SoundFile
 Werkzeug
 WTForms
+mediapipe
