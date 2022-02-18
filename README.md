@@ -9,10 +9,13 @@ Update repositories and install pip
     
     sudo apt-get update
     sudo apt-get install -y python3-pip
+    pip3 install --upgrade pip
     cd OpenOPAF
 
-Install Flask
-    
-    pip3 install Flask
+Install Requirements
+
+    pip3 install -r requirements.txt
+
+Install Mediapipe
 
 
