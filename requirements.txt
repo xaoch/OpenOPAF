@@ -14,4 +14,3 @@ sounddevice
 SoundFile
 Werkzeug
 WTForms
-mediapipe
