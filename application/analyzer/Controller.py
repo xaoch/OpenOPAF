@@ -1,6 +1,6 @@
-import project.analyzer.extraction.VideoExtractor as ve
-import project.analyzer.extraction.AudioExtractor as ae
-import project.analyzer.extraction.SlidesExtractor as se
+import application.analyzer.extraction.VideoExtractor as ve
+import application.analyzer.extraction.AudioExtractor as ae
+import application.analyzer.extraction.SlidesExtractor as se
 from time import sleep
 from threading import Thread, Event
 

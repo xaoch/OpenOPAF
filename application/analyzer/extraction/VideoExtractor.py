@@ -9,8 +9,8 @@ import random
 import csv
 from threading import Thread, Event
 from time import sleep
-import project.analyzer.extraction.GeometricGazeExtractor as gge
-import project.analyzer.extraction.GeometricBodyPostureExtractor as gbpe
+import application.analyzer.extraction.GeometricGazeExtractor as gge
+import application.analyzer.extraction.GeometricBodyPostureExtractor as gbpe
 import time
 
 class VideoExtractor:

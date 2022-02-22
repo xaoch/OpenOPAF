@@ -16,6 +16,9 @@ Update repositories and install pip
 
 Install Requirements
 
+    sudo apt-get install libxml2-dev libxslt-dev python-dev
+    sudo apt-get install libjpeg-dev zlib1g-dev 
+    sudo apt-get install libffi-dev
     pip3 install -r requirements.txt
 
 Install Mediapipe
