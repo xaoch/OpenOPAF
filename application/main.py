@@ -81,6 +81,7 @@ def captureFrame():
                     cv2.FONT_HERSHEY_SIMPLEX, 0.35, (0, 0, 255), 1)
         with lock:
             outputFrame = frame.copy()
+    vs.stop()
 
 t = threading.Thread(target=captureFrame)
 
