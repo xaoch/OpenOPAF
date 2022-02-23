@@ -24,7 +24,7 @@ class VideoExtractor:
         self.directory = directory
         self.path =  directory+"/Video"
         self.frame_rate = 2
-        self.cam = cv2.VideoCapture(0)
+        self.cam = cv2.VideoCapture(1)
         self.cam.set(3, self.videoWidth)  # width
         self.cam.set(4, self.videoHeight)  # Height
         self.createFolders()
