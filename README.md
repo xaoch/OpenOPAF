@@ -18,6 +18,7 @@ Install Requirements
 
     sudo apt-get install libxml2-dev libxslt-dev python-dev
     sudo apt-get install libjpeg-dev zlib1g-dev 
+    sudo apt-get install libasound-dev portaudio19-dev libportaudio2 libportaudiocpp0
     sudo apt-get install libffi-dev
     pip3 install -r requirements.txt
 

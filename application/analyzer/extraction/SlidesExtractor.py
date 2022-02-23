@@ -5,7 +5,6 @@ from pptx import Presentation
 import argparse
 import csv
 from threading import Thread, Event
-from pptx_tools import utils  # needs python-pptx-interface installed
 
 class SlidesExtractor:
 
@@ -20,7 +19,6 @@ class SlidesExtractor:
         png_folder = ...
         pptx_file = ...
 
-        utils.save_pptx_as_png(png_folder, pptx_file)
         self.csv_file = open(self.path + '/result.csv', mode='w')
         self.resultFile = csv.writer(self.csv_file, delimiter=',')
         self.resultFile.writerow(["slide", "font_size","text_length"])
