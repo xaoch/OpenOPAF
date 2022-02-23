@@ -81,7 +81,6 @@ def captureFrame():
                     cv2.FONT_HERSHEY_SIMPLEX, 0.35, (0, 0, 255), 1)
         with lock:
             outputFrame = frame.copy()
-    vs.stop()
 
 t = threading.Thread(target=captureFrame)
 
@@ -324,6 +323,7 @@ def prepareRecording():
 def recording():
     global controllerObject,vs, stopStreaming
     stopStreaming=True
+    vs.stop()
     t.join()
     sleep(2)
     form = StopForm()
