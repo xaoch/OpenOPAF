@@ -288,7 +288,7 @@ def presentation():
         session["includePresentation"] = form.includePresentation.data
         session["presId"] = str(uuid.uuid4())
         app = Flask(__name__)
-        uploads_dir = os.path.join(app.instance_path, 'presentations')
+        uploads_dir = os.path.join(app.root_path, 'presentations')
         path=os.path.join(uploads_dir, session["presId"])
         os.mkdir(path)
         print(path)
@@ -299,7 +299,7 @@ def presentation():
             filename = secure_filename(f.filename)
             session["presFile"] = filename
             app = Flask(__name__)
-            uploads_dir = os.path.join(app.instance_path, 'presentations')
+            uploads_dir = os.path.join(app.root_path, 'presentations')
             f.save(os.path.join(uploads_dir, session["presId"], "presentation.pptx"))
             return redirect(url_for('main.prepareRecording'))
         else:
@@ -333,7 +333,7 @@ def recording():
     else:
         if session.get("controller") is None:
             app = Flask(__name__)
-            uploads_dir = os.path.join(app.instance_path, 'presentations')
+            uploads_dir = os.path.join(app.root_path, 'presentations')
             path = os.path.join(uploads_dir, session["presId"])
             controllerObject = Controller(int(session["duration"])*60, session["includePresentation"], path)
             controllerObject.run()
@@ -365,7 +365,7 @@ def report():
     if presId is None:
         presId=session["presId"]
     app = Flask(__name__)
-    uploads_dir = os.path.join(app.instance_path, 'presentations')
+    uploads_dir = os.path.join(app.root_path, 'presentations')
     path = os.path.join(uploads_dir, presId)
     dfAudio = pd.read_csv(os.path.join(path,"Audio","result.csv"))
     dfVideo = pd.read_csv(os.path.join(path,"Video","result.csv"))
@@ -418,7 +418,7 @@ def video_feed():
 @login_required
 def videoRecordings(presId):
     app = Flask(__name__)
-    uploads_dir = os.path.join(app.instance_path, 'presentations')
+    uploads_dir = os.path.join(app.root_path, 'presentations')
     path = os.path.join(uploads_dir, presId,"Video")
     return send_from_directory(path, "video.mp4")
 
@@ -426,7 +426,7 @@ def videoRecordings(presId):
 @login_required
 def audioRecordings(presId):
     app = Flask(__name__)
-    uploads_dir = os.path.join(app.instance_path, 'presentations')
+    uploads_dir = os.path.join(app.root_path, 'presentations')
     path = os.path.join(uploads_dir, presId,"Audio")
     return send_from_directory(path, "audio.wav")
 
