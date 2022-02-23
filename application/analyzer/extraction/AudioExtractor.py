@@ -52,7 +52,7 @@ class AudioExtractor:
             mean_Hz = parselmouth.praat.call(pitch, "Get mean", 0, 0, "Hertz")
             stdev_Hz = parselmouth.praat.call(pitch, "Get standard deviation", 0, 0, "Hertz")
             variation = stdev_Hz / mean_Hz
-            sourcerun = "/syllablenucleiv3.praat"
+            sourcerun = "praat/syllablenucleiv3.praat"
             objects = run_file(sound, sourcerun, "./*.flac", "None", -25, 2, 0.3, "yes", "English", 1.3, "Table",
                                "OverWriteData", "yes", capture_output=True)
             table = objects[0][0]
