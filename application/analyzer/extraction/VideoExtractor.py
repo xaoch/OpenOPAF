@@ -36,8 +36,8 @@ class VideoExtractor:
         self.frameNumber = 0
         self.lastGaze = "None"
         self.lastBodyPosture = "None"
-        fourcc = cv2.VideoWriter_fourcc(*'X264')
-        self.videoFile = cv2.VideoWriter(self.path + '/video.mp4', 0x00000021, self.frame_rate, (self.videoWidth, self.videoHeight))
+        fourcc = cv2.VideoWriter_fourcc(*'mp4v')
+        self.videoFile = cv2.VideoWriter(self.path + '/video.mp4', fourcc, self.frame_rate, (self.videoWidth, self.videoHeight))
         self.csv_file = open(self.path + '/result.csv', mode='w')
         self.resultFile = csv.writer(self.csv_file, delimiter=',')
         self.resultFile.writerow(["frame", "gaze", "posture"])
