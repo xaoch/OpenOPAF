@@ -13,6 +13,7 @@ import application.analyzer.extraction.GeometricGazeExtractor as gge
 import application.analyzer.extraction.GeometricBodyPostureExtractor as gbpe
 import time
 from imutils.video import VideoStream
+import threading
 
 class VideoExtractor:
 
@@ -20,15 +21,28 @@ class VideoExtractor:
 
     videoWidth=640
     videoHeight=480
+    frame=None
+    lock = threading.Lock()
+
+    def captureFrame(self):
+        while True:
+            if (stopCapturing):
+                break
+            # read the next frame from the video stream, resize it,
+            # convert the frame to grayscale, and blur it
+            frame = self.cam.read()
+            # frame = imutils.resize(frame, width=400)
+            # grab the current timestamp and draw it on the frame
+            with self.lock:
+                self.frame = frame.copy()
 
     def __init__(self, directory):
         self.directory = directory
         self.path =  directory+"/Video"
         self.frame_rate = 2
         print("Trying to open camera")
-        self.cam = VideoStream(src=0)
+        self.cam = VideoStream(src=0).start()
         print(self.cam)
-        self.cam.start()
         print("Camera Open")
         self.createFolders()
         self.mp_drawing = mp.solutions.drawing_utils
@@ -118,13 +132,7 @@ class VideoExtractor:
             time_elapsed = time.time() - prev
             if time_elapsed > 1. / self.frame_rate:
                 prev = time.time()
-                success, image = self.cam.read()
-                if not success:
-                    print("Ignoring empty camera frame.")
-                    # If loading a video, use 'break' instead of 'continue'.
-                    continue
-            else:
-                continue
+                image = self.cam.read()
 
             # Flip the image horizontally for a later selfie-view display, and convert
             # the BGR image to RGB.
@@ -225,6 +233,7 @@ class VideoExtractor:
 
     def run(self):
         self.t = Thread(target=self.extract, args=())
+        self.daemon = True
         self.t.start()
 
     def stop(self):
