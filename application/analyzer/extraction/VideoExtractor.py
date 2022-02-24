@@ -12,6 +12,7 @@ from time import sleep
 import application.analyzer.extraction.GeometricGazeExtractor as gge
 import application.analyzer.extraction.GeometricBodyPostureExtractor as gbpe
 import time
+from imutils.video import VideoStream
 
 class VideoExtractor:
 
@@ -25,10 +26,8 @@ class VideoExtractor:
         self.path =  directory+"/Video"
         self.frame_rate = 2
         print("Trying to open camera")
-        self.cam = cv2.VideoCapture(0,cv2.CAP_V4L2)
+        self.cam = VideoStream(src=0, resolution=(640, 480)).start()
         print("Camera Open")
-        self.cam.set(3, self.videoWidth)  # width
-        self.cam.set(4, self.videoHeight)  # Height
         self.createFolders()
         self.mp_drawing = mp.solutions.drawing_utils
         self.mp_holistic = mp.solutions.holistic
@@ -112,10 +111,8 @@ class VideoExtractor:
             return x, y, width, height
 
     def extract(self):
-        print("Video Thread: starting")
         prev = 0
-        print("Is cam opened?", self.cam.isOpened())
-        while self.cam.isOpened():
+        while True:
             time_elapsed = time.time() - prev
             if time_elapsed > 1. / self.frame_rate:
                 prev = time.time()
@@ -194,7 +191,7 @@ class VideoExtractor:
                 break
         self.csv_file.close()
         self.videoFile.release()
-        self.cam.release()
+        self.cam.stop()
         print("Video Thread: finishing")
 
 
