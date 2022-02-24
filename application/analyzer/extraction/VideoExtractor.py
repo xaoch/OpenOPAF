@@ -26,7 +26,8 @@ class VideoExtractor:
         self.path =  directory+"/Video"
         self.frame_rate = 2
         print("Trying to open camera")
-        self.cam = VideoStream(src=0, resolution=(640, 480)).start()
+        self.cam = VideoStream(src=0, resolution=(640, 480))
+        self.cam.start()
         print("Camera Open")
         self.createFolders()
         self.mp_drawing = mp.solutions.drawing_utils
