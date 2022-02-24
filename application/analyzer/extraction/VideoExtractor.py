@@ -114,6 +114,7 @@ class VideoExtractor:
     def extract(self):
         print("Video Thread: starting")
         prev = 0
+        print("Is cam opened?", self.cam.isOpened())
         while self.cam.isOpened():
             time_elapsed = time.time() - prev
             if time_elapsed > 1. / self.frame_rate:
