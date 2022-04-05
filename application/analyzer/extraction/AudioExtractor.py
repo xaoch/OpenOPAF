@@ -82,7 +82,7 @@ class AudioExtractor:
     def extract(self):
         print("Audio Thread: starting")
         self.time = -5
-        sd.default.device=11
+        #sd.default.device=11
         with sf.SoundFile(os.path.join(self.path, "audio.wav"), mode='x', samplerate=self.fs, channels=1, subtype="PCM_16") as file:
             with sd.Stream(samplerate=self.fs, channels=1, blocksize=44100*5, callback=self.process):
                 while(True):
