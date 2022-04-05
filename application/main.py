@@ -323,6 +323,7 @@ def prepareRecording():
 def recording():
     global controllerObject,vs, stopStreaming
     stopStreaming=True
+    vs.stream.release()
     vs.stop()
     t.join()
     sleep(10)

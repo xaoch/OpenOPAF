@@ -25,3 +25,5 @@ Install Requirements
 Install Mediapipe
 
 
+export FLASK_APP=application
+flask run
