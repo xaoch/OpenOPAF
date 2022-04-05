@@ -133,7 +133,6 @@ class VideoExtractor:
             if time_elapsed > 1. / self.frame_rate:
                 prev = time.time()
                 image = self.cam.read()
-                print(image)
 
                 # Flip the image horizontally for a later selfie-view display, and convert
                 # the BGR image to RGB.
