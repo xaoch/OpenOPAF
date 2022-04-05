@@ -27,7 +27,7 @@ class AudioExtractor:
         self.csv_file = open(self.path + '/result.csv', mode='w')
         self.resultFile = csv.writer(self.csv_file, delimiter=',')
         self.resultFile.writerow(["time", "volume", "speed","filled_pauses","pitch_variation"])
-        self.fs = 44100  # Sample rate
+        self.fs = 48000  # Sample rate
         self.interval = 5  # Duration of recording seconds
 
         self.minimum_pitch = 80
