@@ -27,7 +27,7 @@ class AudioExtractor:
         self.csv_file = open(self.path + '/result.csv', mode='w')
         self.resultFile = csv.writer(self.csv_file, delimiter=',')
         self.resultFile.writerow(["time", "volume", "speed","filled_pauses","pitch_variation"])
-        self.fs = 8000  # Sample rate
+        self.fs = 44100  # Sample rate
         self.interval = 5  # Duration of recording seconds
 
         self.minimum_pitch = 80
@@ -42,7 +42,7 @@ class AudioExtractor:
         except:
             print("Audio Directories already created")
 
-    def process(self,soundData, outdata, frames, time, status):
+    def process(self,soundData, frames, time, status):
         self.q.put(soundData.copy())
         self.time=self.time+self.interval
         try:
@@ -84,7 +84,7 @@ class AudioExtractor:
         self.time = -5
         #sd.default.device=11
         with sf.SoundFile(os.path.join(self.path, "audio.wav"), mode='x', samplerate=self.fs, channels=1, subtype="PCM_16") as file:
-            with sd.InputStream(samplerate=self.fs, device=12,channels=1, blocksize=44100*5, callback=self.process):
+            with sd.InputStream(samplerate=self.fs, device=11, channels=1, blocksize=44100*5, callback=self.process):
                 while(True):
                     if self.time>=0:
                         file.write(self.q.get())
