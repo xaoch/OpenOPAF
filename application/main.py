@@ -360,9 +360,9 @@ def reportWaiting():
 @main.route('/report', methods=['get','post'])
 @login_required
 def report():
-    #presId= request.args.get('presId')
-    presId="41b173a5-ef24-4e1e-9740-b14dc0da7840"
-    #includePresentation=session["includePresentation"]
+    presId= request.args.get('presId')
+    #presId="41b173a5-ef24-4e1e-9740-b14dc0da7840"
+    includePresentation=session["includePresentation"]
     includePresentation=True
     if presId is None:
         presId=session["presId"]
