@@ -125,7 +125,7 @@ procedure setSB: .idSnd, .idTG
 
     frFrom = frNuc
     repeat
-      frFrom -= 1
+      frFrom = frFrom- 1
       dBL = Get value in frame: frFrom
       tL  = Get time from frame number: frFrom
       until dBL < dBNuc - 6 or tL < tSBMin[syllable] or frFrom < 2
@@ -133,7 +133,7 @@ procedure setSB: .idSnd, .idTG
 
     frTo = frNuc
     repeat
-      frTo += 1
+      frTo = frTo + 1
       dBR = Get value in frame: frTo
       tR  = Get time from frame number: frTo
       until dBR < dBNuc - 6 or tR > tSBMin[syllable+1] or frTo > nrFrames-1
@@ -345,18 +345,18 @@ procedure sdFmt: .idSnd
       lF2 = Get value at time: 2, t, "bark", "Linear"
       lF3 = Get value at time: 3, t, "bark", "Linear"
       if lF1 <> undefined
-        dF1[syllable] += abs(qGlobF1 - lF1)
+        dF1[syllable] = dF1[syllable] +abs(qGlobF1 - lF1)
         endif
       if lF2 <> undefined
-        dF2[syllable] += abs(qGlobF2 - lF2)
+        dF2[syllable] = dF2[syllable] + abs(qGlobF2 - lF2)
         endif
       if lF3 <> undefined
-        dF3[syllable] += abs(qGlobF3 - lF3)
+        dF3[syllable] = dF3[syllable]+ abs(qGlobF3 - lF3)
         endif
       endfor
-    dF1 [syllable] /= (fe-fs+1)
-    dF2 [syllable] /= (fe-fs+1)
-    dF3 [syllable] /= (fe-fs+1)
+    dF1 [syllable] = dF1 [syllable]/(fe-fs+1)
+    dF2 [syllable] = dF2 [syllable]/(fe-fs+1)
+    dF3 [syllable] = dF3 [syllable]/(fe-fs+1)
     dF1#[syllable]  = dF1[syllable]
     dF2#[syllable]  = dF2[syllable]
     dF3#[syllable]  = dF3[syllable]
@@ -471,12 +471,12 @@ procedure processData: .idTG, .name$, .type$
     if   language$ == "English"
       score = scoreUK
       if  score > 3.4942 * filled_Pause_threshold
-        lbl2$ += "fp"
+        lbl2$ = lbl2$ + "fp"
         endif
     elif language$ == "Dutch"
       score = scoreNL
       if score > 2.7094 * filled_Pause_threshold
-        lbl2$ += "fp"
+        lbl2$ = lbl2$ +"fp"
         endif
     else
       exitScript: "Language not supported."
