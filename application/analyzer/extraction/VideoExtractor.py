@@ -202,7 +202,7 @@ class VideoExtractor:
 
             self.mp_drawing.draw_landmarks(image, pose_landmarks, self.mp_holistic.POSE_CONNECTIONS)
             #self.mp_drawing.draw_landmarks(image, face_landmarks, self.mp_holistic.FACE_CONNECTIONS)
-            cv2.imshow('MediaPipe Holistic', image)
+            #cv2.imshow('MediaPipe Holistic', image)
             if cv2.waitKey(5) & 0xFF == 27:
                 break
             self.videoFile.write(image)
@@ -210,7 +210,7 @@ class VideoExtractor:
                 break
         self.csv_file.close()
         self.videoFile.release()
-        self.cam.stop()
+        self.cam.release()
         print("Video Thread: finishing")
 
 
