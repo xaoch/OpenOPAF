@@ -28,7 +28,7 @@ class AudioExtractor:
         self.resultFile = csv.writer(self.csv_file, delimiter=',')
         self.resultFile.writerow(["time", "volume", "speed","filled_pauses","pitch_variation"])
         self.fs = 48000  # Sample rate
-        self.interval = 5  # Duration of recording seconds
+        self.interval = 2  # Duration of recording seconds
 
         self.minimum_pitch = 80
         self.maximum_pitch = 400
@@ -48,13 +48,10 @@ class AudioExtractor:
         try:
             soundData = np.transpose(soundData)
             sound = parselmouth.Sound(soundData, sampling_frequency=self.fs)
-            pitch=0
-            mean_Hz=0
-            variation=0
-            #pitch = sound.to_pitch(self.time_step, self.minimum_pitch, self.maximum_pitch)
-            #mean_Hz = parselmouth.praat.call(pitch, "Get mean", 0, 0, "Hertz")
-            #stdev_Hz = parselmouth.praat.call(pitch, "Get standard deviation", 0, 0, "Hertz")
-            #variation = stdev_Hz / mean_Hz
+            pitch = sound.to_pitch(self.time_step, self.minimum_pitch, self.maximum_pitch)
+            mean_Hz = parselmouth.praat.call(pitch, "Get mean", 0, 0, "Hertz")
+            stdev_Hz = parselmouth.praat.call(pitch, "Get standard deviation", 0, 0, "Hertz")
+            variation = stdev_Hz / mean_Hz
             praatPath=os.path.join(self.path, "..","..","..","praat")
             sourcerun = os.path.join(praatPath,"syllablenucleiv3.praat")
             objects = run_file(sound, sourcerun, "./*.flac", "None", -25, 2, 0.3, "yes", "English", 1.3, "Table",
@@ -83,10 +80,10 @@ class AudioExtractor:
 
     def extract(self):
         print("Audio Thread: starting")
-        self.time = -5
+        self.time = -self.interval
         #sd.default.device=11
         with sf.SoundFile(os.path.join(self.path, "audio.wav"), mode='x', samplerate=self.fs, channels=1, subtype="PCM_16") as file:
-            with sd.InputStream(samplerate=self.fs, device=12, channels=1, blocksize=self.fs*5, callback=self.process):
+            with sd.InputStream(samplerate=self.fs, device=12, channels=1, blocksize=self.fs*self.interval, callback=self.process):
                 while(True):
                     if self.time>=0:
                         file.write(self.q.get())
