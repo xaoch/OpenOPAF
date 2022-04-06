@@ -39,13 +39,13 @@ class VideoExtractor:
     def __init__(self, directory):
         self.directory = directory
         self.path =  directory+"/Video"
-        self.frame_rate = 15
+        self.frame_rate = 1
         print("Trying to open camera")
         #self.cam = VideoStream(src=0).start()
         self.cam = cv2.VideoCapture(0)
         self.cam.set(cv2.CAP_PROP_FRAME_WIDTH, self.videoWidth)  # width
         self.cam.set(cv2.CAP_PROP_FRAME_HEIGHT, self.videoHeight)  # Height
-        self.cam.set(cv2.CAP_PROP_FPS, self.frame_rate)
+        #self.cam.set(cv2.CAP_PROP_FPS, self.frame_rate)
         #print(self.cam)
         print("Camera Open")
         self.createFolders()
