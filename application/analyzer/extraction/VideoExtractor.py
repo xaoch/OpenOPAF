@@ -45,7 +45,7 @@ class VideoExtractor:
         self.cam = cv2.VideoCapture(0)
         self.cam.set(cv2.CAP_PROP_FRAME_WIDTH, self.videoWidth)  # width
         self.cam.set(cv2.CAP_PROP_FRAME_HEIGHT, self.videoHeight)  # Height
-        cap.set(cv2.CAP_PROP_FPS, self.frame_rate)
+        self.cam.set(cv2.CAP_PROP_FPS, self.frame_rate)
         #print(self.cam)
         print("Camera Open")
         self.createFolders()
