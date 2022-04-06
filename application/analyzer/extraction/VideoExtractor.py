@@ -41,8 +41,11 @@ class VideoExtractor:
         self.path =  directory+"/Video"
         self.frame_rate = 2
         print("Trying to open camera")
-        self.cam = VideoStream(src=0).start()
-        print(self.cam)
+        #self.cam = VideoStream(src=0).start()
+        self.cam = cv2.VideoCapture(0)
+        self.cam.set(3, self.videoWidth)  # width
+        self.cam.set(4, self.videoHeight)  # Height
+        #print(self.cam)
         print("Camera Open")
         self.createFolders()
         self.mp_drawing = mp.solutions.drawing_utils
@@ -127,69 +130,75 @@ class VideoExtractor:
             return x, y, width, height
 
     def extract(self):
+        print("Video Thread: starting")
         prev = 0
-        while True:
+        while self.cam.isOpened():
             time_elapsed = time.time() - prev
             if time_elapsed > 1. / self.frame_rate:
                 prev = time.time()
-                image = self.cam.read()
+                success, image = self.cam.read()
+                if not success:
+                    print("Ignoring empty camera frame.")
+                    # If loading a video, use 'break' instead of 'continue'.
+                    continue
+            else:
+                continue
+            # Flip the image horizontally for a later selfie-view display, and convert
+            # the BGR image to RGB.
+            image = cv2.cvtColor(cv2.flip(image, 1), cv2.COLOR_BGR2RGB)
+            self.frameNumber = self.frameNumber + 1
+            print(self.frameNumber)
 
-                # Flip the image horizontally for a later selfie-view display, and convert
-                # the BGR image to RGB.
-                image = cv2.cvtColor(cv2.flip(image, 1), cv2.COLOR_BGR2RGB)
-                self.frameNumber = self.frameNumber + 1
-                print(self.frameNumber)
+            image.flags.writeable = False
+            results = self.holistic_detector.process(image)
 
-                image.flags.writeable = False
-                results = self.holistic_detector.process(image)
+            image.flags.writeable = True
 
-                image.flags.writeable = True
+            image = cv2.cvtColor(image, cv2.COLOR_RGB2BGR)
 
-                image = cv2.cvtColor(image, cv2.COLOR_RGB2BGR)
+            face_landmarks = results.face_landmarks
+            pose_landmarks = results.pose_landmarks
 
-                face_landmarks = results.face_landmarks
-                pose_landmarks = results.pose_landmarks
+            gazeExtractor = gge.GeometricGazeExtractor()
+            bodyPostureExtractor = gbpe.GeometricBodyPostureExtractor()
+            gaze="None"
+            bodyPosture="None"
 
-                gazeExtractor = gge.GeometricGazeExtractor()
-                bodyPostureExtractor = gbpe.GeometricBodyPostureExtractor()
-                gaze="None"
-                bodyPosture="None"
+            if (face_landmarks is not None):
+                face_keypoints = face_landmarks.landmark
 
-                if (face_landmarks is not None):
-                    face_keypoints = face_landmarks.landmark
+                if(face_keypoints is not None):
+                    headx,heady,headw,headh = self.getHeadRectangle(face_keypoints)
+                    head_height=headh
 
-                    if(face_keypoints is not None):
-                        headx,heady,headw,headh = self.getHeadRectangle(face_keypoints)
-                        head_height=headh
+                    gaze=gazeExtractor.gaze(face_keypoints,image,"face")
 
-                        gaze=gazeExtractor.gaze(face_keypoints,image,"face")
-
-                else:
-                    if (pose_landmarks is not None):
-                        pose_keypoints = pose_landmarks.landmark
-                        if (pose_keypoints is not None):
-                            headx, heady, headw, headh = self.getHeadRectangleFromPosture(pose_keypoints)
-                            gaze=gazeExtractor.gaze(pose_keypoints,image,"posture")
-
-                print("Gaze: ", gaze)
-
+            else:
                 if (pose_landmarks is not None):
                     pose_keypoints = pose_landmarks.landmark
                     if (pose_keypoints is not None):
-                        bodyPosture=bodyPostureExtractor.bodyPosture(pose_keypoints,image)
+                        headx, heady, headw, headh = self.getHeadRectangleFromPosture(pose_keypoints)
+                        gaze=gazeExtractor.gaze(pose_keypoints,image,"posture")
 
-                print("Body Posture: ", bodyPosture)
+            print("Gaze: ", gaze)
+
+            if (pose_landmarks is not None):
+                pose_keypoints = pose_landmarks.landmark
+                if (pose_keypoints is not None):
+                    bodyPosture=bodyPostureExtractor.bodyPosture(pose_keypoints,image)
+
+            print("Body Posture: ", bodyPosture)
 
 
-                self.resultFile.writerow([self.frameNumber, gaze, bodyPosture])
-                if (pose_landmarks is not None):
-                    pose_keypoints = pose_landmarks.landmark
-                    if (pose_keypoints is not None):
-                        self.captureGazeImages(self.frameNumber,image, gaze, self.lastGaze, headx, heady, headw, headh)
-                        #print("Head: ",headx,",",heady,",",headw,",",headh)
-                        self.captureBodyPostureImages(self.frameNumber, image, bodyPosture, self.lastBodyPosture)
-                self.lastGaze=gaze
-                self.lastBodyPosture=bodyPosture
+            self.resultFile.writerow([self.frameNumber, gaze, bodyPosture])
+            if (pose_landmarks is not None):
+                pose_keypoints = pose_landmarks.landmark
+                if (pose_keypoints is not None):
+                    self.captureGazeImages(self.frameNumber,image, gaze, self.lastGaze, headx, heady, headw, headh)
+                    #print("Head: ",headx,",",heady,",",headw,",",headh)
+                    self.captureBodyPostureImages(self.frameNumber, image, bodyPosture, self.lastBodyPosture)
+            self.lastGaze=gaze
+            self.lastBodyPosture=bodyPosture
 
             self.mp_drawing.draw_landmarks(image, pose_landmarks, self.mp_holistic.POSE_CONNECTIONS)
             #self.mp_drawing.draw_landmarks(image, face_landmarks, self.mp_holistic.FACE_CONNECTIONS)
