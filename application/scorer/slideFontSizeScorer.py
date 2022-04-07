@@ -70,12 +70,12 @@ class slideFontSizeScorer:
             frame2["group"] = 1
             frame2["start"] = i
             frame2["end"] = i + 1
-            if fontValue == "Ok":
-                frame["subgroup"] = "sg_cor"
-                frame["className"] = "correct"
+            if lengthValue == "Ok":
+                frame2["subgroup"] = "sg_cor"
+                frame2["className"] = "correct"
             else:
-                frame["subgroup"] = "sg_inc"
-                frame["className"] = "incorrect"
+                frame2["subgroup"] = "sg_inc"
+                frame2["className"] = "incorrect"
             i = i + 1
             tline.append(frame)
             tline.append(frame2)
