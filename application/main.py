@@ -406,10 +406,27 @@ def report():
     figArt.add_scattergl(x=dfAudio.name, y=dfAudio.speed.where((dfAudio.speed < 20)|(dfAudio.speed > 200)), line={"width": 0},
                          marker={"size": 12, "color": "red"}, name="Poor")
 
+    figFP = go.Figure()
+    figFP.update_layout(width=int(1500))
+    figArt.add_hrect(y0=2, y1=4, line_width=0, fillcolor="red", opacity=0.2)
+    figFP.add_hrect(y0=1, y1=2, line_width=0, fillcolor="purple", opacity=0.2)
+    figFP.add_hrect(y0=0, y1=1, line_width=0, fillcolor="blue", opacity=0.2)
+    figFP.add_scattergl(x=dfAudio.name, y=dfAudio.nrFP.where(dfAudio.nrFP < 1),
+                         line={"width": 0},
+                         marker={"size": 12, "color": "blue"}, name="Good")
+    figFP.add_scattergl(x=dfAudio.name, y=dfAudio.nrFP.where(
+        (dfAudio.nrFP > 0) & (dfAudio.nrFP < 2)),
+                         line={"width": 0}, marker={"size": 12, "color": "purple"}, name="Ok")
+    figFP.add_scattergl(x=dfAudio.name, y=dfAudio.nrFP.where(dfAudio.nrFP > 1),
+                         line={"width": 0},
+                         marker={"size": 12, "color": "red"}, name="Poor")
+
     graphJSONVolume = json.dumps(figVol, cls=plotly.utils.PlotlyJSONEncoder)
     graphJSONArticulation = json.dumps(figArt, cls=plotly.utils.PlotlyJSONEncoder)
+    graphJSONFP = json.dumps(figFP, cls=plotly.utils.PlotlyJSONEncoder)
+
     maxFrame=dfAudio.shape[0]*5
-    return render_template("report.html",presId=presId,summary=summary,maxFrame=maxFrame,includePresentation=includePresentation,graphJSONVolume=graphJSONVolume, graphJSONArticulation=graphJSONArticulation)
+    return render_template("report.html",presId=presId,summary=summary,maxFrame=maxFrame,includePresentation=includePresentation,graphJSONVolume=graphJSONVolume, graphJSONArticulation=graphJSONArticulation, graphJSONFP=graphJSONFP)
 
 @main.route("/video_feed")
 def video_feed():
