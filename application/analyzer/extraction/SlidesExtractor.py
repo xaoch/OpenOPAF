@@ -14,6 +14,7 @@ class SlidesExtractor:
     def __init__(self, directory):
         self.prs = Presentation(directory+"/presentation.pptx")
         self.path=directory+"/Slides"
+        self.pathPres=directory+"/presentation.pptx"
         self.outputPDF=directory+"/presentation.pdf"
         self.outputSlides=self.path+"/slide%02d.png"
         self.createFolders()
@@ -88,7 +89,7 @@ class SlidesExtractor:
             index = i + 1
             self.resultFile.writerow([index, fontErrors[i], textErrors[i]])
         self.csv_file.close()
-        command=["libreoffice","--headless","--convert-to","pdf",self.prs]
+        command=["libreoffice","--headless","--convert-to","pdf",self.pathPres]
         subprocess.run(command)
         command=["gs","-sDEVICE=pngalpha","-o",self.outputSlides,self.outputPDF]
         subprocess.run(command)
