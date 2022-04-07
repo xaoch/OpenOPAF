@@ -69,7 +69,7 @@ class AudioExtractor:
             executable="/usr/bin/praat"
             if self.time==0:
                 append="OverWriteData"
-            else
+            else:
                 append="AppendData"
             command =[executable,"--run",sourcerun,audioFileName,audioDirectory,outputFileName,"None","-25","2","0.3","yes","English","1.3","Save as text file",append,"no"]
             print("Calliing praat")
