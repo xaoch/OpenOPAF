@@ -89,7 +89,7 @@ class SlidesExtractor:
             index = i + 1
             self.resultFile.writerow([index, fontErrors[i], textErrors[i]])
         self.csv_file.close()
-        command=["libreoffice","--headless","--convert-to","pdf",self.pathPres]
+        command=["libreoffice","--headless","--convert-to","pdf","--outdir",self.path,self.pathPres]
         print(command)
         subprocess.run(command)
         command=["gs","-sDEVICE=pngalpha","-o",self.outputSlides,self.outputPDF]
