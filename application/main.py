@@ -365,8 +365,8 @@ def reportWaiting():
 def report():
     presId= request.args.get('presId')
     includePresentation=session["includePresentation"]
-    #presId="5d8f6a5d-ebd4-43d2-bc9c-da19e8018da3"
-    #includePresentation=False
+    presId="7435b00d-e8f0-49b7-ba16-74ecd192dea1"
+    includePresentation=True
     if presId is None:
         presId=session["presId"]
     app = Flask(__name__)
