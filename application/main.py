@@ -451,7 +451,7 @@ def videoRecordings(presId):
 
 @main.route('/recordings/image/<presId>/<image_number>')
 @login_required
-def videoRecordings(presId,image_number):
+def slideImages(presId,image_number):
     app = Flask(__name__)
     image_number=str(image_number)
     if image_number.len==1:
