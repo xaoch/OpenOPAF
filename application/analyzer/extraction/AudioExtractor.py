@@ -64,7 +64,7 @@ class AudioExtractor:
             #variation = stdev_Hz / mean_Hz
             variation=0
             praatPath=os.path.join(self.path, "..","..","..","praat")
-            sourcerun = os.path.join(praatPath,"syllablenucleiv3.praat")
+            sourcerun = os.path.join(praatPath,"processing.praat")
             executable="/usr/bin/praat"
             command =[executable,"--run",sourcerun,audioFileName,audioDirectory,"results2.csv",None,-25,2,0.3,"yes","English",1.3,"Save as text file","AppendData","no"]
             print("Calliing praat")
