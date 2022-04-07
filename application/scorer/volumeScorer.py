@@ -32,7 +32,7 @@ class volumeScorer:
         i = 0
         while (i) < totalFrames:
             frame = {}
-            meanVolume=df["volume"].iat[i]
+            meanVolume=df["power"].iat[i]
             endTime=df["time"].iat[i]
             frame["start"] = int(endTime-5)
             frame["end"] = int(endTime)
