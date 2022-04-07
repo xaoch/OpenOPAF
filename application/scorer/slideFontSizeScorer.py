@@ -43,3 +43,41 @@ class slideFontSizeScorer:
            score=1
 
        return score
+
+    def timeline(self):
+        tline=[]
+        df = self.df
+        totalSlides = df.shape[0]
+        i=0
+        while i<totalSlides:
+            frame= {}
+            frame2={}
+            fontValue = df['font_size'].iat[i]
+            lengthValue = df['text_length'].iat[i]
+            frame["content"]=fontValue
+            frame["frame"]=i
+            frame["group"]=0
+            frame["start"]=i
+            frame["end"]=i+1
+            if fontValue=="Ok":
+                frame["subgroup"]= "sg_cor"
+                frame["className"]="correct"
+            else:
+                frame["subgroup"] = "sg_inc"
+                frame["className"] = "incorrect"
+            frame2["content"] = lengthValue
+            frame2["frame"] = i
+            frame2["group"] = 1
+            frame2["start"] = i
+            frame2["end"] = i + 1
+            if fontValue == "Ok":
+                frame["subgroup"] = "sg_cor"
+                frame["className"] = "correct"
+            else:
+                frame["subgroup"] = "sg_inc"
+                frame["className"] = "incorrect"
+            i = i + 1
+            tline.append(frame)
+            tline.append(frame2)
+
+        return tline
