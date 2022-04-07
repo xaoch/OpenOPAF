@@ -454,7 +454,7 @@ def videoRecordings(presId):
 def slideImages(presId,image_number):
     app = Flask(__name__)
     image_number=str(image_number)
-    if image_number.len==1:
+    if len(image_number)==1:
         image_number="0"+image_number
     uploads_dir = os.path.join(app.root_path, 'presentations')
     path = os.path.join(uploads_dir, presId,"Slides")
