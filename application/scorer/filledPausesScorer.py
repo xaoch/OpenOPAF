@@ -10,7 +10,7 @@ class filledPausesScorer:
         df = self.df
         totalFrames = df.shape[0]
         if totalFrames > 0:
-            meanFP = df["filled_pauses"].mean()
+            meanFP = df["nrFP"].mean()
 
         if meanFP > 1:
             score = 1
