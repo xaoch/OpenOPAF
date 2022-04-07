@@ -326,7 +326,6 @@ def recording():
     vs.stream.release()
     vs.stop()
     t.join()
-    sleep(10)
     form = StopForm()
     if form.validate_on_submit():
         if controllerObject is not None:
