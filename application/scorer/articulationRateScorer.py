@@ -43,9 +43,9 @@ class articulationRateScorer:
             frame = {}
             meanSpeed=df["speechrate"].iat[i]
             meanSpeed=meanSpeed*60 / 1.66
-            endTime=df["time"].iat[i]
-            frame["start"] = int(endTime-5)
-            frame["end"] = int(endTime)
+            endTime = df["name"].iat[i]
+            frame["start"] = int(endTime)
+            frame["end"] = int(endTime) + 5
             frame["resize"]=False
             frame["drag"]=False
             frame["loop"] = False

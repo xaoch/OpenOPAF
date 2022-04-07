@@ -33,9 +33,9 @@ class volumeScorer:
         while (i) < totalFrames:
             frame = {}
             meanVolume=df["power"].iat[i]
-            endTime=df["time"].iat[i]
-            frame["start"] = int(endTime-5)
-            frame["end"] = int(endTime)
+            endTime=df["name"].iat[i]
+            frame["start"] = int(endTime)
+            frame["end"] = int(endTime)+5
             frame["resize"]=False
             frame["drag"]=False
             frame["loop"] = False
