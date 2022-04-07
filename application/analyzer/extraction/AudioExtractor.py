@@ -68,6 +68,7 @@ class AudioExtractor:
             executable="/usr/bin/praat"
             command =[executable,"--run",sourcerun,audioFileName,audioDirectory,"results2.csv",None,-25,2,0.3,"yes","English",1.3,"Save as text file","AppendData","no"]
             print("Calliing praat")
+            print(command)
             subprocess.run(command)
             print("Returning")
             #objects = run_file(sound, sourcerun, "./*.flac", "None", -25, 2, 0.3, "yes", "English", 1.3, "Table",
