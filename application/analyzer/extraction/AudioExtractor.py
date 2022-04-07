@@ -50,7 +50,7 @@ class AudioExtractor:
             soundData = np.transpose(soundData)
             sound = parselmouth.Sound(soundData, sampling_frequency=self.fs)
             audioFileName=self.path + "/" + str(self.time) + ".wav"
-            outputFileName=self.path + "/results.csv"
+            outputFileName=self.path + "/result.csv"
             audioDirectory = self.path + "/"
             sound.save(audioFileName, 'WAV')
             #pitch = sound.to_pitch(self.time_step, self.minimum_pitch, self.maximum_pitch)
