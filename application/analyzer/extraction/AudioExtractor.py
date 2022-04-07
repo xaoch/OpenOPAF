@@ -62,7 +62,7 @@ class AudioExtractor:
             praatPath=os.path.join(self.path, "..","..","..","praat")
             sourcerun = os.path.join(praatPath,"syllablenucleiv3.praat")
             #objects = run_file(sound, sourcerun, "./*.flac", "None", -25, 2, 0.3, "yes", "English", 1.3, "Table",
-                               "OverWriteData", "yes", capture_output=True)
+            #                   "OverWriteData", "yes", capture_output=True)
             #table = objects[0][0]
 
             #ar = call(table, "Get value", 1, " articulation_rate(nsyll/phonationtime)")
