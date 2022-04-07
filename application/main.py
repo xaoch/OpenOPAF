@@ -449,6 +449,17 @@ def videoRecordings(presId):
     path = os.path.join(uploads_dir, presId,"Video")
     return send_from_directory(path, "video.mp4")
 
+@main.route('/recordings/image/<presId>/<image_number>')
+@login_required
+def videoRecordings(presId,image_number):
+    app = Flask(__name__)
+    image_number=str(image_number)
+    if image_number.len==1:
+        image_number="0"+image_number
+    uploads_dir = os.path.join(app.root_path, 'presentations')
+    path = os.path.join(uploads_dir, presId,"Slides")
+    return send_from_directory(path, "slide-"+str(image_number)+".mp4")
+
 @main.route('/recordings/audio/<presId>')
 @login_required
 def audioRecordings(presId):

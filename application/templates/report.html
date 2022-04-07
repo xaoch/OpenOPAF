@@ -493,6 +493,7 @@
 						</div>
 						<div class="card-body">
 							<center>
+								<center><img id="slideImage" width="500px" src="{{ url_for('main.slideImages', presId=presId,image_number='1') }}"/></center>
 								<div id="slidesTimeline"></div>
 							</center>
 						</div>
@@ -550,6 +551,14 @@
           				    video.pause();
         				}
       				},1000);
+    			  }
+
+    			  function setTimeSlides(properties){
+           		  	console.log(properties)
+      				var slide= document.getElementById("slideImage");
+      				frame=itemsPosture.get(properties.item).frame;
+      				source="{{ url_for('main.slideImages', presId=presId,image_number='2') }}"
+      				slide.src=source
     			  }
 
            		  function multimediaDisplay(properties) {
