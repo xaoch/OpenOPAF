@@ -10,8 +10,8 @@ class articulationRateScorer:
         df = self.df
         totalFrames = df.shape[0]
         if totalFrames > 0:
-            meanSpeed = df["speed"].mean()
-
+            meanSpeed = df["speechrate"].mean()
+        meanSpeed=meanSpeed* 60 / 1.66
         if meanSpeed > 200:
             score = 1
         elif meanSpeed > 180:
@@ -41,7 +41,8 @@ class articulationRateScorer:
         i = 0
         while (i) < totalFrames:
             frame = {}
-            meanSpeed=df["speed"].iat[i]
+            meanSpeed=df["speechrate"].iat[i]
+            meanSpeed=meanSpeed*60 / 1.66
             endTime=df["time"].iat[i]
             frame["start"] = int(endTime-5)
             frame["end"] = int(endTime)
