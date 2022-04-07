@@ -458,7 +458,7 @@ def slideImages(presId,image_number):
         image_number="0"+image_number
     uploads_dir = os.path.join(app.root_path, 'presentations')
     path = os.path.join(uploads_dir, presId,"Slides")
-    return send_from_directory(path, "slide"+str(image_number)+".mp4")
+    return send_from_directory(path, "slide"+str(image_number)+".png")
 
 @main.route('/recordings/audio/<presId>')
 @login_required
