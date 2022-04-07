@@ -365,7 +365,7 @@ def report():
     presId= request.args.get('presId')
     includePresentation=session["includePresentation"]
     presId="5d8f6a5d-ebd4-43d2-bc9c-da19e8018da3"
-    includePresentation=True
+    includePresentation=False
     if presId is None:
         presId=session["presId"]
     app = Flask(__name__)
