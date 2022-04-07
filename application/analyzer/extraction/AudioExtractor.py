@@ -48,10 +48,13 @@ class AudioExtractor:
         try:
             soundData = np.transpose(soundData)
             sound = parselmouth.Sound(soundData, sampling_frequency=self.fs)
-            pitch = sound.to_pitch(self.time_step, self.minimum_pitch, self.maximum_pitch)
-            mean_Hz = parselmouth.praat.call(pitch, "Get mean", 0, 0, "Hertz")
-            stdev_Hz = parselmouth.praat.call(pitch, "Get standard deviation", 0, 0, "Hertz")
-            variation = stdev_Hz / mean_Hz
+            #pitch = sound.to_pitch(self.time_step, self.minimum_pitch, self.maximum_pitch)
+            #mean_Hz = parselmouth.praat.call(pitch, "Get mean", 0, 0, "Hertz")
+            #stdev_Hz = parselmouth.praat.call(pitch, "Get standard deviation", 0, 0, "Hertz")
+            mean_Hz=0
+            stdev_Hz=0
+            #variation = stdev_Hz / mean_Hz
+            variation=0
             praatPath=os.path.join(self.path, "..","..","..","praat")
             sourcerun = os.path.join(praatPath,"syllablenucleiv3.praat")
             objects = run_file(sound, sourcerun, "./*.flac", "None", -25, 2, 0.3, "yes", "English", 1.3, "Table",
