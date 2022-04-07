@@ -14,6 +14,7 @@ import pandas as pd
 import sounddevice as sd
 import queue
 import soundfile as sf
+import subprocess
 
 class AudioExtractor:
 
@@ -48,6 +49,9 @@ class AudioExtractor:
         try:
             soundData = np.transpose(soundData)
             sound = parselmouth.Sound(soundData, sampling_frequency=self.fs)
+            audioFileName=self.path + "/" + str(self.time) + ".wav"
+            audioDirectory = self.path + "/"
+            sound.save(audioFileName, 'WAV')
             #pitch = sound.to_pitch(self.time_step, self.minimum_pitch, self.maximum_pitch)
             #mean_Hz = parselmouth.praat.call(pitch, "Get mean", 0, 0, "Hertz")
             #stdev_Hz = parselmouth.praat.call(pitch, "Get standard deviation", 0, 0, "Hertz")
@@ -62,11 +66,8 @@ class AudioExtractor:
             praatPath=os.path.join(self.path, "..","..","..","praat")
             sourcerun = os.path.join(praatPath,"syllablenucleiv3.praat")
             executable="/usr/bin/praat"
-            command
-            subprocess.run(["ls", "-l"])  # doesn't capture output
-            subprocess.call(
-                [executable, "--run", sourcerun, fileDirectory, recordedFileName, outputfile, outputfileFP,
-                 str(window), str(framerate), str(silence_Threshold), str(minimum_Pause_Duration), str(removeNoise)])
+            command =[executable,"--run",sourcerun,audioFileName,audioDirectory,"results2.csv",None,-25,2,0.3,"yes","English",1.3,"Save as text file","AppendData","no"]
+            subprocess.call(command)
             #objects = run_file(sound, sourcerun, "./*.flac", "None", -25, 2, 0.3, "yes", "English", 1.3, "Table",
             #                   "OverWriteData", "yes", capture_output=True)
             #table = objects[0][0]
@@ -86,7 +87,7 @@ class AudioExtractor:
             # Flip the image horizontally for a later selfie-view display, and convert
             # the BGR image to RGB.
             self.resultFile.writerow([self.time, power, sr, fp, stdev_Hz])
-            sound.save(self.path + "/" + str(self.time) + ".wav", 'WAV')
+
         except Exception as e:
             print(e)
 
