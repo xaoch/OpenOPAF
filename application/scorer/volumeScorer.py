@@ -8,6 +8,7 @@ class volumeScorer:
     def score(self):
        df=self.df
        totalFrames= df.shape[0]
+       print(df.columns)
        if totalFrames>0:
            meanVolume = df["power"].mean()
 
