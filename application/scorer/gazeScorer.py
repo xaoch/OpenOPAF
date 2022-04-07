@@ -57,7 +57,7 @@ class gazeScorer:
        return score
 
     def timeline(self):
-        fs=5
+        fs=10
         tline=[]
         df = self.df
         totalFrames = df.shape[0]
