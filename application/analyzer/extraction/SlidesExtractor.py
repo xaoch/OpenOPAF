@@ -15,7 +15,7 @@ class SlidesExtractor:
         self.prs = Presentation(directory+"/presentation.pptx")
         self.path=directory+"/Slides"
         self.pathPres=directory+"/presentation.pptx"
-        self.outputPDF=directory+"/presentation.pdf"
+        self.outputPDF=self.path+"/presentation.pdf"
         self.outputSlides=self.path+"/slide%02d.png"
         self.createFolders()
 
