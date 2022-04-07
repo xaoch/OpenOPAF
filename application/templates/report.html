@@ -493,14 +493,7 @@
 						</div>
 						<div class="card-body">
 							<center>
-								<div id='chartArticulation' class='chartArticulation'></div>
-								<div id="waveformArticulation">
-                    				<div class="progress progress-striped active" id="progress-bar">
-                        				<div class="progress-bar progress-bar-info"></div>
-                    				</div>
-		                    	<!-- Here be waveform -->
-        			        	</div>
-                				<div id="wave-timeline-Articulation"></div>
+								<div id="slidesTimeline"></div>
 							</center>
 						</div>
 					</div>
@@ -591,6 +584,7 @@
                   // DOM element where the Timeline will be attached
                   var containerGaze = document.getElementById('gazeTimeline');
                   var containerPosture = document.getElementById('postureTimeline');
+                  var containerSlides = document.getElementById('slidesTimeline');
                   var groupsGaze = new vis.DataSet([
                     {id: 0, content: 'Gaze', value: 1},
                   ]);
@@ -600,12 +594,19 @@
                   var groupsSlides = new vis.DataSet([
                     {id: 0, content: 'Font Size', value: 1},
                     {id: 1, content: 'Text Length', value: 2},
-
                   ]);
 
                   var options = {
                     showMajorLabels: false,
                     max:{{maxFrame}},
+                    min:0,
+                    stack: false,
+                    stackSubgroups: true,
+                  };
+
+                  var optionsSlides = {
+                    showMajorLabels: false,
+                    max:{{maxSlide}},
                     min:0,
                     stack: false,
                     stackSubgroups: true,
@@ -624,6 +625,12 @@
                   var timelinePosture= new vis.Timeline(containerPosture, itemsPosture, options);
                   timelinePosture.setGroups(groupsPosture);
 				  timelinePosture.on('click',setTimePosture);
+
+				  dataSlides={{summary['slidesTimeline'] | tojson}};
+                  var itemsSlides = new vis.DataSet(dataSlides);
+                  var timelineSlides= new vis.Timeline(containerSlides, itemsSlides, optionsSlides);
+                  timelineSlides.setGroups(groupsSlides);
+				  timelineSlides.on('click',setTimeSlides);
 
 
                 </script>

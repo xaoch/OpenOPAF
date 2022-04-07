@@ -189,14 +189,14 @@ def calculateSummary(audioData, videoData, presData):
             slideFontSizeValue = "To Improve"
             slideFontSizeStyle = "style1"
             slideFontSizeRecommendation = "<li><i><b>Use a large font.</b></i> As a general rule, avoid text smaller than 18 point.</li><li><i><b>Avoid long texts.</b></i>Put no more than 8 lines of text on any slide.</li>"
-
+        slidesTimeline= sfsScorer.timeline()
         slideTextLengthScore = stlScorer.score()
         slideTextLengthValue = "Excellent"
         slideTextLengthStyle = "style5"
         slideTextLengthRecommendation = ""
         if slideTextLengthScore < 4:
             slideTextLengthValue = "Good"
-            slideTexthLengthStyle = "style3"
+            slideTextLengthStyle = "style3"
             slideTextLengthRecommendation = "<li><i><b>Try to reduce the length of the text in the slides.</b></i> As a general rule, do not use more than 4 single lines.</li>"
 
         if slideTextLengthScore < 2:
@@ -237,7 +237,8 @@ def calculateSummary(audioData, videoData, presData):
             "slideTextLengthScore": slideTextLengthScore,
             "slideTextLengthValue": slideTextLengthValue,
             "slideTextLengthStyle": slideTextLengthStyle,
-            "slideTextLengthRecommendation": slideTextLengthRecommendation
+            "slideTextLengthRecommendation": slideTextLengthRecommendation,
+            "slidesTimeline": slidesTimeline
         }
     else:
         summary = {
