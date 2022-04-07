@@ -53,22 +53,26 @@ class AudioExtractor:
             #stdev_Hz = parselmouth.praat.call(pitch, "Get standard deviation", 0, 0, "Hertz")
             mean_Hz=0
             stdev_Hz=0
+            ar=0
+            sr=0
+            fp=0
+            power=0
             #variation = stdev_Hz / mean_Hz
             variation=0
             praatPath=os.path.join(self.path, "..","..","..","praat")
             sourcerun = os.path.join(praatPath,"syllablenucleiv3.praat")
-            objects = run_file(sound, sourcerun, "./*.flac", "None", -25, 2, 0.3, "yes", "English", 1.3, "Table",
+            #objects = run_file(sound, sourcerun, "./*.flac", "None", -25, 2, 0.3, "yes", "English", 1.3, "Table",
                                "OverWriteData", "yes", capture_output=True)
-            table = objects[0][0]
+            #table = objects[0][0]
 
-            ar = call(table, "Get value", 1, " articulation_rate(nsyll/phonationtime)")
-            fp = call(table, "Get value", 1, " nrFP")
-            pow = call(table, "Get value", 1, " Power")
-            sr = float(call(table, "Get value", 1, " speechrate(nsyll/dur)")) * 60 / 1.66
+            #ar = call(table, "Get value", 1, " articulation_rate(nsyll/phonationtime)")
+            #fp = call(table, "Get value", 1, " nrFP")
+            #power = call(table, "Get value", 1, " Power")
+            #sr = float(call(table, "Get value", 1, " speechrate(nsyll/dur)")) * 60 / 1.66
             print("Articulation Rate: ", ar)
             print("Words per Minute: ", sr)
             print("Filled Pauses: ", fp)
-            print("Power: ", pow)
+            print("Power: ", power)
             print("Pitch Variation: ", variation)
             print("Pitch mean: ", mean_Hz)
             print("Pitch SD: ", stdev_Hz)
