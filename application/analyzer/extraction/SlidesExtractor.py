@@ -5,6 +5,7 @@ from pptx import Presentation
 import argparse
 import csv
 from threading import Thread, Event
+import subprocess
 
 class SlidesExtractor:
 
@@ -13,6 +14,8 @@ class SlidesExtractor:
     def __init__(self, directory):
         self.prs = Presentation(directory+"/presentation.pptx")
         self.path=directory+"/Slides"
+        self.outputPDF=directory+"/presentation.pdf"
+        self.outputSlides=self.path+"/slide%02d.png"
         self.createFolders()
 
         # you should use full paths, to make sure PowerPoint can handle the paths
@@ -85,6 +88,10 @@ class SlidesExtractor:
             index = i + 1
             self.resultFile.writerow([index, fontErrors[i], textErrors[i]])
         self.csv_file.close()
+        command=["libreoffice","--headless","--convert-to","pdf",self.prs]
+        subprocess.run(command)
+        command=["gs","-sDEVICE=pngalpha","-o",self.outputSlides,self.outputPDF]
+        subprocess.run(command)
         print("Slides Thread: finishing")
 
     def run(self):
