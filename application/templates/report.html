@@ -442,6 +442,41 @@
 					<div class="card">
 
 						<div class="card-header">
+							<h3>Filled Pauses</h3>
+							<div class="card-header-right">
+								<div class="btn-group card-option">
+									<button type="button" class="btn dropdown-toggle btn-icon" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+										<i class="feather icon-more-horizontal"></i>
+									</button>
+									<ul class="list-unstyled card-option dropdown-menu dropdown-menu-right">
+										<li class="dropdown-item full-card"><a href="#!"><span><i class="feather icon-maximize"></i> maximize</span><span style="display:none"><i class="feather icon-minimize"></i> Restore</span></a></li>
+										<li class="dropdown-item minimize-card"><a href="#!"><span><i class="feather icon-minus"></i> collapse</span><span style="display:none"><i class="feather icon-plus"></i> expand</span></a></li>
+									</ul>
+								</div>
+							</div>
+						</div>
+						<div class="card-body">
+							<center>
+								<div id="waveformFilledPauses">
+                    				<div class="progress progress-striped active" id="progress-bar">
+                        				<div class="progress-bar progress-bar-info"></div>
+                    				</div>
+		                    	<!-- Here be waveform -->
+        			        	</div>
+                				<div id="wave-timeline-FilledPauses"></div>
+							</center>
+						</div>
+					</div>
+				</div>
+				<!-- [ sample-page ] end -->
+			</div>
+
+			<div class="row">
+				<!-- [ sample-page ] start -->
+				<div class="col-sm-12">
+					<div class="card">
+
+						<div class="card-header">
 							<h3>Slide Analysis</h3>
 							<div class="card-header-right">
 								<div class="btn-group card-option">
@@ -673,6 +708,68 @@ document.addEventListener('DOMContentLoaded', function() {
             WaveSurfer.regions.create({
             regionsMinLength: 2,
             regions: {{summary['articulationTimeline'] | tojson}}
+        })
+        ]
+    };
+
+    if (location.search.match('scroll')) {
+        options.minPxPerSec = 100;
+        options.scrollParent = true;
+    }
+
+    if (location.search.match('normalize')) {
+        options.normalize = true;
+    }
+
+    // Init wavesurfer
+    wavesurferA = WaveSurfer.create(options);
+
+    /* Progress bar */
+    (function() {
+        const progressDiv = document.querySelector('#progress-bar');
+        const progressBar = progressDiv.querySelector('.progress-bar');
+
+        let showProgress = function(percent) {
+            progressDiv.style.display = 'block';
+            progressBar.style.width = percent + '%';
+        };
+
+        let hideProgress = function() {
+            progressDiv.style.display = 'none';
+        };
+
+        wavesurferA.on('loading', showProgress);
+        wavesurferA.on('ready', hideProgress);
+        wavesurferA.on('destroy', hideProgress);
+        wavesurferA.on('error', hideProgress);
+        wavesurferA.on('region-click', function(region, e) {
+        e.stopPropagation();
+        // Play on click, loop on shift click
+        e.shiftKey ? region.playLoop() : region.play();
+    });
+    })();
+
+    wavesurferA.load("{{ url_for('main.audioRecordings', presId=presId) }}" );
+});
+
+// Init & load
+document.addEventListener('DOMContentLoaded', function() {
+    let options = {
+        container: '#waveformFilledPauses',
+        waveColor: 'violet',
+        progressColor: 'purple',
+        loaderColor: 'purple',
+        cursorColor: 'navy',
+        barWidth: 2,
+    	barHeight: 10, // the height of the wave
+    	barGap: null, // the optional spacing between bars of the wave, if not provided will be calculated in legacy format
+        plugins: [
+            WaveSurfer.timeline.create({
+                container: '#wave-timeline-FilledPauses'
+            }),
+            WaveSurfer.regions.create({
+            regionsMinLength: 2,
+            regions: {{summary['fpTimeline'] | tojson}}
         })
         ]
     };

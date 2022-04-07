@@ -157,6 +157,7 @@ def calculateSummary(audioData, videoData, presData):
         fpValue = "Poor"
         fpStyle = "style1"
         fpRecommendation = "<li><i><b>Avoid filler words.</b></i> Um, like, you know, and many others. To an audience, these are indications that you do not know what to say; you sound uncomfortable, so they start to feel uncomfortable as well. Speak slowly enough that you can collect your thoughts before moving ahead. If you really do not know what to say, pause silently until you do.</li>"
+    filledPausesTimeline = fpScorer.timeline()
 
     articulationScore = aScorer.score()
 
@@ -228,6 +229,7 @@ def calculateSummary(audioData, videoData, presData):
             "fpValue": fpValue,
             "fpStyle": fpStyle,
             "fpRecommendation": fpRecommendation,
+            "fpTimeline": filledPausesTimeline,
             "slideFontSizeScore": slideFontSizeScore,
             "slideFontSizeValue": slideFontSizeValue,
             "slideFontSizeStyle": slideFontSizeStyle,
@@ -263,6 +265,7 @@ def calculateSummary(audioData, videoData, presData):
             "fpValue": fpValue,
             "fpStyle": fpStyle,
             "fpRecommendation": fpRecommendation,
+            "fpTimeline": filledPausesTimeline,
         }
     return summary
 
