@@ -90,8 +90,10 @@ class SlidesExtractor:
             self.resultFile.writerow([index, fontErrors[i], textErrors[i]])
         self.csv_file.close()
         command=["libreoffice","--headless","--convert-to","pdf",self.pathPres]
+        print(command)
         subprocess.run(command)
         command=["gs","-sDEVICE=pngalpha","-o",self.outputSlides,self.outputPDF]
+        print(command)
         subprocess.run(command)
         print("Slides Thread: finishing")
 
