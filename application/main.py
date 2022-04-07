@@ -382,10 +382,10 @@ def report():
     figVol.add_hrect(y0=65, y1=45, line_width=0, fillcolor="blue", opacity=0.2)
     figVol.add_hrect(y0=45, y1=35, line_width=0, fillcolor="purple", opacity=0.2)
     figVol.add_hrect(y0=35, y1=0, line_width=0, fillcolor="red", opacity=0.2)
-    figVol.add_scattergl(x=dfAudio.time, y=dfAudio.volume, line={"color": "black"},marker={"size":0},name="Trend")
-    figVol.add_scattergl(x=dfAudio.time, y=dfAudio.volume.where(dfAudio.volume >= 45), line={"width":0}, marker={"size":12,"color":"blue"},name="Good")
-    figVol.add_scattergl(x=dfAudio.time, y=dfAudio.volume.where((dfAudio.volume > 35) & (dfAudio.volume < 45)), line={"width": 0}, marker={"size": 12, "color": "purple"}, name="Ok")
-    figVol.add_scattergl(x=dfAudio.time, y=dfAudio.volume.where(dfAudio.volume <= 35), line={"width":0}, marker={"size":12,"color":"red"},name="Poor")
+    figVol.add_scattergl(x=dfAudio.name, y=dfAudio.power, line={"color": "black"},marker={"size":0},name="Trend")
+    figVol.add_scattergl(x=dfAudio.name, y=dfAudio.power.where(dfAudio.power >= 45), line={"width":0}, marker={"size":12,"color":"blue"},name="Good")
+    figVol.add_scattergl(x=dfAudio.name, y=dfAudio.power.where((dfAudio.power > 35) & (dfAudio.power < 45)), line={"width": 0}, marker={"size": 12, "color": "purple"}, name="Ok")
+    figVol.add_scattergl(x=dfAudio.name, y=dfAudio.power.where(dfAudio.power <= 35), line={"width":0}, marker={"size":12,"color":"red"},name="Poor")
 
     figArt = go.Figure()
     figArt.update_layout(width=int(1500))
@@ -394,12 +394,13 @@ def report():
     figArt.add_hrect(y0=80, y1=150, line_width=0, fillcolor="blue", opacity=0.2)
     figArt.add_hrect(y0=20, y1=80, line_width=0, fillcolor="purple", opacity=0.2)
     figArt.add_hrect(y0=20, y1=0, line_width=0, fillcolor="red", opacity=0.2)
-    figArt.add_scattergl(x=dfAudio.time, y=dfAudio.speed, line={"color": "black"}, marker={"size": 0}, name="Trend")
-    figArt.add_scattergl(x=dfAudio.time, y=dfAudio.speed.where((dfAudio.speed >= 80) & (dfAudio.speed <= 150) ), line={"width": 0},
+    dfAudio.speed=dfAudio.speechrate*60/1.66
+    figArt.add_scattergl(x=dfAudio.name, y=dfAudio.speed, line={"color": "black"}, marker={"size": 0}, name="Trend")
+    figArt.add_scattergl(x=dfAudio.name, y=dfAudio.speed.where((dfAudio.speed >= 80) & (dfAudio.speed <= 150) ), line={"width": 0},
                          marker={"size": 12, "color": "blue"}, name="Good")
-    figArt.add_scattergl(x=dfAudio.time, y=dfAudio.speed.where(((dfAudio.speed > 150) & (dfAudio.speed <= 200))|((dfAudio.speed >= 20)&(dfAudio.speed<80))),
+    figArt.add_scattergl(x=dfAudio.name, y=dfAudio.speed.where(((dfAudio.speed > 150) & (dfAudio.speed <= 200))|((dfAudio.speed >= 20)&(dfAudio.speed<80))),
                          line={"width": 0}, marker={"size": 12, "color": "purple"}, name="Ok")
-    figArt.add_scattergl(x=dfAudio.time, y=dfAudio.speed.where((dfAudio.speed < 20)|(dfAudio.speed > 200)), line={"width": 0},
+    figArt.add_scattergl(x=dfAudio.name, y=dfAudio.speed.where((dfAudio.speed < 20)|(dfAudio.speed > 200)), line={"width": 0},
                          marker={"size": 12, "color": "red"}, name="Poor")
 
     graphJSONVolume = json.dumps(figVol, cls=plotly.utils.PlotlyJSONEncoder)
