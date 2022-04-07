@@ -67,7 +67,9 @@ class AudioExtractor:
             sourcerun = os.path.join(praatPath,"syllablenucleiv3.praat")
             executable="/usr/bin/praat"
             command =[executable,"--run",sourcerun,audioFileName,audioDirectory,"results2.csv",None,-25,2,0.3,"yes","English",1.3,"Save as text file","AppendData","no"]
-            subprocess.call(command)
+            print("Calliing praat")
+            subprocess.run(command)
+            print("Returning")
             #objects = run_file(sound, sourcerun, "./*.flac", "None", -25, 2, 0.3, "yes", "English", 1.3, "Table",
             #                   "OverWriteData", "yes", capture_output=True)
             #table = objects[0][0]
