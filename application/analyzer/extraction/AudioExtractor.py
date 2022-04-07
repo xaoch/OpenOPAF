@@ -26,8 +26,8 @@ class AudioExtractor:
         self.path =  directory+"/Audio"
         self.createFolders()
         self.csv_file = open(self.path + '/result.csv', mode='w')
-        self.resultFile = csv.writer(self.csv_file, delimiter=',')
-        self.resultFile.writerow(["time", "volume", "speed","filled_pauses","pitch_variation"])
+        #self.resultFile = csv.writer(self.csv_file, delimiter=',')
+        #self.resultFile.writerow(["time", "volume", "speed","filled_pauses","pitch_variation"])
         self.fs = 48000  # Sample rate
         self.interval = 5  # Duration of recording seconds
 
@@ -50,6 +50,7 @@ class AudioExtractor:
             soundData = np.transpose(soundData)
             sound = parselmouth.Sound(soundData, sampling_frequency=self.fs)
             audioFileName=self.path + "/" + str(self.time) + ".wav"
+            outputFileName=self.path + "/results.csv"
             audioDirectory = self.path + "/"
             sound.save(audioFileName, 'WAV')
             #pitch = sound.to_pitch(self.time_step, self.minimum_pitch, self.maximum_pitch)
@@ -66,7 +67,11 @@ class AudioExtractor:
             praatPath=os.path.join(self.path, "..","..","..","praat")
             sourcerun = os.path.join(praatPath,"processing.praat")
             executable="/usr/bin/praat"
-            command =[executable,"--run",sourcerun,audioFileName,audioDirectory,"results2.csv","None","-25","2","0.3","yes","English","1.3","Save as text file","AppendData","no"]
+            if self.time==0:
+                append="OverWriteData"
+            else
+                append="AppendData"
+            command =[executable,"--run",sourcerun,audioFileName,audioDirectory,outputFileName,"None","-25","2","0.3","yes","English","1.3","Save as text file",append,"no"]
             print("Calliing praat")
             print(command)
             subprocess.run(command)
@@ -79,17 +84,17 @@ class AudioExtractor:
             #fp = call(table, "Get value", 1, " nrFP")
             #power = call(table, "Get value", 1, " Power")
             #sr = float(call(table, "Get value", 1, " speechrate(nsyll/dur)")) * 60 / 1.66
-            print("Articulation Rate: ", ar)
-            print("Words per Minute: ", sr)
-            print("Filled Pauses: ", fp)
-            print("Power: ", power)
-            print("Pitch Variation: ", variation)
-            print("Pitch mean: ", mean_Hz)
-            print("Pitch SD: ", stdev_Hz)
+            #print("Articulation Rate: ", ar)
+            #print("Words per Minute: ", sr)
+            #print("Filled Pauses: ", fp)
+            #print("Power: ", power)
+            #print("Pitch Variation: ", variation)
+            #print("Pitch mean: ", mean_Hz)
+            #print("Pitch SD: ", stdev_Hz)
 
             # Flip the image horizontally for a later selfie-view display, and convert
             # the BGR image to RGB.
-            self.resultFile.writerow([self.time, power, sr, fp, stdev_Hz])
+            #self.resultFile.writerow([self.time, power, sr, fp, stdev_Hz])
 
         except Exception as e:
             print(e)
@@ -110,7 +115,7 @@ class AudioExtractor:
                     if self.stopSignal.is_set():
                         sd.stop()
                         break
-        self.csv_file.close()
+        #self.csv_file.close()
         print("Audio Thread: finishing")
 
     def run(self):
