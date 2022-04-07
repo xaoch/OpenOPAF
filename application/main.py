@@ -100,107 +100,107 @@ def calculateSummary(audioData, videoData, presData):
 
 
     gazeScore = gScorer.score()
-    gazeValue = "Good"
+    gazeValue = "Excellent"
     gazeStyle = "style5"
     gazeRecommendation = ""
     gazeTimeline = gScorer.timeline()
     if gazeScore < 4:
-        gazeValue = "Regular"
+        gazeValue = "Good"
         gazeStyle = "style3"
         gazeRecommendation = "<li><i><b>Make eye contact with the audience.</b></i> Your purpose is to communicate with your audience, and people listen more if they feel you are talking directly to them. As you speak, let your eyes settle on one person for several seconds before moving on to somebody else. You do not have to make eye contact with everybody, but make sure you connect with all areas of the audience equally.</li>"
     if gazeScore < 2:
-        gazeValue = "Poor"
+        gazeValue = "To Improve"
         gazeStyle = "style1"
         gazeRecommendation = "<li><i><b>Make eye contact with the audience.</b></i> Your purpose is to communicate with your audience, and people listen more if they feel you are talking directly to them. As you speak, let your eyes settle on one person for several seconds before moving on to somebody else. You do not have to make eye contact with everybody, but make sure you connect with all areas of the audience equally.</li> <li><i><b>Avoid reading from the screen.</b></i> First, if you are reading from the screen, you are not making eye contact with your audience. Second, if you put it on your slide, it is because you wanted them to read it, not you.</li>"
 
     postureScore = pScorer.score()
-    postureValue = "Good"
+    postureValue = "Excellent"
     postureStyle = "style5"
     postureRecommedation = ""
     postureTimeline =pScorer.timeline()
 
     if postureScore < 4:
-        postureValue = "Regular"
+        postureValue = "Good"
         postureStyle = "style3"
         postureRecommendation = "<li><i><b>Open Posture</b></i> A speaker should not cross his hands or legs because the audience might perceive it as the unwillingness to communicate.  You should not present your back to the audience.</li> "
 
     if postureScore < 2:
-        postureValue = "Poor"
+        postureValue = "To Improve"
         postureStyle = "style1"
         postureRecommendation = "<li><i><b>Open Posture</b></i> A speaker should not cross his hands or legs because the audience might perceive it as the unwillingness to communicate. You should not present your back to the audience.</li> <i><b>Open Gestures</b></i> A speaker should use their hands to communicate with the audience.</li>"
 
     volumeScore = vScorer.score()
-    volumeValue = "Good"
+    volumeValue = "Excellent"
     volumeStyle = "style5"
     volumeRecommendation = ""
     if volumeScore < 4:
-        volumeValue = "Regular"
+        volumeValue = "Good"
         volumeStyle = "style3"
         volumeRecommendation = "<li><i><b>Increase the volume of your voice.</b></i> Your first goal is to be comfortably heard by everyone in the audience. If they cannot hear your voice, then you cannot deliver a message to them."
 
     if volumeScore < 2:
-        volumeValue = "Poor"
+        volumeValue = "To Improve"
         volumeStyle = "style1"
-        volumeRecommendation = "<li><i><b>Increase the volume of your voice.</b></i> Your first goal is to be comfortably heard by everyone in the audience. If they cannot hear your voice, then you cannot deliver a message to them. <li><i><b>Start loud.</b></i> It’s not a strict rule, but generally a good idea to open a notch louder than average. It grabs attention and demonstrates enthusiasm.</li> <li><i><b>Finish loud.</b></i> Also not a rule, but speaking louder helps create a rousing, confident finish. This is especially true in a persuasive or motivational speech.</li>"
+        volumeRecommendation = "<li><i><b>Increase the volume of your voice.</b></i> Your first goal is to be comfortably heard by everyone in the audience. If they cannot hear your voice, then you cannot deliver a message to them. <li><i><b>Start loud.</b></i> It’s not a strict rule, but generally a Excellent idea to open a notch louder than average. It grabs attention and demonstrates enthusiasm.</li> <li><i><b>Finish loud.</b></i> Also not a rule, but speaking louder helps create a rousing, confident finish. This is especially true in a persuasive or motivational speech.</li>"
     volumeTimeline=vScorer.timeline()
 
     fpScore = fpScorer.score()
-    fpValue = "Good"
+    fpValue = "Excellent"
     fpStyle = "style5"
     fpRecommendation = ""
     if fpScore < 4:
-        fpValue = "Regular"
+        fpValue = "Good"
         fpStyle = "style3"
         fpRecommendation = "<li><i><b>Avoid filler words.</b></i> Um, like, you know, and many others. To an audience, these are indications that you do not know what to say; you sound uncomfortable, so they start to feel uncomfortable as well. Speak slowly enough that you can collect your thoughts before moving ahead. If you really do not know what to say, pause silently until you do.</li>"
 
     if fpScore < 2:
-        fpValue = "Poor"
+        fpValue = "To Improve"
         fpStyle = "style1"
         fpRecommendation = "<li><i><b>Avoid filler words.</b></i> Um, like, you know, and many others. To an audience, these are indications that you do not know what to say; you sound uncomfortable, so they start to feel uncomfortable as well. Speak slowly enough that you can collect your thoughts before moving ahead. If you really do not know what to say, pause silently until you do.</li>"
     filledPausesTimeline = fpScorer.timeline()
 
     articulationScore = aScorer.score()
 
-    articulationValue = "Good"
+    articulationValue = "Excellent"
     articulationStyle = "style5"
     articulationRecommendation = ""
     if articulationScore < 4:
-        articulationValue = "Regular"
+        articulationValue = "Good"
         articulationStyle = "style3"
         articulationRecommendation = "<li><i><b>Don’t speak as fast as you do in conversation.</b></i> You might speak as many as 400 words a minute in a lively conversation, but your audience needs you to slow down to 140-160 words a minute. It takes work to develop a slower presenting style, but you’ll be a more effective speaker.</li>"
 
     if articulationScore < 2:
-        articulationValue = "Poor"
+        articulationValue = "To Improve"
         articulationStyle = "style1"
         articulationRecommendation = "<li><i><b>Don’t speak as fast as you do in conversation.</b></i> You might speak as many as 400 words a minute in a lively conversation, but your audience needs you to slow down to 140-160 words a minute. It takes work to develop a slower presenting style, but you’ll be a more effective speaker.</li>"
     articulationTimeline = aScorer.timeline()
 
     if pData is not None:
         slideFontSizeScore = sfsScorer.score()
-        slideFontSizeValue = "Good"
+        slideFontSizeValue = "Excellent"
         slideFontSizeStyle = "style5"
         slideFontSizeRecommendation = ""
         if slideFontSizeScore < 4:
-            slideFontSizeValue = "Regular"
+            slideFontSizeValue = "Good"
             slideFontSizeStyle = "style3"
             slideFontSizeRecommendation = "<li><i><b>Use a large font.</b></i> As a general rule, avoid text smaller than 18 point.</li>"
 
         if slideFontSizeScore < 2:
-            slideFontSizeValue = "Poor"
+            slideFontSizeValue = "To Improve"
             slideFontSizeStyle = "style1"
             slideFontSizeRecommendation = "<li><i><b>Use a large font.</b></i> As a general rule, avoid text smaller than 18 point.</li><li><i><b>Avoid long texts.</b></i>Put no more than 8 lines of text on any slide.</li>"
 
         slideTextLengthScore = stlScorer.score()
-        slideTextLengthValue = "Good"
+        slideTextLengthValue = "Excellent"
         slideTextLengthStyle = "style5"
         slideTextLengthRecommendation = ""
         if slideTextLengthScore < 4:
-            slideTextLengthValue = "Regular"
+            slideTextLengthValue = "Good"
             slideTexthLengthStyle = "style3"
             slideTextLengthRecommendation = "<li><i><b>Try to reduce the length of the text in the slides.</b></i> As a general rule, do not use more than 4 single lines.</li>"
 
         if slideTextLengthScore < 2:
-            slideTextLengthValue = "Poor"
+            slideTextLengthValue = "To Improve"
             slideTextLengthStyle = "style1"
             slideTextLengthRecommendation = "<li><i><b>Reduce the amount of text in the slides, the public should not read the slides, but listen to you</b></i> As a general rule, do not use more than 4 single lines.</li>"
 
@@ -386,9 +386,9 @@ def report():
     figVol.add_hrect(y0=45, y1=35, line_width=0, fillcolor="purple", opacity=0.2)
     figVol.add_hrect(y0=35, y1=0, line_width=0, fillcolor="red", opacity=0.2)
     figVol.add_scattergl(x=dfAudio.name, y=dfAudio.power, line={"color": "black"},marker={"size":0},name="Trend")
-    figVol.add_scattergl(x=dfAudio.name, y=dfAudio.power.where(dfAudio.power >= 45), line={"width":0}, marker={"size":12,"color":"blue"},name="Good")
+    figVol.add_scattergl(x=dfAudio.name, y=dfAudio.power.where(dfAudio.power >= 45), line={"width":0}, marker={"size":12,"color":"blue"},name="Excellent")
     figVol.add_scattergl(x=dfAudio.name, y=dfAudio.power.where((dfAudio.power > 35) & (dfAudio.power < 45)), line={"width": 0}, marker={"size": 12, "color": "purple"}, name="Ok")
-    figVol.add_scattergl(x=dfAudio.name, y=dfAudio.power.where(dfAudio.power <= 35), line={"width":0}, marker={"size":12,"color":"red"},name="Poor")
+    figVol.add_scattergl(x=dfAudio.name, y=dfAudio.power.where(dfAudio.power <= 35), line={"width":0}, marker={"size":12,"color":"red"},name="To Improve")
 
     figArt = go.Figure()
     figArt.update_layout(width=int(1500))
@@ -400,11 +400,11 @@ def report():
     dfAudio.speed=dfAudio.speechrate*60/1.66
     figArt.add_scattergl(x=dfAudio.name, y=dfAudio.speed, line={"color": "black"}, marker={"size": 0}, name="Trend")
     figArt.add_scattergl(x=dfAudio.name, y=dfAudio.speed.where((dfAudio.speed >= 80) & (dfAudio.speed <= 150) ), line={"width": 0},
-                         marker={"size": 12, "color": "blue"}, name="Good")
+                         marker={"size": 12, "color": "blue"}, name="Excellent")
     figArt.add_scattergl(x=dfAudio.name, y=dfAudio.speed.where(((dfAudio.speed > 150) & (dfAudio.speed <= 200))|((dfAudio.speed >= 20)&(dfAudio.speed<80))),
                          line={"width": 0}, marker={"size": 12, "color": "purple"}, name="Ok")
     figArt.add_scattergl(x=dfAudio.name, y=dfAudio.speed.where((dfAudio.speed < 20)|(dfAudio.speed > 200)), line={"width": 0},
-                         marker={"size": 12, "color": "red"}, name="Poor")
+                         marker={"size": 12, "color": "red"}, name="To Improve")
 
     figFP = go.Figure()
     figFP.update_layout(width=int(1500))
@@ -413,13 +413,13 @@ def report():
     figFP.add_hrect(y0=0, y1=0.5, line_width=0, fillcolor="blue", opacity=0.2)
     figFP.add_scattergl(x=dfAudio.name, y=dfAudio.nrFP.where(dfAudio.nrFP < 1),
                          line={"width": 0},
-                         marker={"size": 12, "color": "blue"}, name="Good")
+                         marker={"size": 12, "color": "blue"}, name="Excellent")
     figFP.add_scattergl(x=dfAudio.name, y=dfAudio.nrFP.where(
         (dfAudio.nrFP > 0) & (dfAudio.nrFP < 2)),
                          line={"width": 0}, marker={"size": 12, "color": "purple"}, name="Ok")
     figFP.add_scattergl(x=dfAudio.name, y=dfAudio.nrFP.where(dfAudio.nrFP > 1),
                          line={"width": 0},
-                         marker={"size": 12, "color": "red"}, name="Poor")
+                         marker={"size": 12, "color": "red"}, name="To Improve")
 
     graphJSONVolume = json.dumps(figVol, cls=plotly.utils.PlotlyJSONEncoder)
     graphJSONArticulation = json.dumps(figArt, cls=plotly.utils.PlotlyJSONEncoder)
