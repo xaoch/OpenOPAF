@@ -9,7 +9,7 @@ class volumeScorer:
        df=self.df
        totalFrames= df.shape[0]
        if totalFrames>0:
-           meanVolume = df["Power"].mean()
+           meanVolume = df["power"].mean()
 
        if meanVolume>50:
            score=5
