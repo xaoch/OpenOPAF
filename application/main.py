@@ -427,7 +427,11 @@ def report():
     graphJSONFP = json.dumps(figFP, cls=plotly.utils.PlotlyJSONEncoder)
 
     maxFrame=dfAudio.shape[0]*5
-    return render_template("report.html",presId=presId,summary=summary,maxFrame=maxFrame,includePresentation=includePresentation,graphJSONVolume=graphJSONVolume, graphJSONArticulation=graphJSONArticulation, graphJSONFP=graphJSONFP)
+    if (includePresentation):
+        maxSlide= dfSlides.shape[0]
+    else:
+        maxSlide=0
+    return render_template("report.html",presId=presId,summary=summary,maxFrame=maxFrame,maxSlide=maxSlide,includePresentation=includePresentation,graphJSONVolume=graphJSONVolume, graphJSONArticulation=graphJSONArticulation, graphJSONFP=graphJSONFP)
 
 @main.route("/video_feed")
 def video_feed():
