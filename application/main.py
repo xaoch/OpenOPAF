@@ -408,9 +408,9 @@ def report():
 
     figFP = go.Figure()
     figFP.update_layout(width=int(1500))
-    figArt.add_hrect(y0=2, y1=4, line_width=0, fillcolor="red", opacity=0.2)
-    figFP.add_hrect(y0=1, y1=2, line_width=0, fillcolor="purple", opacity=0.2)
-    figFP.add_hrect(y0=0, y1=1, line_width=0, fillcolor="blue", opacity=0.2)
+    figFP.add_hrect(y0=2.5, y1=5, line_width=0, fillcolor="red", opacity=0.2)
+    figFP.add_hrect(y0=0.5, y1=1.5, line_width=0, fillcolor="purple", opacity=0.2)
+    figFP.add_hrect(y0=0, y1=0.5, line_width=0, fillcolor="blue", opacity=0.2)
     figFP.add_scattergl(x=dfAudio.name, y=dfAudio.nrFP.where(dfAudio.nrFP < 1),
                          line={"width": 0},
                          marker={"size": 12, "color": "blue"}, name="Good")
