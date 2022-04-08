@@ -84,11 +84,15 @@ var table = new Tabulator("#reports-table", {
     columns:[
     {formatter:"rownum", hozAlign:"center", width:40},
     {formatter:printIcon, width:40, hozAlign:"center", cellClick:function(e, cell){alert("Printing row data for: " + cell.getRow().getData().name)}},
-    {title:"Date", field:"date", width:150},
+    {title:"Date", field:"date", width:200},
     {title:"Posture Score", field:"posture", formatter:"star", formatterParams:{stars:5}, hozAlign:"center", width:120},
     {title:"Gaze Score", field:"gaze", formatter:"star", formatterParams:{stars:5}, hozAlign:"center", width:120},
     {title:"Volume Score", field:"volume", formatter:"star", formatterParams:{stars:5}, hozAlign:"center", width:120},
     {title:"Articulation Score", field:"speed", formatter:"star", formatterParams:{stars:5}, hozAlign:"center", width:120},
+    {title:"Filled Pauses", field:"fp", formatter:"star", formatterParams:{stars:5}, hozAlign:"center", width:120},
+    {title:"Slides Font Size", field:"fs", formatter:"star", formatterParams:{stars:5}, hozAlign:"center", width:120},
+    {title:"Slides Text Length", field:"tl", formatter:"star", formatterParams:{stars:5}, hozAlign:"center", width:120},
+
     ],
 });
 </script>
