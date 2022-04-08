@@ -65,7 +65,7 @@
 <script type="text/javascript" src="https://unpkg.com/tabulator-tables@5.1.8/dist/js/tabulator.min.js"></script>
 <script>
 var printIcon = function(cell, formatterParams){ //plain text value
-    return "<a href='/view_report/"+cell.getRow().getData().presId+">View Report</a>";
+    return "<a href='/view_report/"+cell.getRow().getData().presId+'">View Report</a>";
 };
 
 var tabledata = {{data | tojson}};
