@@ -34,7 +34,7 @@ class Presentation(db.Model):
             'id': self.id,
             'presId': self.presId,
             'presenter': self.presenter,
-            'date': dump_datetime(date),
+            'date': dump_datetime(self.date),
             'gaze': self.gaze,
             'posture':self.posture,
             'volume': self.volume,
