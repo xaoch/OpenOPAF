@@ -276,7 +276,7 @@ def calculateSummary(audioData, videoData, presData):
 @main.route('/')
 @login_required
 def index():
-    presentations = Presentation.query.filter_by(presenter=current_user.id).order_by(Presentation.date.desc()).all().limit(10)
+    presentations = Presentation.query.filter_by(presenter=current_user.id).order_by(Presentation.date.desc()).limit(10).all()
     presentations = presentations[::-1]
     presdict = [i.serialize for i in presentations]
     df=pd.Dataframe(presdict)
