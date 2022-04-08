@@ -558,6 +558,8 @@
       				var slide= document.getElementById("slideImage");
       				frame=itemsSlides.get(properties.item).frame;
       				source="{{ url_for('main.slideImages', presId=presId,image_number='2') }}"
+      				position= source.lastIndexOf("/");
+      				source=source.substr(0,position+1)+str(frame)
       				slide.src=source
     			  }
 
