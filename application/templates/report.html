@@ -471,6 +471,8 @@
 				</div>
 				<!-- [ sample-page ] end -->
 			</div>
+{% if includePresentation %}
+
 
 			<div class="row">
 				<!-- [ sample-page ] start -->
@@ -501,6 +503,7 @@
 				</div>
 				<!-- [ sample-page ] end -->
 			</div>
+{% endif %}
 
 		</div>
 	</div>
@@ -598,17 +601,22 @@
                   // DOM element where the Timeline will be attached
                   var containerGaze = document.getElementById('gazeTimeline');
                   var containerPosture = document.getElementById('postureTimeline');
-                  var containerSlides = document.getElementById('slidesTimeline');
+
                   var groupsGaze = new vis.DataSet([
                     {id: 0, content: 'Gaze', value: 1},
                   ]);
                   var groupsPosture = new vis.DataSet([
                     {id: 0, content: 'Posture', value: 1},
                   ]);
-                  var groupsSlides = new vis.DataSet([
+
+                  {% if includePresentation %}
+                  	var containerSlides = document.getElementById('slidesTimeline');
+                  	 var groupsSlides = new vis.DataSet([
                     {id: 0, content: 'Font Size', value: 1},
                     {id: 1, content: 'Text Length', value: 2},
                   ]);
+                  {% endif %}
+
 
                   var options = {
                     showMajorLabels: false,
@@ -640,12 +648,15 @@
                   timelinePosture.setGroups(groupsPosture);
 				  timelinePosture.on('click',setTimePosture);
 
+				  {% if includePresentation %}
+
 				  dataSlides={{summary['slidesTimeline'] | tojson}};
                   var itemsSlides = new vis.DataSet(dataSlides);
                   var timelineSlides= new vis.Timeline(containerSlides, itemsSlides, optionsSlides);
                   timelineSlides.setGroups(groupsSlides);
 				  timelineSlides.on('click',setTimeSlides);
 
+				  {% endif %}
 
                 </script>
 
