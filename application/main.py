@@ -294,11 +294,11 @@ def index():
     figPosture = createGraphDashboard(df.id,df.posture,"Posture")
     figVolume = createGraphDashboard(df.id,df.volume,"Volume")
     figSpeed = createGraphDashboard(df.id,df.speed,"Articulation Rate")
-    figFP = createGraphDashboard(df.id,df.fp,"Filled Pauses")
+    figFp = createGraphDashboard(df.id,df.fp,"Filled Pauses")
     figFs = createGraphDashboard(df.id, df.fs, "Font Size")
     figTl = createGraphDashboard(df.id,df.tl,"Text Length")
 
-    return render_template('index.html', name=current_user.name,figGaze=figGaze, figPosture=figPosture, figVolume=figVolume, figSpeed=figSpeed, figFP=figFP, figFs=figFs, figTl=figTl)
+    return render_template('index.html', name=current_user.name,figGaze=figGaze, figPosture=figPosture, figVolume=figVolume, figSpeed=figSpeed, figFp=figFp, figFs=figFs, figTl=figTl)
 
 @main.route('/reports')
 @login_required
