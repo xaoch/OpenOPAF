@@ -19,6 +19,7 @@ import json
 import plotly
 import plotly.express as px
 import plotly.graph_objs as go
+from plotly.subplots import make_subplots
 from application.scorer.gazeScorer import gazeScorer
 from application.scorer.postureScorer import postureScorer
 from application.scorer.volumeScorer import volumeScorer
@@ -281,7 +282,9 @@ def index():
     presdict = [i.serialize for i in presentations]
     df=pd.DataFrame(presdict)
 
-    figDash = go.Figure()
+    #figDash = go.Figure()
+    figDash = make_subplots(rows=7, cols=1)
+
     figDash.update_layout(width=int(1500))
     figDash.add_hrect(y0=4, y1=5, line_width=0, fillcolor="blue", opacity=0.2)
     figDash.add_hrect(y0=2, y1=4, line_width=0, fillcolor="purple", opacity=0.2)
