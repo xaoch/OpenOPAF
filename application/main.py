@@ -286,11 +286,13 @@ def index():
     figDash = make_subplots(rows=7, cols=1)
 
     figDash.update_layout(width=int(1500))
-    pgaze=go.Scatter(x=df.id, y=df.gaze, line={"color": "yellow"}, marker={"size": 12}, name="Gaze")
+    pgaze=go.Figure()
+    pgaze.add_scattergl(x=df.id, y=df.gaze, line={"color": "green"}, marker={"size": 12}, name="Gaze")
     pgaze.add_hrect(y0=4, y1=5, line_width=0, fillcolor="blue", opacity=0.2)
     pgaze.add_hrect(y0=2, y1=4, line_width=0, fillcolor="purple", opacity=0.2)
     pgaze.add_hrect(y0=0, y1=2, line_width=0, fillcolor="red", opacity=0.2)
     figDash.append_trace(pgaze, row = 1, col = 1)
+
     graphJSON = json.dumps(figDash, cls=plotly.utils.PlotlyJSONEncoder)
     return render_template('index.html', name=current_user.name,graphJSON=graphJSON)
 
