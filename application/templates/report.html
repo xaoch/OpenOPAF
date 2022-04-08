@@ -556,7 +556,7 @@
     			  function setTimeSlides(properties){
            		  	console.log(properties)
       				var slide= document.getElementById("slideImage");
-      				frame=itemsPosture.get(properties.item).frame;
+      				frame=itemsSlides.get(properties.item).frame;
       				source="{{ url_for('main.slideImages', presId=presId,image_number='2') }}"
       				slide.src=source
     			  }
