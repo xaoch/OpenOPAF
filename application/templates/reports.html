@@ -73,7 +73,7 @@ console.log(tabledata);
 
 //Build Tabulator
 var table = new Tabulator("#reports-table", {
-    height:"311px",
+    height:"800px",
     data:tabledata,
     layout:"fitDataTable",
     rowFormatter:function(row){
@@ -84,7 +84,7 @@ var table = new Tabulator("#reports-table", {
     columns:[
     {formatter:"rownum", hozAlign:"center", width:40},
     {title:"Date", field:"date", width:200},
-    {title:"Posture Score", field:"posture", formatter:"star", formatterParams:{stars:5}, hozAlign:"center", width:120},
+    {title:"Posture Score", field:"posture", formatter:"star", formatterParams:{stars:5}, hozAlign:"center"},
     {title:"Gaze Score", field:"gaze", formatter:"star", formatterParams:{stars:5}, hozAlign:"center", width:120},
     {title:"Volume Score", field:"volume", formatter:"star", formatterParams:{stars:5}, hozAlign:"center", width:120},
     {title:"Articulation Score", field:"speed", formatter:"star", formatterParams:{stars:5}, hozAlign:"center", width:120},
