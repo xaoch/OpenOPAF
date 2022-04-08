@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, session, redirect, url_for, Flask, request, Response, send_from_directory
+from flask import Blueprint, render_template, session, redirect, url_for, Flask, request, Response, send_from_directory,jsonify
 from flask_login import login_required, current_user
 from application import db
 from application.forms import NewPresentationForm, PresentationFileForm, StopForm
@@ -281,7 +281,7 @@ def index():
 @main.route('/reports')
 @login_required
 def reports():
-    presentations=json.dumps([u.as_dict() for u in Presentation.query.filter_by(presenter=current_user.id).all()])
+    presentations= jsonify(json_list=[i.serialize for i in Presentation.query.filter_by(presenter=current_user.id).all()])
     return render_template('reports.html', name=current_user.name,data=presentations)
 
 @main.route('/profile')

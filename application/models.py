@@ -7,11 +7,13 @@ class User(UserMixin,db.Model):
     password = db.Column(db.String(100))
     name = db.Column(db.String(1000))
 
-class JsonModel(object):
-    def as_dict(self):
-       return {c.name: getattr(self, c.name) for c in self.__table__.columns}
+def dump_datetime(value):
+    """Deserialize datetime object into string form for JSON processing."""
+    if value is None:
+        return None
+    return [value.strftime("%Y-%m-%d"), value.strftime("%H:%M:%S")]
 
-class Presentation(db.Model,JsonModel):
+class Presentation(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     presId = db.Column(db.String(100), unique=True)
     presenter =db.Column(db.Integer, db.ForeignKey('user.id'))
@@ -24,3 +26,21 @@ class Presentation(db.Model,JsonModel):
     slides= db.Column(db.Boolean)
     fs = db.Column(db.Integer)
     tl = db.Column(db.Integer)
+
+    @property
+    def serialize(self):
+        """Return object data in easily serializable format"""
+        return {
+            'id': self.id,
+            'presId': self.presId,
+            'presenter': self.presenter,
+            'date': dump_datetime(date),
+            'gaze': self.gaze,
+            'posture':self.posture,
+            'volume': self.volume,
+            'speed': self.speed,
+            'fp': self.fp,
+            'slides': self.slides,
+            'fs': self.fs,
+            'tl': self.tl
+        }
