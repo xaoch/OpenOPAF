@@ -281,7 +281,8 @@ def index():
 @main.route('/reports')
 @login_required
 def reports():
-    presentations=[i.serialize for i in Presentation.query.filter_by(presenter=current_user.id).all()]
+    presQuery= Presentation.query.filter_by(presenter=current_user.id).all().order_by(Presentation.date.desc())
+    presentations=[i.serialize for i in presQuery]
     print(presentations)
     return render_template('reports.html', name=current_user.name,data=presentations)
 
