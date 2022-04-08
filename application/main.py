@@ -469,7 +469,7 @@ def report():
     db.session.add(new_presentation)
     db.session.commit()
 
-    return render_template("report.html",presId=presId,summary=summary,maxFrame=maxFrame,maxSlide=maxSlide,includePresentation=includePresentation,graphJSONVolume=graphJSONVolume, graphJSONArticulation=graphJSONArticulation, graphJSONFP=graphJSONFP)
+    return render_template("report.html",name=current_user.name,=presId,summary=summary,maxFrame=maxFrame,maxSlide=maxSlide,includePresentation=includePresentation,graphJSONVolume=graphJSONVolume, graphJSONArticulation=graphJSONArticulation, graphJSONFP=graphJSONFP)
 
 @main.route('/view_report/<presId>')
 @login_required
@@ -537,7 +537,7 @@ def view_report(presId):
         maxSlide= dfSlides.shape[0]
     else:
         maxSlide=0
-    return render_template("report.html",presId=presId,summary=summary,maxFrame=maxFrame,maxSlide=maxSlide,includePresentation=includePresentation,graphJSONVolume=graphJSONVolume, graphJSONArticulation=graphJSONArticulation, graphJSONFP=graphJSONFP)
+    return render_template("report.html",name=current_user.name,presId=presId,summary=summary,maxFrame=maxFrame,maxSlide=maxSlide,includePresentation=includePresentation,graphJSONVolume=graphJSONVolume, graphJSONArticulation=graphJSONArticulation, graphJSONFP=graphJSONFP)
 
 
 @main.route("/video_feed")
