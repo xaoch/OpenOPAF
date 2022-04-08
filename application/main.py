@@ -281,7 +281,7 @@ def index():
 @main.route('/reports')
 @login_required
 def reports():
-    presentations= Presentation.query.filter_by(presenter=current_user.id).all
+    presentations= Presentation.query.filter_by(presenter=current_user.id).all()
     return render_template('reports.html', name=current_user.name,data=presentations)
 
 @main.route('/profile')
