@@ -103,9 +103,6 @@ class AudioExtractor:
     def extract(self):
         print("Audio Thread: starting")
         self.time = -self.interval
-        f = open("sound.txt", "a")
-        f.write(sd.query_devices())
-        f.close()
         #sd.default.device=11
         with sf.SoundFile(os.path.join(self.path, "audio.wav"), mode='x', samplerate=self.fs, channels=1, subtype="PCM_16") as file:
             with sd.InputStream(samplerate=self.fs, device="USB PnP Audio Device", channels=1, blocksize=self.fs*self.interval, callback=self.process):
