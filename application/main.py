@@ -315,14 +315,20 @@ def controls():
 
 @main.route('/reboot')
 @login_required
-def controls():
+def reboot():
     os.system('sudo reboot')
     return "Done"
 
 @main.route('/shutdown')
 @login_required
-def controls():
+def shutdown():
     os.system('sudo halt')
+    return "Done"
+
+@main.route('/update')
+@login_required
+def update():
+    os.system('git pull origin main')
     return "Done"
 
 @main.route('/profile')
