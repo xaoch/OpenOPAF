@@ -285,20 +285,25 @@ def createGraphDashboard(x,y,name):
 @main.route('/')
 @login_required
 def index():
-    presentations = Presentation.query.filter_by(presenter=current_user.id).order_by(Presentation.date.desc()).limit(10).all()
-    presentations = presentations[::-1]
-    presdict = [i.serialize for i in presentations]
-    df=pd.DataFrame(presdict)
+    query=Presentation.query.filter_by(presenter=current_user.id).order_by(Presentation.date.desc()).limit(10)
+    results = query.count()
+    if results>0:
+        presentations=query.all()
+        presentations = presentations[::-1]
 
-    figGaze = createGraphDashboard(df.id,df.gaze,"Gaze")
-    figPosture = createGraphDashboard(df.id,df.posture,"Posture")
-    figVolume = createGraphDashboard(df.id,df.volume,"Volume")
-    figSpeed = createGraphDashboard(df.id,df.speed,"Articulation Rate")
-    figFp = createGraphDashboard(df.id,df.fp,"Filled Pauses")
-    figFs = createGraphDashboard(df.id, df.fs, "Font Size")
-    figTl = createGraphDashboard(df.id,df.tl,"Text Length")
+        presdict = [i.serialize for i in presentations]
+        df=pd.DataFrame(presdict)
 
-    return render_template('index.html', name=current_user.name,figGaze=figGaze, figPosture=figPosture, figVolume=figVolume, figSpeed=figSpeed, figFp=figFp, figFs=figFs, figTl=figTl)
+        figGaze = createGraphDashboard(df.id,df.gaze,"Gaze")
+        figPosture = createGraphDashboard(df.id,df.posture,"Posture")
+        figVolume = createGraphDashboard(df.id,df.volume,"Volume")
+        figSpeed = createGraphDashboard(df.id,df.speed,"Articulation Rate")
+        figFp = createGraphDashboard(df.id,df.fp,"Filled Pauses")
+        figFs = createGraphDashboard(df.id, df.fs, "Font Size")
+        figTl = createGraphDashboard(df.id,df.tl,"Text Length")
+        return render_template('index.html', name=current_user.name,figGaze=figGaze, figPosture=figPosture, figVolume=figVolume, figSpeed=figSpeed, figFp=figFp, figFs=figFs, figTl=figTl)
+    else:
+        return render_template('indexEmpty.html', name=current_user.name)
 
 @main.route('/reports')
 @login_required
