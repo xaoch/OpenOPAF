@@ -7,7 +7,11 @@ class User(UserMixin,db.Model):
     password = db.Column(db.String(100))
     name = db.Column(db.String(1000))
 
-class Presentation(db.Model):
+class JsonModel(object):
+    def as_dict(self):
+       return {c.name: getattr(self, c.name) for c in self.__table__.columns}
+
+class Presentation(db.Model,JsonModel):
     id = db.Column(db.Integer, primary_key=True)
     presId = db.Column(db.String(100), unique=True)
     presenter =db.Column(db.Integer, db.ForeignKey('user.id'))
