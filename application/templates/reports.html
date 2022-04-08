@@ -84,14 +84,7 @@ var table = new Tabulator("#reports-table", {
     columns:[
     {formatter:"rownum", hozAlign:"center", width:40},
     {formatter:printIcon, width:40, hozAlign:"center", cellClick:function(e, cell){alert("Printing row data for: " + cell.getRow().getData().name)}},
-    {title:"Date", field:"date", width:150, formatter:function(cell, formatterParams){
-       var value = cell.getValue();
-        if(value.indexOf("o") > 0){
-            return "<span style='color:#3FB449; font-weight:bold;'>" + value + "</span>";
-        }else{
-            return value;
-        }
-    }},
+    {title:"Date", field:"date", width:150},
     {title:"Posture Score", field:"posture", formatter:"star", formatterParams:{stars:5}, hozAlign:"center", width:120},
     {title:"Gaze Score", field:"gaze", formatter:"star", formatterParams:{stars:5}, hozAlign:"center", width:120},
     {title:"Volume Score", field:"volume", formatter:"star", formatterParams:{stars:5}, hozAlign:"center", width:120},
