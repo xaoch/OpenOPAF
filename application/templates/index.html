@@ -46,7 +46,21 @@
 							</div>
 						</div>
 						<div class="card-body">
-							<div id='chartDashboard' class='chartDashboard'></div>
+							<h3>Gaze</h3>
+							<div id='chartGaze' class='chartGaze'></div>
+							<h3>Posture</h3>
+							<div id='chartPosture' class='chartPosture'></div>
+							<h3>Volume</h3>
+							<div id='chartVolume' class='chartVolume'></div>
+							<h3>Articulation Rate</h3>
+							<div id='chartSpeed' class='chartSpeed'></div>
+							<h3>Filled Pauses</h3>
+							<div id='chartFp' class='chartFp'></div>
+							<h3>Font Size</h3>
+							<div id='chartFs' class='chartFs'></div>
+							<h3>Text Length</h3>
+							<div id='chartTl' class='chartTl'></div>
+
 						</div>
 					</div>
 				</div>
@@ -63,8 +77,22 @@
 {% block javascripts %}
 <script src='https://cdn.plot.ly/plotly-latest.min.js'></script>
 <script type='text/javascript'>
-  var graphDashboard = {{graphJSON | safe}};
-  Plotly.plot('chartDashboard',graphDashboard,{},{responsive: true});
+  var graphGaze = {{figGaze | safe}};
+  Plotly.plot('chartGaze',graphGaze,{},{responsive: true});
+  var graphPosture = {{figPosture | safe}};
+  Plotly.plot('chartPosture',graphPosture,{},{responsive: true});
+  var graphVolume = {{figVolume | safe}};
+  Plotly.plot('chartVolume',graphVolume,{},{responsive: true});
+  var graphSpeed = {{figSpeed | safe}};
+  Plotly.plot('chartSpeed',graphSpeed,{},{responsive: true});
+  var graphFp = {{figFp | safe}};
+  Plotly.plot('chartFp',graphFp,{},{responsive: true});
+  var graphFs = {{figFs | safe}};
+  Plotly.plot('chartFs',graphFs,{},{responsive: true});
+  var graphTl = {{figTl | safe}};
+  Plotly.plot('chartTl',graphTl,{},{responsive: true});
+
+
 
 </script>
 {% endblock javascripts %}

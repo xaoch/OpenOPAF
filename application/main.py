@@ -273,6 +273,14 @@ def calculateSummary(audioData, videoData, presData):
         }
     return summary
 
+def createGraphDashboard(x,y,name):
+    fig = go.Figure()
+    fig.update_layout(width=int(1500))
+    fig.add_hrect(y0=4, y1=5, line_width=0, fillcolor="blue", opacity=0.2)
+    fig.add_hrect(y0=2, y1=4, line_width=0, fillcolor="purple", opacity=0.2)
+    fig.add_hrect(y0=0, y1=2, line_width=0, fillcolor="red", opacity=0.2)
+    fig.add_scattergl(x=ids, y=y, line={"color": "black"}, marker={"size": 12}, name=name)
+    return json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
 
 @main.route('/')
 @login_required
@@ -282,19 +290,15 @@ def index():
     presdict = [i.serialize for i in presentations]
     df=pd.DataFrame(presdict)
 
-    #figDash = go.Figure()
-    figDash = make_subplots(rows=7, cols=1)
+    figGaze = createGraphDashboard(df.id,df.gaze,"Gaze")
+    figPosture = createGraphDashboard(df.id,df.posture,"Posture")
+    figVolume = createGraphDashboard(df.id,df.volume,"Volume")
+    figSpeed = createGraphDashboard(df.id,df.speed,"Articulation Rate")
+    figFP = createGraphDashboard(df.id,df.fp,"Filled Pauses")
+    figFs = createGraphDashboard(df.id, df.fs, "Font Size")
+    figTl = createGraphDashboard(df.id,df.tl,"Text Length")
 
-    figDash.update_layout(width=int(1500))
-    pgaze=go.Figure()
-    pgaze.add_scattergl(x=df.id, y=df.gaze, line={"color": "green"}, marker={"size": 12}, name="Gaze")
-    pgaze.add_hrect(y0=4, y1=5, line_width=0, fillcolor="blue", opacity=0.2)
-    pgaze.add_hrect(y0=2, y1=4, line_width=0, fillcolor="purple", opacity=0.2)
-    pgaze.add_hrect(y0=0, y1=2, line_width=0, fillcolor="red", opacity=0.2)
-    figDash.append_trace(pgaze, row = 1, col = 1)
-
-    graphJSON = json.dumps(figDash, cls=plotly.utils.PlotlyJSONEncoder)
-    return render_template('index.html', name=current_user.name,graphJSON=graphJSON)
+    return render_template('index.html', name=current_user.name,figGaze=figGaze, figPosture=figPosture, figVolume=figVolume, figSpeed=figSpeed, figFP=figFP, figFs=figFs, figTl=figTl)
 
 @main.route('/reports')
 @login_required
