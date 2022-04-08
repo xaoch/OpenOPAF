@@ -280,10 +280,19 @@ def index():
     presentations = presentations[::-1]
     presdict = [i.serialize for i in presentations]
     df=pd.DataFrame(presdict)
-    print(df)
 
+    figDash = go.Figure()
+    figDash.update_layout(width=int(1500))
+    figDash.add_hrect(y0=4, y1=5, line_width=0, fillcolor="blue", opacity=0.2)
+    figDash.add_hrect(y0=2, y1=4, line_width=0, fillcolor="purple", opacity=0.2)
+    figDash.add_hrect(y0=0, y1=2, line_width=0, fillcolor="red", opacity=0.2)
+    figDash.add_scattergl(x=df.id, y=df.gaze, line={"color": "yellow"}, marker={"size": 12}, name="Gaze")
+    figDash.add_scattergl(x=df.id, y=df.posture, line={"color": "green"}, marker={"size": 12}, name="Gaze")
+    figDash.add_scattergl(x=df.id, y=df.volume, line={"color": "green"}, marker={"size": 12}, name="Gaze")
+    figDash.add_scattergl(x=df.id, y=df.speed, line={"color": "yellow"}, marker={"size": 12}, name="Gaze")
 
-    return render_template('index.html', name=current_user.name)
+    graphJSON = json.dumps(figDash, cls=plotly.utils.PlotlyJSONEncoder)
+    return render_template('index.html', name=current_user.name,graphJSON=graphJSON)
 
 @main.route('/reports')
 @login_required
