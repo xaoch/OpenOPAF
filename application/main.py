@@ -278,6 +278,11 @@ def calculateSummary(audioData, videoData, presData):
 def index():
     return render_template('index.html', name=current_user.name)
 
+@main.route('/reports')
+@login_required
+def reports():
+    return render_template('reports.html', name=current_user.name)
+
 @main.route('/profile')
 @login_required
 def profile():

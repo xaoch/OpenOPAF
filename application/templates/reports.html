@@ -1,0 +1,102 @@
+{% extends "baseGeneral.html" %}
+
+{% block title %} Dashboard {% endblock %}
+
+{% block stylesheets %}
+<link href="https://unpkg.com/tabulator-tables@5.1.8/dist/css/tabulator.min.css" rel="stylesheet">
+
+{% endblock stylesheets %}
+
+{% block content %}
+
+<div class="pcoded-main-container">
+		<div class="pcoded-content">
+			<!-- [ breadcrumb ] start -->
+			<div class="page-header">
+				<div class="page-block">
+					<div class="row align-items-center">
+						<div class="col-md-12">
+							<div class="page-header-title">
+								<h5 class="m-b-10">{{ name }} - Reports</h5>
+							</div>
+							<ul class="breadcrumb">
+								<li class="breadcrumb-item"><a href="#!">Dashboard</a></li>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- [ breadcrumb ] end -->
+			<!-- [ Main Content ] start -->
+			<div class="row">
+				<!-- [ sample-page ] start -->
+				<div class="col-sm-12">
+					<div class="card">
+
+						<div class="card-header">
+							<h5>Reports</h5>
+							<div class="card-header-right">
+								<div class="btn-group card-option">
+									<button type="button" class="btn dropdown-toggle btn-icon" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+										<i class="feather icon-more-horizontal"></i>
+									</button>
+									<ul class="list-unstyled card-option dropdown-menu dropdown-menu-right">
+										<li class="dropdown-item full-card"><a href="#!"><span><i class="feather icon-maximize"></i> maximize</span><span style="display:none"><i class="feather icon-minimize"></i> Restore</span></a></li>
+										<li class="dropdown-item minimize-card"><a href="#!"><span><i class="feather icon-minus"></i> collapse</span><span style="display:none"><i class="feather icon-plus"></i> expand</span></a></li>
+									</ul>
+								</div>
+							</div>
+						</div>
+						<div class="card-body">
+							<div id="reports-table"></div>
+						</div>
+					</div>
+				</div>
+				<!-- [ sample-page ] end -->
+			</div>
+			<!-- [ Main Content ] end -->
+		</div>
+	</div>
+
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}
+<script type="text/javascript" src="https://unpkg.com/tabulator-tables@5.1.8/dist/js/tabulator.min.js"></script>
+<script>
+var printIcon = function(cell, formatterParams){ //plain text value
+    return "<i class='fa fa-print'></i>";
+};
+
+//Build Tabulator
+var table = new Tabulator("#example-table", {
+    height:"311px",
+    layout:"fitColumns",
+    rowFormatter:function(row){
+        if(row.getData().col == "blue"){
+            row.getElement().style.backgroundColor = "#1e3b20";
+        }
+    },
+    columns:[
+    {formatter:"rownum", hozAlign:"center", width:40},
+    {formatter:printIcon, width:40, hozAlign:"center", cellClick:function(e, cell){alert("Printing row data for: " + cell.getRow().getData().name)}},
+    {title:"Name", field:"name", width:150, formatter:function(cell, formatterParams){
+       var value = cell.getValue();
+        if(value.indexOf("o") > 0){
+            return "<span style='color:#3FB449; font-weight:bold;'>" + value + "</span>";
+        }else{
+            return value;
+        }
+    }},
+    {title:"Progress", field:"progress", formatter:"progress", formatterParams:{color:["#00dd00", "orange", "rgb(255,0,0)"]}, sorter:"number", width:100},
+    {title:"Rating", field:"rating", formatter:"star", formatterParams:{stars:6}, hozAlign:"center", width:120},
+    {title:"Driver", field:"car", hozAlign:"center", formatter:"tickCross", width:50},
+    {title:"Col", field:"col" ,formatter:"color", width:50},
+    {title:"Line Wraping", field:"lorem" ,formatter:"textarea"},
+    {formatter:"buttonCross", width:30, hozAlign:"center"}
+    ],
+});
+</script>
+
+{% endblock javascripts %}
+
