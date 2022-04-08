@@ -279,7 +279,7 @@ def createGraphDashboard(x,y,name):
     fig.add_hrect(y0=4, y1=5, line_width=0, fillcolor="blue", opacity=0.2)
     fig.add_hrect(y0=2, y1=4, line_width=0, fillcolor="purple", opacity=0.2)
     fig.add_hrect(y0=0, y1=2, line_width=0, fillcolor="red", opacity=0.2)
-    fig.add_scattergl(x=ids, y=y, line={"color": "black"}, marker={"size": 12}, name=name)
+    fig.add_scattergl(x=x, y=y, line={"color": "black"}, marker={"size": 12}, name=name)
     return json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
 
 @main.route('/')
