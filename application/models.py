@@ -16,5 +16,7 @@ class Presentation(db.Model):
     posture = db.Column(db.Integer)
     volume = db.Column(db.Integer)
     speed = db.Column(db.Integer)
+    fp = db.Column(db.Integer)
+    slides= db.Column(db.Boolean)
     fs = db.Column(db.Integer)
     tl = db.Column(db.Integer)

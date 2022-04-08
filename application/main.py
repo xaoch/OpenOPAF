@@ -26,6 +26,8 @@ from application.scorer.filledPausesScorer import filledPausesScorer
 from application.scorer.articulationRateScorer import articulationRateScorer
 from application.scorer.slideFontSizeScorer import slideFontSizeScorer
 from application.scorer.slideTextLenghtScorer import slideTextLengthScorer
+from .models import Presentation
+
 
 
 main = Blueprint('main', __name__)
@@ -431,17 +433,42 @@ def report():
         maxSlide= dfSlides.shape[0]
     else:
         maxSlide=0
+
+    if (includePresentation):
+        new_presentation = Presentation(presId=presId,
+                                        presenter=current_user.id,
+                                        date=datetime.datetime.now(),
+                                        gaze=int(summary["gazeScore"]),
+                                        posture=int(summary["postureScore"]),
+                                        volume=int(summary["volumeScore"]),
+                                        speed=int(summary["articulationScore"]),
+                                        fp=int(summary["fp"]),
+                                        slides=True,
+                                        fs=int(summary["slideFontSizeScore"]),
+                                        tl=int(summary["slideTextLengthScore"])
+                                        )
+    else:
+        new_presentation = Presentation(presId=presId,
+                                        presenter=current_user.id,
+                                        date=datetime.datetime.now(),
+                                        gaze=int(summary["gazeScore"]),
+                                        posture=int(summary["postureScore"]),
+                                        volume=int(summary["volumeScore"]),
+                                        speed=int(summary["articulationScore"]),
+                                        fp=int(summary["fp"]),
+                                        slides=False
+                                        )
+
+    db.session.add(new_presentation)
+    db.session.commit()
+
     return render_template("report.html",presId=presId,summary=summary,maxFrame=maxFrame,maxSlide=maxSlide,includePresentation=includePresentation,graphJSONVolume=graphJSONVolume, graphJSONArticulation=graphJSONArticulation, graphJSONFP=graphJSONFP)
 
 @main.route('/view_report/<presId>')
 @login_required
-def report():
-    presId= request.args.get('presId')
-    includePresentation=session["includePresentation"]
-    presId="7435b00d-e8f0-49b7-ba16-74ecd192dea1"
-    includePresentation=True
-    if presId is None:
-        presId=session["presId"]
+def view_report(presId):
+    presentation = Presentation.query.filter_by(presId=presId).first()
+    includePresentation=presentation.slides
     app = Flask(__name__)
     uploads_dir = os.path.join(app.root_path, 'presentations')
     path = os.path.join(uploads_dir, presId)
@@ -452,7 +479,6 @@ def report():
     else:
         dfSlides=None
     summary=calculateSummary(dfAudio,dfVideo,dfSlides)
-
 
     figVol=go.Figure()
     figVol.update_layout(width=int(1500))
