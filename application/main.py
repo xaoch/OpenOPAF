@@ -479,7 +479,7 @@ def report():
                                         posture=int(summary["postureScore"]),
                                         volume=int(summary["volumeScore"]),
                                         speed=int(summary["articulationScore"]),
-                                        fp=int(summary["fp"]),
+                                        fp=int(summary["fpScore"]),
                                         slides=False
                                         )
 
