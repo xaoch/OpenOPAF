@@ -84,13 +84,13 @@ var table = new Tabulator("#reports-table", {
     columns:[
     {formatter:"rownum", hozAlign:"center", width:40},
     {title:"Date", field:"date", width:200},
-    {title:"Posture Score", field:"posture", formatter:"star", formatterParams:{stars:5}, hozAlign:"center", width:180},
-    {title:"Gaze Score", field:"gaze", formatter:"star", formatterParams:{stars:5}, hozAlign:"center", width:180},
-    {title:"Volume Score", field:"volume", formatter:"star", formatterParams:{stars:5}, hozAlign:"center", width:180},
-    {title:"Articulation Score", field:"speed", formatter:"star", formatterParams:{stars:5}, hozAlign:"center", width:180},
-    {title:"Filled Pauses", field:"fp", formatter:"star", formatterParams:{stars:5}, hozAlign:"center", width:180},
-    {title:"Slides Font Size", field:"fs", formatter:"star", formatterParams:{stars:5}, hozAlign:"center", width:180},
-    {title:"Slides Text Length", field:"tl", formatter:"star", formatterParams:{stars:5}, hozAlign:"center", width:180},
+    {title:"Posture", field:"posture", formatter:"star", formatterParams:{stars:5}, hozAlign:"center", width:150},
+    {title:"Gaze", field:"gaze", formatter:"star", formatterParams:{stars:5}, hozAlign:"center", width:150},
+    {title:"Volume", field:"volume", formatter:"star", formatterParams:{stars:5}, hozAlign:"center", width:150},
+    {title:"Articulation", field:"speed", formatter:"star", formatterParams:{stars:5}, hozAlign:"center", width:150},
+    {title:"Filled Pauses", field:"fp", formatter:"star", formatterParams:{stars:5}, hozAlign:"center", width:150},
+    {title:"Font Size", field:"fs", formatter:"star", formatterParams:{stars:5}, hozAlign:"center", width:150},
+    {title:"Text Length", field:"tl", formatter:"star", formatterParams:{stars:5}, hozAlign:"center", width:150},
 	{formatter:printIcon, width:200}
     ],
 });
