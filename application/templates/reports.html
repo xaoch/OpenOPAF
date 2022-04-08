@@ -83,7 +83,6 @@ var table = new Tabulator("#reports-table", {
     },
     columns:[
     {formatter:"rownum", hozAlign:"center", width:40},
-    {formatter:printIcon, width:200, hozAlign:"center", cellClick:function(e, cell){alert("Printing row data for: " + cell.getRow().getData().presId)}},
     {title:"Date", field:"date", width:200},
     {title:"Posture Score", field:"posture", formatter:"star", formatterParams:{stars:5}, hozAlign:"center", width:120},
     {title:"Gaze Score", field:"gaze", formatter:"star", formatterParams:{stars:5}, hozAlign:"center", width:120},
@@ -92,7 +91,7 @@ var table = new Tabulator("#reports-table", {
     {title:"Filled Pauses", field:"fp", formatter:"star", formatterParams:{stars:5}, hozAlign:"center", width:120},
     {title:"Slides Font Size", field:"fs", formatter:"star", formatterParams:{stars:5}, hozAlign:"center", width:120},
     {title:"Slides Text Length", field:"tl", formatter:"star", formatterParams:{stars:5}, hozAlign:"center", width:120},
-
+	{formatter:printIcon, width:200}
     ],
 });
 </script>
