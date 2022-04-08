@@ -557,10 +557,13 @@
            		  	console.log(properties)
       				var slide= document.getElementById("slideImage");
       				frame=itemsSlides.get(properties.item).frame;
-      				source="{{ url_for('main.slideImages', presId=presId,image_number='2') }}"
-      				position= source.lastIndexOf("/");
-      				source=source.substr(0,position+1)+String(frame+1)
-      				slide.src=source
+      				if(isNaN(frame)){
+      					source="{{ url_for('main.slideImages', presId=presId,image_number='2') }}"
+      					position= source.lastIndexOf("/");
+      					source=source.substr(0,position+1)+String(frame+1)
+      					slide.src=source
+      					}
+
     			  }
 
            		  function multimediaDisplay(properties) {
