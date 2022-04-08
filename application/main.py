@@ -308,6 +308,23 @@ def reports():
     print(presentations)
     return render_template('reports.html', name=current_user.name,data=presentations)
 
+@main.route('/controls')
+@login_required
+def controls():
+    return render_template('controls.html')
+
+@main.route('/reboot')
+@login_required
+def controls():
+    os.system('sudo reboot')
+    return "Done"
+
+@main.route('/shutdown')
+@login_required
+def controls():
+    os.system('sudo halt')
+    return "Done"
+
 @main.route('/profile')
 @login_required
 def profile():
