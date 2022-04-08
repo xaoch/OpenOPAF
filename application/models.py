@@ -6,3 +6,15 @@ class User(UserMixin,db.Model):
     email = db.Column(db.String(100), unique=True)
     password = db.Column(db.String(100))
     name = db.Column(db.String(1000))
+
+class Presentation(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    presId = db.Column(db.String(100), unique=True)
+    presenter =db.Column(db.Integer, db.ForeignKey('user.id'))
+    date = db.Column(db.DateTime)
+    gaze = db.Column(db.Integer)
+    posture = db.Column(db.Integer)
+    volume = db.Column(db.Integer)
+    speed = db.Column(db.Integer)
+    fs = db.Column(db.Integer)
+    tl = db.Column(db.Integer)
