@@ -41,6 +41,7 @@ outputFrame = None
 lock = threading.Lock()
 vs=None
 stopStreaming=False
+t=None
 
 def captureFrame():
     global vs, outputFrame, lock, stopStreaming
