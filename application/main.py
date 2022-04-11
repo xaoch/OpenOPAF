@@ -31,7 +31,7 @@ from .models import Presentation
 import logging
 
 
-logging.basicConfig(filename='opaf.log', level=logging.INFO)
+logging.basicConfig(filename='opaf.log', level=logging.DEBUG)
 logging.info('Started')
 
 main = Blueprint('main', __name__)
