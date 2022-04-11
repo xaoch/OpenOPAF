@@ -89,6 +89,7 @@ def captureFrame():
             outputFrame = frame.copy()
 
 t = threading.Thread(target=captureFrame)
+t.daemon = True
 
 
 def calculateSummary(audioData, videoData, presData):
@@ -384,7 +385,6 @@ def prepareRecording():
     vs = VideoStream(src=0).start()
     stopStreaming=False
     sleep(2.0)
-    t.daemon = True
     t.start()
     return render_template('prepareRecording.html')
 
