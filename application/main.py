@@ -381,7 +381,7 @@ def presentation():
 @main.route('/prepareRecording', methods=['get','post'])
 @login_required
 def prepareRecording():
-    global outputFrame, vs
+    global outputFrame, vs, t
     vs = VideoStream(src=0).start()
     stopStreaming=False
     sleep(2.0)
@@ -393,7 +393,7 @@ def prepareRecording():
 @main.route('/recording', methods=['get','post'])
 @login_required
 def recording():
-    global controllerObject,vs, stopStreaming
+    global controllerObject,vs, stopStreaming, t
     stopStreaming=True
     vs.stream.release()
     vs.stop()
