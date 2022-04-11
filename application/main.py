@@ -521,7 +521,7 @@ def reportWaiting():
 @main.route('/report', methods=['get','post'])
 @login_required
 def report():
-    presId= request.args.get('presId')
+    presId= session["presId"]
     includePresentation=session["includePresentation"]
     #presId="7435b00d-e8f0-49b7-ba16-74ecd192dea1"
     #includePresentation=True
