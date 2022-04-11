@@ -4,5 +4,4 @@ cd /home/augmented/Code/OpenOPAF
 sleep 5
 export FLASK_APP=application
 export DISPLAY=:0
-python -m sounddevice
 flask run --host=0.0.0.0
