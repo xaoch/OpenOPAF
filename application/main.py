@@ -251,8 +251,9 @@ def calculateSummary(audioData, videoData, presData):
             "slideTextLengthRecommendation": slideTextLengthRecommendation,
             "slidesTimeline": slidesTimeline
         }
-    summary=audioDict.update(videoDict)
-    summary=summary.update(presDict)
+    audioDict.update(videoDict)
+    audioDict.update(presDict)
+    summary=audioDict
     return summary
 
 def createGraphDashboard(x,y,name):
