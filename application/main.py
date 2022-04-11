@@ -31,13 +31,8 @@ from .models import Presentation
 import logging
 
 
-logger = logging.getLogger(__name__)
-f_handler = logging.FileHandler('opaf.log')
-f_handler.setLevel(logging.DEBUG)
-f_format = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
-logger.addHandler(f_handler)
-
-
+logging.basicConfig(filename='opaf.log', level=logging.INFO)
+logging.info('Started')
 
 main = Blueprint('main', __name__)
 
@@ -293,7 +288,7 @@ def createGraphDashboard(x,y,name):
 @main.route('/')
 @login_required
 def index():
-    logger.debug("Index requested")
+    logging.debug("Index requested")
     query=Presentation.query.filter_by(presenter=current_user.id).order_by(Presentation.date.desc()).limit(10)
     results = query.count()
     if results>0:
@@ -310,10 +305,10 @@ def index():
         figFp = createGraphDashboard(df.id,df.fp,"Filled Pauses")
         figFs = createGraphDashboard(df.id, df.fs, "Font Size")
         figTl = createGraphDashboard(df.id,df.tl,"Text Length")
-        logger.debug("Index information provided - At least one previous presentation")
+        logging.debug("Index information provided - At least one previous presentation")
         return render_template('index.html', name=current_user.name,figGaze=figGaze, figPosture=figPosture, figVolume=figVolume, figSpeed=figSpeed, figFp=figFp, figFs=figFs, figTl=figTl)
     else:
-        logger.debug("Index information provided - No previous presentations")
+        logging.debug("Index information provided - No previous presentations")
         return render_template('indexEmpty.html', name=current_user.name)
 
 @main.route('/reports')
