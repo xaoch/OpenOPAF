@@ -265,6 +265,116 @@ def createGraphDashboard(x,y,name):
     fig.add_scattergl(x=x, y=y, line={"color": "black"}, marker={"size": 12}, name=name)
     return json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
 
+
+def generateReport(presId,includePresentation):
+    if presId is None:
+        presId=session["presId"]
+    app = Flask(__name__)
+    uploads_dir = os.path.join(app.root_path, 'presentations')
+    path = os.path.join(uploads_dir, presId)
+    dfAudio=None
+    dfVideo=None
+    dfSlides=None
+    AudioInfo=False
+    VideoInfo=False
+    SlidesInfo=False
+    try:
+        dfAudio = pd.read_csv(os.path.join(path,"Audio","result.csv"))
+        AudioInfo=True
+    except Exception as e:
+        logging.error("Exception occurred Reading Audio Information", exc_info=True)
+        print(e)
+        AudioInfo=False
+    try:
+        dfVideo = pd.read_csv(os.path.join(path,"Video","result.csv"))
+        VideoInfo=True
+    except Exception as e:
+        logging.error("Exception occurred in Reading Video Information", exc_info=True)
+        print(e)
+        VideoInfo = False
+    SlidesInfo = False
+    if (includePresentation):
+        try:
+            dfSlides = pd.read_csv(os.path.join(path, "Slides", "result.csv"))
+            SlidesInfo=True
+        except Exception as e:
+            logging.error("Exception occurred in Reading Slides Information", exc_info=True)
+            print(e)
+            SlidesInfo = False
+    summary=calculateSummary(dfAudio,dfVideo,dfSlides)
+
+    graphJSONVolume = None
+    graphJSONArticulation = None
+    graphJSONFP = None
+    if(AudioInfo):
+        figVol=go.Figure()
+        figVol.update_layout(width=int(1500))
+        figVol.add_hrect(y0=65, y1=45, line_width=0, fillcolor="blue", opacity=0.2)
+        figVol.add_hrect(y0=45, y1=35, line_width=0, fillcolor="purple", opacity=0.2)
+        figVol.add_hrect(y0=35, y1=0, line_width=0, fillcolor="red", opacity=0.2)
+        figVol.add_scattergl(x=dfAudio.name, y=dfAudio.power, line={"color": "black"},marker={"size":0},name="Trend")
+        figVol.add_scattergl(x=dfAudio.name, y=dfAudio.power.where(dfAudio.power >= 45), line={"width":0}, marker={"size":12,"color":"blue"},name="Excellent")
+        figVol.add_scattergl(x=dfAudio.name, y=dfAudio.power.where((dfAudio.power > 35) & (dfAudio.power < 45)), line={"width": 0}, marker={"size": 12, "color": "purple"}, name="Good")
+        figVol.add_scattergl(x=dfAudio.name, y=dfAudio.power.where(dfAudio.power <= 35), line={"width":0}, marker={"size":12,"color":"red"},name="To Improve")
+
+        figArt = go.Figure()
+        figArt.update_layout(width=int(1500))
+        figArt.add_hrect(y0=150, y1=200, line_width=0, fillcolor="purple", opacity=0.2)
+        figArt.add_hrect(y0=200, y1=220, line_width=0, fillcolor="red", opacity=0.2)
+        figArt.add_hrect(y0=80, y1=150, line_width=0, fillcolor="blue", opacity=0.2)
+        figArt.add_hrect(y0=20, y1=80, line_width=0, fillcolor="purple", opacity=0.2)
+        figArt.add_hrect(y0=20, y1=0, line_width=0, fillcolor="red", opacity=0.2)
+        dfAudio.speed=dfAudio.speechrate*60/1.66
+        figArt.add_scattergl(x=dfAudio.name, y=dfAudio.speed, line={"color": "black"}, marker={"size": 0}, name="Trend")
+        figArt.add_scattergl(x=dfAudio.name, y=dfAudio.speed.where((dfAudio.speed >= 80) & (dfAudio.speed <= 150) ), line={"width": 0},
+                             marker={"size": 12, "color": "blue"}, name="Excellent")
+        figArt.add_scattergl(x=dfAudio.name, y=dfAudio.speed.where(((dfAudio.speed > 150) & (dfAudio.speed <= 200))|((dfAudio.speed >= 20)&(dfAudio.speed<80))),
+                          line={"width": 0}, marker={"size": 12, "color": "purple"}, name="Good")
+        figArt.add_scattergl(x=dfAudio.name, y=dfAudio.speed.where((dfAudio.speed < 20)|(dfAudio.speed > 200)), line={"width": 0},
+                             marker={"size": 12, "color": "red"}, name="To Improve")
+
+        figFP = go.Figure()
+        figFP.update_layout(width=int(1500))
+        figFP.add_hrect(y0=1.5, y1=5, line_width=0, fillcolor="red", opacity=0.2)
+        figFP.add_hrect(y0=0.5, y1=1.5, line_width=0, fillcolor="purple", opacity=0.2)
+        figFP.add_hrect(y0=0, y1=0.5, line_width=0, fillcolor="blue", opacity=0.2)
+        figFP.add_scattergl(x=dfAudio.name, y=dfAudio.nrFP.where(dfAudio.nrFP < 1),
+                             line={"width": 0},
+                             marker={"size": 12, "color": "blue"}, name="Excellent")
+        figFP.add_scattergl(x=dfAudio.name, y=dfAudio.nrFP.where(
+            (dfAudio.nrFP > 0) & (dfAudio.nrFP < 2)),
+                             line={"width": 0}, marker={"size": 12, "color": "purple"}, name="Good")
+        figFP.add_scattergl(x=dfAudio.name, y=dfAudio.nrFP.where(dfAudio.nrFP > 1),
+                             line={"width": 0},
+                             marker={"size": 12, "color": "red"}, name="To Improve")
+
+        graphJSONVolume = json.dumps(figVol, cls=plotly.utils.PlotlyJSONEncoder)
+        graphJSONArticulation = json.dumps(figArt, cls=plotly.utils.PlotlyJSONEncoder)
+        graphJSONFP = json.dumps(figFP, cls=plotly.utils.PlotlyJSONEncoder)
+
+        maxFrameAudio=dfAudio.shape[0]*5
+    if (includePresentation and SlidesInfo):
+        maxSlide= dfSlides.shape[0]
+    else:
+        maxSlide=0
+    if (VideoInfo):
+        maxFrameVideo=dfVideo.shape[0]/2
+    else:
+        maxFrameVideo=0
+    reportInfo={
+        "summary":summary,
+        "AudioInfo":AudioInfo,
+        "VideoInfo":VideoInfo,
+        "SlidesInfo":SlidesInfo,
+        "maxFrameAudio":maxFrameAudio,
+        "maxFrameVideo":maxFrameVideo,
+        "graphJSONVolume":graphJSONVolume,
+        "graphJSONArticulation":graphJSONArticulation,
+        "graphJSONFP":graphJSONFP
+    }
+    return reportInfo
+
+
 @main.route('/')
 @login_required
 def index():
@@ -414,119 +524,30 @@ def report():
     includePresentation=session["includePresentation"]
     #presId="7435b00d-e8f0-49b7-ba16-74ecd192dea1"
     #includePresentation=True
-    if presId is None:
-        presId=session["presId"]
-    app = Flask(__name__)
-    uploads_dir = os.path.join(app.root_path, 'presentations')
-    path = os.path.join(uploads_dir, presId)
-    dfAudio=None
-    dfVideo=None
-    dfSlides=None
-    try:
-        dfAudio = pd.read_csv(os.path.join(path,"Audio","result.csv"))
-        AudioInfo=True
-    except Exception as e:
-        logging.error("Exception occurred Reading Audio Information", exc_info=True)
-        print(e)
-        AudioInfo=False
-    try:
-        dfVideo = pd.read_csv(os.path.join(path,"Video","result.csv"))
-        VideoInfo=True
-    except Exception as e:
-        logging.error("Exception occurred in Reading Video Information", exc_info=True)
-        print(e)
-        VideoInfo = False
-    SlidesInfo = False
-    if (includePresentation):
-        try:
-            dfSlides = pd.read_csv(os.path.join(path, "Slides", "result.csv"))
-            SlidesInfo=True
-        except Exception as e:
-            logging.error("Exception occurred in Reading Slides Information", exc_info=True)
-            print(e)
-            SlidesInfo = False
-    summary=calculateSummary(dfAudio,dfVideo,dfSlides)
+    reportInfo=generateReport(presId,includePresentation)
 
-    graphJSONVolume = None
-    graphJSONArticulation = None
-    graphJSONFP = None
-    if(AudioInfo):
-        figVol=go.Figure()
-        figVol.update_layout(width=int(1500))
-        figVol.add_hrect(y0=65, y1=45, line_width=0, fillcolor="blue", opacity=0.2)
-        figVol.add_hrect(y0=45, y1=35, line_width=0, fillcolor="purple", opacity=0.2)
-        figVol.add_hrect(y0=35, y1=0, line_width=0, fillcolor="red", opacity=0.2)
-        figVol.add_scattergl(x=dfAudio.name, y=dfAudio.power, line={"color": "black"},marker={"size":0},name="Trend")
-        figVol.add_scattergl(x=dfAudio.name, y=dfAudio.power.where(dfAudio.power >= 45), line={"width":0}, marker={"size":12,"color":"blue"},name="Excellent")
-        figVol.add_scattergl(x=dfAudio.name, y=dfAudio.power.where((dfAudio.power > 35) & (dfAudio.power < 45)), line={"width": 0}, marker={"size": 12, "color": "purple"}, name="Good")
-        figVol.add_scattergl(x=dfAudio.name, y=dfAudio.power.where(dfAudio.power <= 35), line={"width":0}, marker={"size":12,"color":"red"},name="To Improve")
-
-        figArt = go.Figure()
-        figArt.update_layout(width=int(1500))
-        figArt.add_hrect(y0=150, y1=200, line_width=0, fillcolor="purple", opacity=0.2)
-        figArt.add_hrect(y0=200, y1=220, line_width=0, fillcolor="red", opacity=0.2)
-        figArt.add_hrect(y0=80, y1=150, line_width=0, fillcolor="blue", opacity=0.2)
-        figArt.add_hrect(y0=20, y1=80, line_width=0, fillcolor="purple", opacity=0.2)
-        figArt.add_hrect(y0=20, y1=0, line_width=0, fillcolor="red", opacity=0.2)
-        dfAudio.speed=dfAudio.speechrate*60/1.66
-        figArt.add_scattergl(x=dfAudio.name, y=dfAudio.speed, line={"color": "black"}, marker={"size": 0}, name="Trend")
-        figArt.add_scattergl(x=dfAudio.name, y=dfAudio.speed.where((dfAudio.speed >= 80) & (dfAudio.speed <= 150) ), line={"width": 0},
-                             marker={"size": 12, "color": "blue"}, name="Excellent")
-        figArt.add_scattergl(x=dfAudio.name, y=dfAudio.speed.where(((dfAudio.speed > 150) & (dfAudio.speed <= 200))|((dfAudio.speed >= 20)&(dfAudio.speed<80))),
-                          line={"width": 0}, marker={"size": 12, "color": "purple"}, name="Good")
-        figArt.add_scattergl(x=dfAudio.name, y=dfAudio.speed.where((dfAudio.speed < 20)|(dfAudio.speed > 200)), line={"width": 0},
-                             marker={"size": 12, "color": "red"}, name="To Improve")
-
-        figFP = go.Figure()
-        figFP.update_layout(width=int(1500))
-        figFP.add_hrect(y0=1.5, y1=5, line_width=0, fillcolor="red", opacity=0.2)
-        figFP.add_hrect(y0=0.5, y1=1.5, line_width=0, fillcolor="purple", opacity=0.2)
-        figFP.add_hrect(y0=0, y1=0.5, line_width=0, fillcolor="blue", opacity=0.2)
-        figFP.add_scattergl(x=dfAudio.name, y=dfAudio.nrFP.where(dfAudio.nrFP < 1),
-                             line={"width": 0},
-                             marker={"size": 12, "color": "blue"}, name="Excellent")
-        figFP.add_scattergl(x=dfAudio.name, y=dfAudio.nrFP.where(
-            (dfAudio.nrFP > 0) & (dfAudio.nrFP < 2)),
-                             line={"width": 0}, marker={"size": 12, "color": "purple"}, name="Good")
-        figFP.add_scattergl(x=dfAudio.name, y=dfAudio.nrFP.where(dfAudio.nrFP > 1),
-                             line={"width": 0},
-                             marker={"size": 12, "color": "red"}, name="To Improve")
-
-        graphJSONVolume = json.dumps(figVol, cls=plotly.utils.PlotlyJSONEncoder)
-        graphJSONArticulation = json.dumps(figArt, cls=plotly.utils.PlotlyJSONEncoder)
-        graphJSONFP = json.dumps(figFP, cls=plotly.utils.PlotlyJSONEncoder)
-
-        maxFrameAudio=dfAudio.shape[0]*5
-    if (includePresentation and SlidesInfo):
-        maxSlide= dfSlides.shape[0]
-    else:
-        maxSlide=0
-    if (VideoInfo):
-        maxFrameVideo=dfVideo.shape[0]/2
-    else:
-        maxFrameVideo=0
     if (includePresentation):
         new_presentation = Presentation(presId=presId,
                                         presenter=current_user.id,
                                         date=datetime.datetime.now(),
-                                        gaze=int(summary["gazeScore"]),
-                                        posture=int(summary["postureScore"]),
-                                        volume=int(summary["volumeScore"]),
-                                        speed=int(summary["articulationScore"]),
-                                        fp=int(summary["fpScore"]),
+                                        gaze=int(reportInfo["summary"]["gazeScore"]),
+                                        posture=int(reportInfo["summary"]["postureScore"]),
+                                        volume=int(reportInfo["summary"]["volumeScore"]),
+                                        speed=int(reportInfo["summary"]["articulationScore"]),
+                                        fp=int(reportInfo["summary"]["fpScore"]),
                                         slides=True,
-                                        fs=int(summary["slideFontSizeScore"]),
-                                        tl=int(summary["slideTextLengthScore"])
+                                        fs=int(reportInfo["summary"]["slideFontSizeScore"]),
+                                        tl=int(reportInfo["summary"]["slideTextLengthScore"])
                                         )
     else:
         new_presentation = Presentation(presId=presId,
                                         presenter=current_user.id,
                                         date=datetime.datetime.now(),
-                                        gaze=int(summary["gazeScore"]),
-                                        posture=int(summary["postureScore"]),
-                                        volume=int(summary["volumeScore"]),
-                                        speed=int(summary["articulationScore"]),
-                                        fp=int(summary["fpScore"]),
+                                        gaze=int(reportInfo["summary"]["gazeScore"]),
+                                        posture=int(reportInfo["summary"]["postureScore"]),
+                                        volume=int(reportInfo["summary"]["volumeScore"]),
+                                        speed=int(reportInfo["summary"]["articulationScore"]),
+                                        fp=int(reportInfo["summary"]["fpScore"]),
                                         slides=False
                                         )
 
@@ -536,86 +557,38 @@ def report():
     return render_template("report.html",
                            name=current_user.name,
                            presId=presId,
-                           summary=summary,
-                           audioInfo=AudioInfo,
-                           videoInfo=VideoInfo,
-                           slidesInfo=SlidesInfo,
-                           maxFrameAudio=maxFrameAudio,
-                           maxFrameVideo=maxFrameVideo,
-                           maxSlide=maxSlide,
-                           includePresentation=includePresentation,
-                           graphJSONVolume=graphJSONVolume,
-                           graphJSONArticulation=graphJSONArticulation,
-                           graphJSONFP=graphJSONFP)
+                           summary=reportInfo["summary"],
+                           audioInfo=reportInfo["AudioInfo"],
+                           videoInfo=reportInfo["VideoInfo"],
+                           slidesInfo=reportInfo["SlidesInfo"],
+                           maxFrameAudio=reportInfo["maxFrameAudio"],
+                           maxFrameVideo=reportInfo["maxFrameVideo"],
+                           maxSlide=reportInfo["maxSlide"],
+                           includePresentation=reportInfo["includePresentation"],
+                           graphJSONVolume=reportInfo["graphJSONVolume"],
+                           graphJSONArticulation=reportInfo["graphJSONArticulation"],
+                           graphJSONFP=reportInfo["graphJSONFP"])
 
 @main.route('/view_report/<presId>')
 @login_required
 def view_report(presId):
     presentation = Presentation.query.filter_by(presId=presId).first()
     includePresentation=presentation.slides
-    app = Flask(__name__)
-    uploads_dir = os.path.join(app.root_path, 'presentations')
-    path = os.path.join(uploads_dir, presId)
-    dfAudio = pd.read_csv(os.path.join(path,"Audio","result.csv"))
-    dfVideo = pd.read_csv(os.path.join(path,"Video","result.csv"))
-    if (includePresentation):
-        dfSlides = pd.read_csv(os.path.join(path, "Slides", "result.csv"))
-    else:
-        dfSlides=None
-    summary=calculateSummary(dfAudio,dfVideo,dfSlides)
-
-    figVol=go.Figure()
-    figVol.update_layout(width=int(1500))
-    figVol.add_hrect(y0=65, y1=45, line_width=0, fillcolor="blue", opacity=0.2)
-    figVol.add_hrect(y0=45, y1=35, line_width=0, fillcolor="purple", opacity=0.2)
-    figVol.add_hrect(y0=35, y1=0, line_width=0, fillcolor="red", opacity=0.2)
-    figVol.add_scattergl(x=dfAudio.name, y=dfAudio.power, line={"color": "black"},marker={"size":0},name="Trend")
-    figVol.add_scattergl(x=dfAudio.name, y=dfAudio.power.where(dfAudio.power >= 45), line={"width":0}, marker={"size":12,"color":"blue"},name="Excellent")
-    figVol.add_scattergl(x=dfAudio.name, y=dfAudio.power.where((dfAudio.power > 35) & (dfAudio.power < 45)), line={"width": 0}, marker={"size": 12, "color": "purple"}, name="Good")
-    figVol.add_scattergl(x=dfAudio.name, y=dfAudio.power.where(dfAudio.power <= 35), line={"width":0}, marker={"size":12,"color":"red"},name="To Improve")
-
-    figArt = go.Figure()
-    figArt.update_layout(width=int(1500))
-    figArt.add_hrect(y0=150, y1=200, line_width=0, fillcolor="purple", opacity=0.2)
-    figArt.add_hrect(y0=200, y1=220, line_width=0, fillcolor="red", opacity=0.2)
-    figArt.add_hrect(y0=80, y1=150, line_width=0, fillcolor="blue", opacity=0.2)
-    figArt.add_hrect(y0=20, y1=80, line_width=0, fillcolor="purple", opacity=0.2)
-    figArt.add_hrect(y0=20, y1=0, line_width=0, fillcolor="red", opacity=0.2)
-    dfAudio.speed=dfAudio.speechrate*60/1.66
-    figArt.add_scattergl(x=dfAudio.name, y=dfAudio.speed, line={"color": "black"}, marker={"size": 0}, name="Trend")
-    figArt.add_scattergl(x=dfAudio.name, y=dfAudio.speed.where((dfAudio.speed >= 80) & (dfAudio.speed <= 150) ), line={"width": 0},
-                         marker={"size": 12, "color": "blue"}, name="Excellent")
-    figArt.add_scattergl(x=dfAudio.name, y=dfAudio.speed.where(((dfAudio.speed > 150) & (dfAudio.speed <= 200))|((dfAudio.speed >= 20)&(dfAudio.speed<80))),
-                         line={"width": 0}, marker={"size": 12, "color": "purple"}, name="Good")
-    figArt.add_scattergl(x=dfAudio.name, y=dfAudio.speed.where((dfAudio.speed < 20)|(dfAudio.speed > 200)), line={"width": 0},
-                         marker={"size": 12, "color": "red"}, name="To Improve")
-
-    figFP = go.Figure()
-    figFP.update_layout(width=int(1500))
-    figFP.add_hrect(y0=1.5, y1=5, line_width=0, fillcolor="red", opacity=0.2)
-    figFP.add_hrect(y0=0.5, y1=1.5, line_width=0, fillcolor="purple", opacity=0.2)
-    figFP.add_hrect(y0=0, y1=0.5, line_width=0, fillcolor="blue", opacity=0.2)
-    figFP.add_scattergl(x=dfAudio.name, y=dfAudio.nrFP.where(dfAudio.nrFP < 1),
-                         line={"width": 0},
-                         marker={"size": 12, "color": "blue"}, name="Excellent")
-    figFP.add_scattergl(x=dfAudio.name, y=dfAudio.nrFP.where(
-        (dfAudio.nrFP > 0) & (dfAudio.nrFP < 2)),
-                         line={"width": 0}, marker={"size": 12, "color": "purple"}, name="Good")
-    figFP.add_scattergl(x=dfAudio.name, y=dfAudio.nrFP.where(dfAudio.nrFP > 1),
-                         line={"width": 0},
-                         marker={"size": 12, "color": "red"}, name="To Improve")
-
-    graphJSONVolume = json.dumps(figVol, cls=plotly.utils.PlotlyJSONEncoder)
-    graphJSONArticulation = json.dumps(figArt, cls=plotly.utils.PlotlyJSONEncoder)
-    graphJSONFP = json.dumps(figFP, cls=plotly.utils.PlotlyJSONEncoder)
-
-    maxFrame=dfAudio.shape[0]*5
-    if (includePresentation):
-        maxSlide= dfSlides.shape[0]
-    else:
-        maxSlide=0
-    return render_template("report.html",name=current_user.name,presId=presId,summary=summary,maxFrame=maxFrame,maxSlide=maxSlide,includePresentation=includePresentation,graphJSONVolume=graphJSONVolume, graphJSONArticulation=graphJSONArticulation, graphJSONFP=graphJSONFP)
-
+    reportInfo = generateReport(presId, includePresentation)
+    return render_template("report.html",
+                           name=current_user.name,
+                           presId=presId,
+                           summary=reportInfo["summary"],
+                           audioInfo=reportInfo["AudioInfo"],
+                           videoInfo=reportInfo["VideoInfo"],
+                           slidesInfo=reportInfo["SlidesInfo"],
+                           maxFrameAudio=reportInfo["maxFrameAudio"],
+                           maxFrameVideo=reportInfo["maxFrameVideo"],
+                           maxSlide=reportInfo["maxSlide"],
+                           includePresentation=reportInfo["includePresentation"],
+                           graphJSONVolume=reportInfo["graphJSONVolume"],
+                           graphJSONArticulation=reportInfo["graphJSONArticulation"],
+                           graphJSONFP=reportInfo["graphJSONFP"])
 
 @main.route("/video_feed")
 def video_feed():
