@@ -202,6 +202,10 @@ class VideoExtractor:
             self.lastBodyPosture=bodyPosture
 
             self.mp_drawing.draw_landmarks(image, pose_landmarks, self.mp_holistic.POSE_CONNECTIONS)
+            cv2.putText(image, gaze, (10, frame.shape[0] - 10),
+                        cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 1)
+            cv2.putText(image, posture, (10, frame.shape[0] - 30),
+                        cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 1)
             #self.mp_drawing.draw_landmarks(image, face_landmarks, self.mp_holistic.FACE_CONNECTIONS)
             #cv2.imshow('MediaPipe Holistic', image)
             if cv2.waitKey(5) & 0xFF == 27:
