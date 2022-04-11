@@ -368,6 +368,7 @@ def generateReport(presId,includePresentation):
         "SlidesInfo":SlidesInfo,
         "maxFrameAudio":maxFrameAudio,
         "maxFrameVideo":maxFrameVideo,
+        "maxSlide":maxSlide,
         "graphJSONVolume":graphJSONVolume,
         "graphJSONArticulation":graphJSONArticulation,
         "graphJSONFP":graphJSONFP
