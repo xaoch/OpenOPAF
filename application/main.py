@@ -565,7 +565,7 @@ def report():
                            maxFrameAudio=reportInfo["maxFrameAudio"],
                            maxFrameVideo=reportInfo["maxFrameVideo"],
                            maxSlide=reportInfo["maxSlide"],
-                           includePresentation=reportInfo["includePresentation"],
+                           includePresentation=includePresentation,
                            graphJSONVolume=reportInfo["graphJSONVolume"],
                            graphJSONArticulation=reportInfo["graphJSONArticulation"],
                            graphJSONFP=reportInfo["graphJSONFP"])
@@ -586,7 +586,7 @@ def view_report(presId):
                            maxFrameAudio=reportInfo["maxFrameAudio"],
                            maxFrameVideo=reportInfo["maxFrameVideo"],
                            maxSlide=reportInfo["maxSlide"],
-                           includePresentation=reportInfo["includePresentation"],
+                           includePresentation=includePresentation,
                            graphJSONVolume=reportInfo["graphJSONVolume"],
                            graphJSONArticulation=reportInfo["graphJSONArticulation"],
                            graphJSONFP=reportInfo["graphJSONFP"])
