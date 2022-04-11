@@ -38,8 +38,9 @@ def signup_post():
     # add the new user to the database
     db.session.add(new_user)
     db.session.commit()
+    login_user(user, remember=True)
 
-    return redirect(url_for('auth.login'))
+    return redirect(url_for('main.index'))
 
 @auth.route('/login', methods=['POST'])
 def login_post():
