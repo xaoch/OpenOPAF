@@ -238,6 +238,7 @@
 			<!-- [ Main Content ] start -->
 			<div class="row">
 				<!-- [ sample-page ] start -->
+
 				<div class="col-sm-12">
 					<div class="card">
 
@@ -518,13 +519,14 @@
 
 <script src='https://cdn.plot.ly/plotly-latest.min.js'></script>
 <script type='text/javascript'>
+  {% if audioInfo %}
   var graphVolume = {{graphJSONVolume | safe}};
   Plotly.plot('chartVolume',graphVolume,{},{responsive: true});
   var graphArticulation = {{graphJSONArticulation | safe}};
   Plotly.plot('chartArticulation',graphArticulation,{},{responsive: true});
   var graphFP = {{graphJSONFP| safe}};
   Plotly.plot('chartFP',graphFP,{},{responsive: true});
-
+  {% endif %}
 </script>
 
 <script type="text/javascript">
@@ -569,35 +571,6 @@
 
     			  }
 
-           		  function multimediaDisplay(properties) {
-  					  multimedia=items.get(properties.item).multimedia;
-					  if(multimedia=="sound")
-					  {
-					    wavfile=items.get(properties.item).soundfile;
-						var audio = new Audio("recordings/fabio_2019_10_6_15_2/Audio/segments/"+wavfile); // define your audio
-                        audio.play();
-					  }
-					  if(multimedia=="fp")
-					  {
-						wavfile=items.get(properties.item).soundfile;
-						var audio = new Audio("recordings/fabio_2019_10_6_15_2/Audio/fp/"+wavfile); // define your audio
-                       	audio.play();
-					  }
-					  if(multimedia=="image")
-					  {
-                        src=items.get(properties.item).image_source;
-						var modal = document.getElementById("myModal");
-					    var img = document.getElementById("myImg");
-						var modalImg = document.getElementById("img01");
-
-						var span = document.getElementsByClassName("close")[0];
-						span.onclick = function() {
-  						  modal.style.display = "none";
-					    }
-					    modal.style.display = "block";
-  					    modalImg.src = src;
-         			  }
-                  }
                   // DOM element where the Timeline will be attached
                   var containerGaze = document.getElementById('gazeTimeline');
                   var containerPosture = document.getElementById('postureTimeline');

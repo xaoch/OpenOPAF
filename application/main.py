@@ -93,96 +93,125 @@ def captureFrame():
 
 
 def calculateSummary(audioData, videoData, presData):
-    aData = audioData
-    vData = videoData
-    pData = presData
+    audioDict={}
+    videoDict={}
+    presDict={}
 
-    gScorer = gazeScorer(vData)
-    pScorer = postureScorer(vData)
-    vScorer = volumeScorer(aData)
-    fpScorer = filledPausesScorer(aData)
-    aScorer = articulationRateScorer(aData)
-    sfsScorer = slideFontSizeScorer(pData)
-    stlScorer = slideTextLengthScorer(pData)
+    if videoData is not None:
+        gScorer = gazeScorer(vData)
+        pScorer = postureScorer(vData)
+        gazeScore = gScorer.score()
+        gazeValue = "Excellent"
+        gazeStyle = "style5"
+        gazeRecommendation = ""
+        gazeTimeline = gScorer.timeline()
+        if gazeScore < 4:
+            gazeValue = "Good"
+            gazeStyle = "style3"
+            gazeRecommendation = "<li><i><b>Make eye contact with the audience.</b></i> Your purpose is to communicate with your audience, and people listen more if they feel you are talking directly to them. As you speak, let your eyes settle on one person for several seconds before moving on to somebody else. You do not have to make eye contact with everybody, but make sure you connect with all areas of the audience equally.</li>"
+        if gazeScore < 2:
+            gazeValue = "To Improve"
+            gazeStyle = "style1"
+            gazeRecommendation = "<li><i><b>Make eye contact with the audience.</b></i> Your purpose is to communicate with your audience, and people listen more if they feel you are talking directly to them. As you speak, let your eyes settle on one person for several seconds before moving on to somebody else. You do not have to make eye contact with everybody, but make sure you connect with all areas of the audience equally.</li> <li><i><b>Avoid reading from the screen.</b></i> First, if you are reading from the screen, you are not making eye contact with your audience. Second, if you put it on your slide, it is because you wanted them to read it, not you.</li>"
 
+        postureScore = pScorer.score()
+        postureValue = "Excellent"
+        postureStyle = "style5"
+        postureRecommedation = ""
+        postureTimeline =pScorer.timeline()
 
-    gazeScore = gScorer.score()
-    gazeValue = "Excellent"
-    gazeStyle = "style5"
-    gazeRecommendation = ""
-    gazeTimeline = gScorer.timeline()
-    if gazeScore < 4:
-        gazeValue = "Good"
-        gazeStyle = "style3"
-        gazeRecommendation = "<li><i><b>Make eye contact with the audience.</b></i> Your purpose is to communicate with your audience, and people listen more if they feel you are talking directly to them. As you speak, let your eyes settle on one person for several seconds before moving on to somebody else. You do not have to make eye contact with everybody, but make sure you connect with all areas of the audience equally.</li>"
-    if gazeScore < 2:
-        gazeValue = "To Improve"
-        gazeStyle = "style1"
-        gazeRecommendation = "<li><i><b>Make eye contact with the audience.</b></i> Your purpose is to communicate with your audience, and people listen more if they feel you are talking directly to them. As you speak, let your eyes settle on one person for several seconds before moving on to somebody else. You do not have to make eye contact with everybody, but make sure you connect with all areas of the audience equally.</li> <li><i><b>Avoid reading from the screen.</b></i> First, if you are reading from the screen, you are not making eye contact with your audience. Second, if you put it on your slide, it is because you wanted them to read it, not you.</li>"
+        if postureScore < 4:
+            postureValue = "Good"
+            postureStyle = "style3"
+            postureRecommendation = "<li><i><b>Open Posture</b></i> A speaker should not cross his hands or legs because the audience might perceive it as the unwillingness to communicate.  You should not present your back to the audience.</li> "
 
-    postureScore = pScorer.score()
-    postureValue = "Excellent"
-    postureStyle = "style5"
-    postureRecommedation = ""
-    postureTimeline =pScorer.timeline()
+        if postureScore < 2:
+            postureValue = "To Improve"
+            postureStyle = "style1"
+            postureRecommendation = "<li><i><b>Open Posture</b></i> A speaker should not cross his hands or legs because the audience might perceive it as the unwillingness to communicate. You should not present your back to the audience.</li> <i><b>Open Gestures</b></i> A speaker should use their hands to communicate with the audience.</li>"
+        videoDict = {
+            "gazeScore": gazeScore,
+            "gazeValue": gazeValue,
+            "gazeStyle": gazeStyle,
+            "gazeRecommendation": gazeRecommendation,
+            "gazeTimeline": gazeTimeline,
+            "postureScore": postureScore,
+            "postureValue": postureValue,
+            "postureStyle": postureStyle,
+            "postureRecommendation": postureRecommedation,
+            "postureTimeline": postureTimeline
+        }
 
-    if postureScore < 4:
-        postureValue = "Good"
-        postureStyle = "style3"
-        postureRecommendation = "<li><i><b>Open Posture</b></i> A speaker should not cross his hands or legs because the audience might perceive it as the unwillingness to communicate.  You should not present your back to the audience.</li> "
+    if audioData is not None:
+        vScorer = volumeScorer(aData)
+        fpScorer = filledPausesScorer(aData)
+        aScorer = articulationRateScorer(aData)
+        volumeScore = vScorer.score()
+        volumeValue = "Excellent"
+        volumeStyle = "style5"
+        volumeRecommendation = ""
+        if volumeScore < 4:
+            volumeValue = "Good"
+            volumeStyle = "style3"
+            volumeRecommendation = "<li><i><b>Increase the volume of your voice.</b></i> Your first goal is to be comfortably heard by everyone in the audience. If they cannot hear your voice, then you cannot deliver a message to them."
 
-    if postureScore < 2:
-        postureValue = "To Improve"
-        postureStyle = "style1"
-        postureRecommendation = "<li><i><b>Open Posture</b></i> A speaker should not cross his hands or legs because the audience might perceive it as the unwillingness to communicate. You should not present your back to the audience.</li> <i><b>Open Gestures</b></i> A speaker should use their hands to communicate with the audience.</li>"
+        if volumeScore < 2:
+            volumeValue = "To Improve"
+            volumeStyle = "style1"
+            volumeRecommendation = "<li><i><b>Increase the volume of your voice.</b></i> Your first goal is to be comfortably heard by everyone in the audience. If they cannot hear your voice, then you cannot deliver a message to them. <li><i><b>Start loud.</b></i> It’s not a strict rule, but generally a Excellent idea to open a notch louder than average. It grabs attention and demonstrates enthusiasm.</li> <li><i><b>Finish loud.</b></i> Also not a rule, but speaking louder helps create a rousing, confident finish. This is especially true in a persuasive or motivational speech.</li>"
+        volumeTimeline=vScorer.timeline()
 
-    volumeScore = vScorer.score()
-    volumeValue = "Excellent"
-    volumeStyle = "style5"
-    volumeRecommendation = ""
-    if volumeScore < 4:
-        volumeValue = "Good"
-        volumeStyle = "style3"
-        volumeRecommendation = "<li><i><b>Increase the volume of your voice.</b></i> Your first goal is to be comfortably heard by everyone in the audience. If they cannot hear your voice, then you cannot deliver a message to them."
+        fpScore = fpScorer.score()
+        fpValue = "Excellent"
+        fpStyle = "style5"
+        fpRecommendation = ""
+        if fpScore < 4:
+            fpValue = "Good"
+            fpStyle = "style3"
+            fpRecommendation = "<li><i><b>Avoid filler words.</b></i> Um, like, you know, and many others. To an audience, these are indications that you do not know what to say; you sound uncomfortable, so they start to feel uncomfortable as well. Speak slowly enough that you can collect your thoughts before moving ahead. If you really do not know what to say, pause silently until you do.</li>"
 
-    if volumeScore < 2:
-        volumeValue = "To Improve"
-        volumeStyle = "style1"
-        volumeRecommendation = "<li><i><b>Increase the volume of your voice.</b></i> Your first goal is to be comfortably heard by everyone in the audience. If they cannot hear your voice, then you cannot deliver a message to them. <li><i><b>Start loud.</b></i> It’s not a strict rule, but generally a Excellent idea to open a notch louder than average. It grabs attention and demonstrates enthusiasm.</li> <li><i><b>Finish loud.</b></i> Also not a rule, but speaking louder helps create a rousing, confident finish. This is especially true in a persuasive or motivational speech.</li>"
-    volumeTimeline=vScorer.timeline()
+        if fpScore < 2:
+            fpValue = "To Improve"
+            fpStyle = "style1"
+            fpRecommendation = "<li><i><b>Avoid filler words.</b></i> Um, like, you know, and many others. To an audience, these are indications that you do not know what to say; you sound uncomfortable, so they start to feel uncomfortable as well. Speak slowly enough that you can collect your thoughts before moving ahead. If you really do not know what to say, pause silently until you do.</li>"
+        filledPausesTimeline = fpScorer.timeline()
 
-    fpScore = fpScorer.score()
-    fpValue = "Excellent"
-    fpStyle = "style5"
-    fpRecommendation = ""
-    if fpScore < 4:
-        fpValue = "Good"
-        fpStyle = "style3"
-        fpRecommendation = "<li><i><b>Avoid filler words.</b></i> Um, like, you know, and many others. To an audience, these are indications that you do not know what to say; you sound uncomfortable, so they start to feel uncomfortable as well. Speak slowly enough that you can collect your thoughts before moving ahead. If you really do not know what to say, pause silently until you do.</li>"
+        articulationScore = aScorer.score()
 
-    if fpScore < 2:
-        fpValue = "To Improve"
-        fpStyle = "style1"
-        fpRecommendation = "<li><i><b>Avoid filler words.</b></i> Um, like, you know, and many others. To an audience, these are indications that you do not know what to say; you sound uncomfortable, so they start to feel uncomfortable as well. Speak slowly enough that you can collect your thoughts before moving ahead. If you really do not know what to say, pause silently until you do.</li>"
-    filledPausesTimeline = fpScorer.timeline()
+        articulationValue = "Excellent"
+        articulationStyle = "style5"
+        articulationRecommendation = ""
+        if articulationScore < 4:
+            articulationValue = "Good"
+            articulationStyle = "style3"
+            articulationRecommendation = "<li><i><b>Don’t speak as fast as you do in conversation.</b></i> You might speak as many as 400 words a minute in a lively conversation, but your audience needs you to slow down to 140-160 words a minute. It takes work to develop a slower presenting style, but you’ll be a more effective speaker.</li>"
 
-    articulationScore = aScorer.score()
+        if articulationScore < 2:
+            articulationValue = "To Improve"
+            articulationStyle = "style1"
+            articulationRecommendation = "<li><i><b>Don’t speak as fast as you do in conversation.</b></i> You might speak as many as 400 words a minute in a lively conversation, but your audience needs you to slow down to 140-160 words a minute. It takes work to develop a slower presenting style, but you’ll be a more effective speaker.</li>"
+        articulationTimeline = aScorer.timeline()
+        audioDict={
+            "volumeScore": volumeScore,
+            "volumeValue": volumeValue,
+            "volumeStyle": volumeStyle,
+            "volumeRecommendation": volumeRecommendation,
+            "volumeTimeline": volumeTimeline,
+            "articulationScore": articulationScore,
+            "articulationValue": articulationValue,
+            "articulationStyle": articulationStyle,
+            "articulationRecommendation": articulationRecommendation,
+            "articulationTimeline": articulationTimeline,
+            "fpScore": fpScore,
+            "fpValue": fpValue,
+            "fpStyle": fpStyle,
+            "fpRecommendation": fpRecommendation,
+            "fpTimeline": filledPausesTimeline
+        }
 
-    articulationValue = "Excellent"
-    articulationStyle = "style5"
-    articulationRecommendation = ""
-    if articulationScore < 4:
-        articulationValue = "Good"
-        articulationStyle = "style3"
-        articulationRecommendation = "<li><i><b>Don’t speak as fast as you do in conversation.</b></i> You might speak as many as 400 words a minute in a lively conversation, but your audience needs you to slow down to 140-160 words a minute. It takes work to develop a slower presenting style, but you’ll be a more effective speaker.</li>"
-
-    if articulationScore < 2:
-        articulationValue = "To Improve"
-        articulationStyle = "style1"
-        articulationRecommendation = "<li><i><b>Don’t speak as fast as you do in conversation.</b></i> You might speak as many as 400 words a minute in a lively conversation, but your audience needs you to slow down to 140-160 words a minute. It takes work to develop a slower presenting style, but you’ll be a more effective speaker.</li>"
-    articulationTimeline = aScorer.timeline()
-
-    if pData is not None:
+    if presData is not None:
+        sfsScorer = slideFontSizeScorer(presData)
+        stlScorer = slideTextLengthScorer(presData)
         slideFontSizeScore = sfsScorer.score()
         slideFontSizeValue = "Excellent"
         slideFontSizeStyle = "style5"
@@ -211,32 +240,7 @@ def calculateSummary(audioData, videoData, presData):
             slideTextLengthStyle = "style1"
             slideTextLengthRecommendation = "<li><i><b>Reduce the amount of text in the slides, the public should not read the slides, but listen to you</b></i> As a general rule, do not use more than 4 single lines.</li>"
 
-        summary = {
-            "gazeScore": gazeScore,
-            "gazeValue": gazeValue,
-            "gazeStyle": gazeStyle,
-            "gazeRecommendation": gazeRecommendation,
-            "gazeTimeline": gazeTimeline,
-            "postureScore": postureScore,
-            "postureValue": postureValue,
-            "postureStyle": postureStyle,
-            "postureRecommedation": postureRecommedation,
-            "postureTimeline": postureTimeline,
-            "volumeScore": volumeScore,
-            "volumeValue": volumeValue,
-            "volumeStyle": volumeStyle,
-            "volumeRecommendation": volumeRecommendation,
-            "volumeTimeline": volumeTimeline,
-            "articulationScore": articulationScore,
-            "articulationValue": articulationValue,
-            "articulationStyle": articulationStyle,
-            "articulationRecommendation": articulationRecommendation,
-            "articulationTimeline": articulationTimeline,
-            "fpScore": fpScore,
-            "fpValue": fpValue,
-            "fpStyle": fpStyle,
-            "fpRecommendation": fpRecommendation,
-            "fpTimeline": filledPausesTimeline,
+        presDict = {
             "slideFontSizeScore": slideFontSizeScore,
             "slideFontSizeValue": slideFontSizeValue,
             "slideFontSizeStyle": slideFontSizeStyle,
@@ -247,34 +251,8 @@ def calculateSummary(audioData, videoData, presData):
             "slideTextLengthRecommendation": slideTextLengthRecommendation,
             "slidesTimeline": slidesTimeline
         }
-    else:
-        summary = {
-            "gazeScore": gazeScore,
-            "gazeValue": gazeValue,
-            "gazeStyle": gazeStyle,
-            "gazeRecommendation": gazeRecommendation,
-            "gazeTimeline": gazeTimeline,
-            "postureScore": postureScore,
-            "postureValue": postureValue,
-            "postureStyle": postureStyle,
-            "postureRecommedation": postureRecommedation,
-            "postureTimeline": postureTimeline,
-            "volumeScore": volumeScore,
-            "volumeValue": volumeValue,
-            "volumeStyle": volumeStyle,
-            "volumeRecommendation": volumeRecommendation,
-            "volumeTimeline": volumeTimeline,
-            "articulationScore": articulationScore,
-            "articulationValue": articulationValue,
-            "articulationStyle": articulationStyle,
-            "articulationRecommendation": articulationRecommendation,
-            "articulationTimeline": articulationTimeline,
-            "fpScore": fpScore,
-            "fpValue": fpValue,
-            "fpStyle": fpStyle,
-            "fpRecommendation": fpRecommendation,
-            "fpTimeline": filledPausesTimeline,
-        }
+    summary=audioDict.update(videoDict)
+    summary=summary.update(presDict)
     return summary
 
 def createGraphDashboard(x,y,name):
@@ -440,66 +418,92 @@ def report():
     app = Flask(__name__)
     uploads_dir = os.path.join(app.root_path, 'presentations')
     path = os.path.join(uploads_dir, presId)
-    dfAudio = pd.read_csv(os.path.join(path,"Audio","result.csv"))
-    dfVideo = pd.read_csv(os.path.join(path,"Video","result.csv"))
+    dfAudio=None
+    dfVideo=None
+    dfSlides=None
+    try:
+        dfAudio = pd.read_csv(os.path.join(path,"Audio","result.csv"))
+        AudioInfo=True
+    except Exception as e:
+        logging.error("Exception occurred Reading Audio Information", exc_info=True)
+        print(e)
+        AudioInfo=False
+    try:
+        dfVideo = pd.read_csv(os.path.join(path,"Video","result.csv"))
+        VideoInfo=True
+    except Exception as e:
+        logging.error("Exception occurred in Reading Video Information", exc_info=True)
+        print(e)
+        VideoInfo = False
+    SlidesInfo = False
     if (includePresentation):
-        dfSlides = pd.read_csv(os.path.join(path, "Slides", "result.csv"))
-    else:
-        dfSlides=None
+        try:
+            dfSlides = pd.read_csv(os.path.join(path, "Slides", "result.csv"))
+            SlidesInfo=True
+        except Exception as e:
+            logging.error("Exception occurred in Reading Slides Information", exc_info=True)
+            print(e)
+            SlidesInfo = False
     summary=calculateSummary(dfAudio,dfVideo,dfSlides)
 
+    graphJSONVolume = None
+    graphJSONArticulation = None
+    graphJSONFP = None
+    if(AudioInfo):
+        figVol=go.Figure()
+        figVol.update_layout(width=int(1500))
+        figVol.add_hrect(y0=65, y1=45, line_width=0, fillcolor="blue", opacity=0.2)
+        figVol.add_hrect(y0=45, y1=35, line_width=0, fillcolor="purple", opacity=0.2)
+        figVol.add_hrect(y0=35, y1=0, line_width=0, fillcolor="red", opacity=0.2)
+        figVol.add_scattergl(x=dfAudio.name, y=dfAudio.power, line={"color": "black"},marker={"size":0},name="Trend")
+        figVol.add_scattergl(x=dfAudio.name, y=dfAudio.power.where(dfAudio.power >= 45), line={"width":0}, marker={"size":12,"color":"blue"},name="Excellent")
+        figVol.add_scattergl(x=dfAudio.name, y=dfAudio.power.where((dfAudio.power > 35) & (dfAudio.power < 45)), line={"width": 0}, marker={"size": 12, "color": "purple"}, name="Good")
+        figVol.add_scattergl(x=dfAudio.name, y=dfAudio.power.where(dfAudio.power <= 35), line={"width":0}, marker={"size":12,"color":"red"},name="To Improve")
 
-    figVol=go.Figure()
-    figVol.update_layout(width=int(1500))
-    figVol.add_hrect(y0=65, y1=45, line_width=0, fillcolor="blue", opacity=0.2)
-    figVol.add_hrect(y0=45, y1=35, line_width=0, fillcolor="purple", opacity=0.2)
-    figVol.add_hrect(y0=35, y1=0, line_width=0, fillcolor="red", opacity=0.2)
-    figVol.add_scattergl(x=dfAudio.name, y=dfAudio.power, line={"color": "black"},marker={"size":0},name="Trend")
-    figVol.add_scattergl(x=dfAudio.name, y=dfAudio.power.where(dfAudio.power >= 45), line={"width":0}, marker={"size":12,"color":"blue"},name="Excellent")
-    figVol.add_scattergl(x=dfAudio.name, y=dfAudio.power.where((dfAudio.power > 35) & (dfAudio.power < 45)), line={"width": 0}, marker={"size": 12, "color": "purple"}, name="Good")
-    figVol.add_scattergl(x=dfAudio.name, y=dfAudio.power.where(dfAudio.power <= 35), line={"width":0}, marker={"size":12,"color":"red"},name="To Improve")
+        figArt = go.Figure()
+        figArt.update_layout(width=int(1500))
+        figArt.add_hrect(y0=150, y1=200, line_width=0, fillcolor="purple", opacity=0.2)
+        figArt.add_hrect(y0=200, y1=220, line_width=0, fillcolor="red", opacity=0.2)
+        figArt.add_hrect(y0=80, y1=150, line_width=0, fillcolor="blue", opacity=0.2)
+        figArt.add_hrect(y0=20, y1=80, line_width=0, fillcolor="purple", opacity=0.2)
+        figArt.add_hrect(y0=20, y1=0, line_width=0, fillcolor="red", opacity=0.2)
+        dfAudio.speed=dfAudio.speechrate*60/1.66
+        figArt.add_scattergl(x=dfAudio.name, y=dfAudio.speed, line={"color": "black"}, marker={"size": 0}, name="Trend")
+        figArt.add_scattergl(x=dfAudio.name, y=dfAudio.speed.where((dfAudio.speed >= 80) & (dfAudio.speed <= 150) ), line={"width": 0},
+                             marker={"size": 12, "color": "blue"}, name="Excellent")
+        figArt.add_scattergl(x=dfAudio.name, y=dfAudio.speed.where(((dfAudio.speed > 150) & (dfAudio.speed <= 200))|((dfAudio.speed >= 20)&(dfAudio.speed<80))),
+                          line={"width": 0}, marker={"size": 12, "color": "purple"}, name="Good")
+        figArt.add_scattergl(x=dfAudio.name, y=dfAudio.speed.where((dfAudio.speed < 20)|(dfAudio.speed > 200)), line={"width": 0},
+                             marker={"size": 12, "color": "red"}, name="To Improve")
 
-    figArt = go.Figure()
-    figArt.update_layout(width=int(1500))
-    figArt.add_hrect(y0=150, y1=200, line_width=0, fillcolor="purple", opacity=0.2)
-    figArt.add_hrect(y0=200, y1=220, line_width=0, fillcolor="red", opacity=0.2)
-    figArt.add_hrect(y0=80, y1=150, line_width=0, fillcolor="blue", opacity=0.2)
-    figArt.add_hrect(y0=20, y1=80, line_width=0, fillcolor="purple", opacity=0.2)
-    figArt.add_hrect(y0=20, y1=0, line_width=0, fillcolor="red", opacity=0.2)
-    dfAudio.speed=dfAudio.speechrate*60/1.66
-    figArt.add_scattergl(x=dfAudio.name, y=dfAudio.speed, line={"color": "black"}, marker={"size": 0}, name="Trend")
-    figArt.add_scattergl(x=dfAudio.name, y=dfAudio.speed.where((dfAudio.speed >= 80) & (dfAudio.speed <= 150) ), line={"width": 0},
-                         marker={"size": 12, "color": "blue"}, name="Excellent")
-    figArt.add_scattergl(x=dfAudio.name, y=dfAudio.speed.where(((dfAudio.speed > 150) & (dfAudio.speed <= 200))|((dfAudio.speed >= 20)&(dfAudio.speed<80))),
-                         line={"width": 0}, marker={"size": 12, "color": "purple"}, name="Good")
-    figArt.add_scattergl(x=dfAudio.name, y=dfAudio.speed.where((dfAudio.speed < 20)|(dfAudio.speed > 200)), line={"width": 0},
-                         marker={"size": 12, "color": "red"}, name="To Improve")
+        figFP = go.Figure()
+        figFP.update_layout(width=int(1500))
+        figFP.add_hrect(y0=1.5, y1=5, line_width=0, fillcolor="red", opacity=0.2)
+        figFP.add_hrect(y0=0.5, y1=1.5, line_width=0, fillcolor="purple", opacity=0.2)
+        figFP.add_hrect(y0=0, y1=0.5, line_width=0, fillcolor="blue", opacity=0.2)
+        figFP.add_scattergl(x=dfAudio.name, y=dfAudio.nrFP.where(dfAudio.nrFP < 1),
+                             line={"width": 0},
+                             marker={"size": 12, "color": "blue"}, name="Excellent")
+        figFP.add_scattergl(x=dfAudio.name, y=dfAudio.nrFP.where(
+            (dfAudio.nrFP > 0) & (dfAudio.nrFP < 2)),
+                             line={"width": 0}, marker={"size": 12, "color": "purple"}, name="Good")
+        figFP.add_scattergl(x=dfAudio.name, y=dfAudio.nrFP.where(dfAudio.nrFP > 1),
+                             line={"width": 0},
+                             marker={"size": 12, "color": "red"}, name="To Improve")
 
-    figFP = go.Figure()
-    figFP.update_layout(width=int(1500))
-    figFP.add_hrect(y0=1.5, y1=5, line_width=0, fillcolor="red", opacity=0.2)
-    figFP.add_hrect(y0=0.5, y1=1.5, line_width=0, fillcolor="purple", opacity=0.2)
-    figFP.add_hrect(y0=0, y1=0.5, line_width=0, fillcolor="blue", opacity=0.2)
-    figFP.add_scattergl(x=dfAudio.name, y=dfAudio.nrFP.where(dfAudio.nrFP < 1),
-                         line={"width": 0},
-                         marker={"size": 12, "color": "blue"}, name="Excellent")
-    figFP.add_scattergl(x=dfAudio.name, y=dfAudio.nrFP.where(
-        (dfAudio.nrFP > 0) & (dfAudio.nrFP < 2)),
-                         line={"width": 0}, marker={"size": 12, "color": "purple"}, name="Good")
-    figFP.add_scattergl(x=dfAudio.name, y=dfAudio.nrFP.where(dfAudio.nrFP > 1),
-                         line={"width": 0},
-                         marker={"size": 12, "color": "red"}, name="To Improve")
+        graphJSONVolume = json.dumps(figVol, cls=plotly.utils.PlotlyJSONEncoder)
+        graphJSONArticulation = json.dumps(figArt, cls=plotly.utils.PlotlyJSONEncoder)
+        graphJSONFP = json.dumps(figFP, cls=plotly.utils.PlotlyJSONEncoder)
 
-    graphJSONVolume = json.dumps(figVol, cls=plotly.utils.PlotlyJSONEncoder)
-    graphJSONArticulation = json.dumps(figArt, cls=plotly.utils.PlotlyJSONEncoder)
-    graphJSONFP = json.dumps(figFP, cls=plotly.utils.PlotlyJSONEncoder)
-
-    maxFrame=dfAudio.shape[0]*5
-    if (includePresentation):
+        maxFrameAudio=dfAudio.shape[0]*5
+    if (includePresentation and SlidesInfo):
         maxSlide= dfSlides.shape[0]
     else:
         maxSlide=0
-
+    if (VideoInfo):
+        maxFrameVideo=dfVideo/2
+    else:
+        maxFrameVideo=0
     if (includePresentation):
         new_presentation = Presentation(presId=presId,
                                         presenter=current_user.id,
@@ -528,7 +532,20 @@ def report():
     db.session.add(new_presentation)
     db.session.commit()
 
-    return render_template("report.html",name=current_user.name,presId=presId,summary=summary,maxFrame=maxFrame,maxSlide=maxSlide,includePresentation=includePresentation,graphJSONVolume=graphJSONVolume, graphJSONArticulation=graphJSONArticulation, graphJSONFP=graphJSONFP)
+    return render_template("report.html",
+                           name=current_user.name,
+                           presId=presId,
+                           summary=summary,
+                           audioInfo=AudioInfo,
+                           videoInfo=VideoInfo,
+                           slidesInfo=SlidesInfo,
+                           maxFrameAudio=maxFrameAudio,
+                           maxFrameVideo=maxFrameVideo,
+                           maxSlide=maxSlide,
+                           includePresentation=includePresentation,
+                           graphJSONVolume=graphJSONVolume,
+                           graphJSONArticulation=graphJSONArticulation,
+                           graphJSONFP=graphJSONFP)
 
 @main.route('/view_report/<presId>')
 @login_required
