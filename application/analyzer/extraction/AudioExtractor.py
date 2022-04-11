@@ -15,6 +15,7 @@ import sounddevice as sd
 import queue
 import soundfile as sf
 import subprocess
+import logging
 
 class AudioExtractor:
 
@@ -97,6 +98,7 @@ class AudioExtractor:
             #self.resultFile.writerow([self.time, power, sr, fp, stdev_Hz])
 
         except Exception as e:
+            logging.error("Exception occurred in Audio Processing", exc_info=True)
             print(e)
 
 
@@ -104,17 +106,21 @@ class AudioExtractor:
         print("Audio Thread: starting")
         self.time = -self.interval
         #sd.default.device=11
-        with sf.SoundFile(os.path.join(self.path, "audio.wav"), mode='x', samplerate=self.fs, channels=1, subtype="PCM_16") as file:
-            with sd.InputStream(samplerate=self.fs, device="USB PnP Audio Device", channels=1, blocksize=self.fs*self.interval, callback=self.process):
-                while(True):
-                    if self.time>=0:
-                        file.write(self.q.get())
-                    else:
-                        self.q.get()
-                    sd.sleep(1000)
-                    if self.stopSignal.is_set():
-                        sd.stop()
-                        break
+        try:
+            with sf.SoundFile(os.path.join(self.path, "audio.wav"), mode='x', samplerate=self.fs, channels=1, subtype="PCM_16") as file:
+                with sd.InputStream(samplerate=self.fs, device="USB PnP Audio Device", channels=1, blocksize=self.fs*self.interval, callback=self.process):
+                    while(True):
+                        if self.time>=0:
+                            file.write(self.q.get())
+                        else:
+                            self.q.get()
+                        sd.sleep(1000)
+                        if self.stopSignal.is_set():
+                            sd.stop()
+                            break
+        except Exception as e:
+            logging.error("Exception occurred in Initializing Audio", exc_info=True)
+            print(e)
         #self.csv_file.close()
         print("Audio Thread: finishing")
 
