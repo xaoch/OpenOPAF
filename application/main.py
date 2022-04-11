@@ -502,7 +502,7 @@ def report():
     else:
         maxSlide=0
     if (VideoInfo):
-        maxFrameVideo=dfVideo/2
+        maxFrameVideo=dfVideo.shape[0]/2
     else:
         maxFrameVideo=0
     if (includePresentation):
