@@ -98,8 +98,8 @@ def calculateSummary(audioData, videoData, presData):
     presDict={}
 
     if videoData is not None:
-        gScorer = gazeScorer(vData)
-        pScorer = postureScorer(vData)
+        gScorer = gazeScorer(videoData)
+        pScorer = postureScorer(videoData)
         gazeScore = gScorer.score()
         gazeValue = "Excellent"
         gazeStyle = "style5"
@@ -143,9 +143,9 @@ def calculateSummary(audioData, videoData, presData):
         }
 
     if audioData is not None:
-        vScorer = volumeScorer(aData)
-        fpScorer = filledPausesScorer(aData)
-        aScorer = articulationRateScorer(aData)
+        vScorer = volumeScorer(audioData)
+        fpScorer = filledPausesScorer(audioData)
+        aScorer = articulationRateScorer(audioData)
         volumeScore = vScorer.score()
         volumeValue = "Excellent"
         volumeStyle = "style5"
