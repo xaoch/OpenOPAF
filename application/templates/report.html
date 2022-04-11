@@ -591,9 +591,17 @@
                   {% endif %}
 
 
-                  var options = {
+                  var optionsAudio = {
                     showMajorLabels: false,
-                    max:{{maxFrame}},
+                    max:{{maxFrameAudio}},
+                    min:0,
+                    stack: false,
+                    stackSubgroups: true,
+                  };
+
+                  var optionsVideo = {
+                    showMajorLabels: false,
+                    max:{{maxFrameVideo}},
                     min:0,
                     stack: false,
                     stackSubgroups: true,
@@ -611,13 +619,13 @@
 
                   dataGaze={{summary['gazeTimeline'] | tojson}};
                   var itemsGaze = new vis.DataSet(dataGaze);
-                  var timelineGaze= new vis.Timeline(containerGaze, itemsGaze, options);
+                  var timelineGaze= new vis.Timeline(containerGaze, itemsGaze, optionsVideo);
                   timelineGaze.setGroups(groupsGaze);
 				  timelineGaze.on('click', setTimeGaze);
 
                   dataPosture={{summary['postureTimeline'] | tojson}};
                   var itemsPosture = new vis.DataSet(dataPosture);
-                  var timelinePosture= new vis.Timeline(containerPosture, itemsPosture, options);
+                  var timelinePosture= new vis.Timeline(containerPosture, itemsPosture, optionsVideo);
                   timelinePosture.setGroups(groupsPosture);
 				  timelinePosture.on('click',setTimePosture);
 
