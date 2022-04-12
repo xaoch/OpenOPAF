@@ -3,6 +3,11 @@ import cv2
 import math
 import mediapipe as mp
 import matplotlib.path as mp
+from shapely.geometry import Point
+from shapely.geometry.polygon import Polygon
+
+
+polygon = Polygon([(0, 0), (0, 1), (1, 1), (1, 0)])
 
 class GeometricBodyPostureExtractor:
 
@@ -60,10 +65,16 @@ class GeometricBodyPostureExtractor:
         if distance_left_hand_face < normalizer * self.distance_hand_face_threshold or distance_right_hand_face < normalizer * self.distance_hand_face_threshold:
              return "Hands_Face"
 
-        polygon = [[lshoulder_x,lshoulder_y],[rshoulder_x,rshoulder_y],[lhip_x,lhip_y],[rhip_x,rhip_y]]
-        torso = mp.Path(polygon)
-        inside_left_wrist = torso.contains_point([lwrist_x,lwrist_y])
-        inside_right_wrist = torso.contains_point([rwrist_x, rwrist_y])
+        #polygon = [[lshoulder_x,lshoulder_y],[rshoulder_x,rshoulder_y],[lhip_x,lhip_y],[rhip_x,rhip_y]]
+        #torso = mp.Path(polygon)
+        # inside_left_wrist = torso.contains_point([lwrist_x,lwrist_y])
+        # inside_right_wrist = torso.contains_point([rwrist_x, rwrist_y])
+
+        lwrist = Point(lwrist_x, lwrist_y)
+        rwrist = Point(rwrist_x, rwrist_y)
+        torso = Polygon([(lshoulder_x,lshoulder_y),(rshoulder_x,rshoulder_y),(lhip_x,lhip_y),(rhip_x,rhip_y)])
+        inside_left_wrist = torso.contains(lwrist)
+        inside_right_wrist = torso.contains(rwrist)
 
         if inside_left_wrist or inside_right_wrist:
              return "Closed_Hands_Inside"
