@@ -6,8 +6,6 @@ import matplotlib.path as mp
 import logging
 
 
-polygon = Polygon([(0, 0), (0, 1), (1, 1), (1, 0)])
-
 class GeometricBodyPostureExtractor:
 
    hand_occluded_threshold =0.5
