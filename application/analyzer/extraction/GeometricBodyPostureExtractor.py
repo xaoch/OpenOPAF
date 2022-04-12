@@ -3,8 +3,6 @@ import cv2
 import math
 import mediapipe as mp
 import matplotlib.path as mp
-from shapely.geometry import Point
-from shapely.geometry.polygon import Polygon
 import logging
 
 
@@ -14,7 +12,7 @@ class GeometricBodyPostureExtractor:
 
    hand_occluded_threshold =0.5
    distance_hand_hip_threshold=3
-   distance_hand_face_threshold=5
+   distance_hand_face_threshold=4
    distance_shoulders_threshold=5
 
    def ray_tracing_method(x, y, poly):
@@ -37,6 +35,7 @@ class GeometricBodyPostureExtractor:
         return inside
 
    def bodyPosture(self,keypoints,image):
+
         size = image.shape
 
         nose_x = keypoints[0].x * size[1]
@@ -78,17 +77,19 @@ class GeometricBodyPostureExtractor:
         if rshoulder_x != 0 and lshoulder_x != 0 and lshoulder_x > rshoulder_x and distance_shoulder < normalizer*self.distance_shoulders_threshold:
             return "Closed_Torso_Side"
 
+        polygon = [[rshoulder_x, rshoulder_y], [lshoulder_x, lshoulder_y], [lhip_x, lhip_y], [rhip_x, rhip_y]]
+        torso = mp.Path(polygon)
+        inside_left_wrist = torso.contains_point([lwrist_x, lwrist_y])
+        inside_right_wrist = torso.contains_point([rwrist_x, rwrist_y])
+        if inside_left_wrist or inside_right_wrist:
+             return "Closed_Hands_Inside"
+
         if keypoints[15].visibility < self.hand_occluded_threshold or keypoints[16].visibility < self.hand_occluded_threshold:
              return "Hands_Back"
         if distance_left_hand_hip < normalizer * self.distance_hand_hip_threshold or distance_right_hand_hip< normalizer * self.distance_hand_hip_threshold:
              return "Hands_Pockets"
         if distance_left_hand_face < normalizer * self.distance_hand_face_threshold or distance_right_hand_face < normalizer * self.distance_hand_face_threshold:
              return "Hands_Face"
-
-        polygon = [[rshoulder_x, rshoulder_y],[lshoulder_x, lshoulder_y],[lhip_x, lhip_y], [rhip_x, rhip_y]]
-        torso = mp.Path(polygon)
-        inside_left_wrist = torso.contains_point([lwrist_x,lwrist_y])
-        inside_right_wrist = torso.contains_point([rwrist_x, rwrist_y])
 
         #lwrist = Point(lwrist_x, lwrist_y)
         #rwrist = Point(rwrist_x, rwrist_y)
@@ -100,14 +101,5 @@ class GeometricBodyPostureExtractor:
         # torso = mp.Path(polygon)
         # inside_left_wrist = torso.contains_point([lwrist_x,lwrist_y])
         # inside_right_wrist = torso.contains_point([rwrist_x, rwrist_y])
-
-        logging.info("Torso: "+str([[rshoulder_x, rshoulder_y],[lshoulder_x, lshoulder_y],[lhip_x, lhip_y], [rhip_x, rhip_y]]))
-        logging.info("L_wrist: "+str(lwrist_x)+" "+str(lwrist_y))
-        logging.info("R_wrist: "+str(rwrist_x)+" "+str(rwrist_y))
-        logging.info("Inside L?: "+str(inside_left_wrist))
-        logging.info("Inside R?: "+str(inside_left_wrist))
-
-        if inside_left_wrist or inside_right_wrist:
-             return "Closed_Hands_Inside"
 
         return "Open"
