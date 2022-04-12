@@ -10,8 +10,8 @@ class GeometricBodyPostureExtractor:
 
    hand_occluded_threshold =0.5
    distance_hand_hip_threshold=3
-   distance_hand_face_threshold=4
-   distance_shoulders_threshold=6
+   distance_hand_face_threshold=3
+   distance_shoulders_threshold=3
 
    def ray_tracing_method(x, y, poly):
 
