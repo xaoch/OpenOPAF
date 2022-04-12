@@ -5,6 +5,7 @@ import mediapipe as mp
 import matplotlib.path as mp
 from shapely.geometry import Point
 from shapely.geometry.polygon import Polygon
+import logging
 
 
 polygon = Polygon([(0, 0), (0, 1), (1, 1), (1, 0)])
@@ -75,6 +76,11 @@ class GeometricBodyPostureExtractor:
         torso = Polygon([(lshoulder_x,lshoulder_y),(rshoulder_x,rshoulder_y),(lhip_x,lhip_y),(rhip_x,rhip_y)])
         inside_left_wrist = torso.contains(lwrist)
         inside_right_wrist = torso.contains(rwrist)
+        logging.info("Torso: "+str([(lshoulder_x,lshoulder_y),(rshoulder_x,rshoulder_y),(lhip_x,lhip_y),(rhip_x,rhip_y)]))
+        logging.info("L_wrist: "+str(lwrist_x)+" "+str(lwrist_y))
+        logging.info("R_wrist: "+str(rwrist_x)+" "+str(rwrist_y))
+        logging.info("Inside L?: "+str(inside_left_wrist))
+        logging.info("Inside R?: "+str(inside_left_wrist))
 
         if inside_left_wrist or inside_right_wrist:
              return "Closed_Hands_Inside"
