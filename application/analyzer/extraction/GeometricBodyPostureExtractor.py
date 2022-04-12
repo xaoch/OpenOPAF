@@ -17,6 +17,25 @@ class GeometricBodyPostureExtractor:
    distance_hand_face_threshold=5
    distance_shoulders_threshold=5
 
+   def ray_tracing_method(x, y, poly):
+
+        n = len(poly)
+        inside = False
+
+        p1x, p1y = poly[0]
+        for i in range(n + 1):
+             p2x, p2y = poly[i % n]
+             if y > min(p1y, p2y):
+                  if y <= max(p1y, p2y):
+                       if x <= max(p1x, p2x):
+                            if p1y != p2y:
+                                 xints = (y - p1y) * (p2x - p1x) / (p2y - p1y) + p1x
+                            if p1x == p2x or x <= xints:
+                                 inside = not inside
+             p1x, p1y = p2x, p2y
+
+        return inside
+
    def bodyPosture(self,keypoints,image):
         size = image.shape
 
@@ -66,17 +85,23 @@ class GeometricBodyPostureExtractor:
         if distance_left_hand_face < normalizer * self.distance_hand_face_threshold or distance_right_hand_face < normalizer * self.distance_hand_face_threshold:
              return "Hands_Face"
 
-        #polygon = [[lshoulder_x,lshoulder_y],[rshoulder_x,rshoulder_y],[lhip_x,lhip_y],[rhip_x,rhip_y]]
-        #torso = mp.Path(polygon)
+        polygon = [[rshoulder_x, rshoulder_y],[lshoulder_x, lshoulder_y],[lhip_x, lhip_y], [rhip_x, rhip_y]]
+        torso = mp.Path(polygon)
+        inside_left_wrist = torso.contains_point([lwrist_x,lwrist_y])
+        inside_right_wrist = torso.contains_point([rwrist_x, rwrist_y])
+
+        #lwrist = Point(lwrist_x, lwrist_y)
+        #rwrist = Point(rwrist_x, rwrist_y)
+        #torso = Polygon([(lshoulder_x,lshoulder_y),(rshoulder_x,rshoulder_y),(lhip_x,lhip_y),(rhip_x,rhip_y)])
+        #inside_left_wrist = torso.contains(lwrist)
+        #inside_right_wrist = torso.contains(rwrist)
+
+        #polygon = [[rshoulder_x, rshoulder_y],[lshoulder_x, lshoulder_y],[lhip_x, lhip_y], [rhip_x, rhip_y]]
+        # torso = mp.Path(polygon)
         # inside_left_wrist = torso.contains_point([lwrist_x,lwrist_y])
         # inside_right_wrist = torso.contains_point([rwrist_x, rwrist_y])
 
-        lwrist = Point(lwrist_x, lwrist_y)
-        rwrist = Point(rwrist_x, rwrist_y)
-        torso = Polygon([(lshoulder_x,lshoulder_y),(rshoulder_x,rshoulder_y),(lhip_x,lhip_y),(rhip_x,rhip_y)])
-        inside_left_wrist = torso.contains(lwrist)
-        inside_right_wrist = torso.contains(rwrist)
-        logging.info("Torso: "+str([(lshoulder_x,lshoulder_y),(rshoulder_x,rshoulder_y),(lhip_x,lhip_y),(rhip_x,rhip_y)]))
+        logging.info("Torso: "+str([[rshoulder_x, rshoulder_y],[lshoulder_x, lshoulder_y],[lhip_x, lhip_y], [rhip_x, rhip_y]]))
         logging.info("L_wrist: "+str(lwrist_x)+" "+str(lwrist_y))
         logging.info("R_wrist: "+str(rwrist_x)+" "+str(rwrist_y))
         logging.info("Inside L?: "+str(inside_left_wrist))
