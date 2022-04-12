@@ -60,26 +60,27 @@ class postureScorer:
        return score
 
     def timeline(self):
+        fs = 10
         tline=[]
         df = self.df
         totalFrames = df.shape[0]
         i=0
-        while (i+10)<totalFrames:
+        while (i+fs)<totalFrames:
             frame= {}
-            window=df[(df["frame"]>=i) & (df["frame"]<i+10)]
+            window=df[(df["frame"]>=i) & (df["frame"]<i+fs)]
             modeValue=window["posture"].mode().iat[0]
-            print(i,i+10,modeValue)
+            print(i,i+fs,modeValue)
             frame["content"]=modeValue
             frame["group"]=0
-            frame["frame"] = i / 5
+            frame["frame"] = i / fs
             frame["start"]=i/2
-            frame["end"]=(i+10)/2
+            frame["end"]=(i+fs)/2
             if modeValue=="Open":
                 frame["subgroup"]= "sg_cor"
                 frame["className"]="correct"
             else:
                 frame["subgroup"] = "sg_inc"
                 frame["className"] = "incorrect"
-            i = i + 10
+            i = i + fs
             tline.append(frame)
         return tline
