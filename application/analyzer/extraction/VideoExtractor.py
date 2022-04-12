@@ -206,7 +206,7 @@ class VideoExtractor:
                         cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 1)
             cv2.putText(image, bodyPosture, (10, image.shape[0] - 35),
                         cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 1)
-            cv2.putText(image, self.frameNumber, (10, image.shape[0] - 70),
+            cv2.putText(image, str(self.frameNumber), (10, image.shape[0] - 70),
                         cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 1)
 
             #self.mp_drawing.draw_landmarks(image, face_landmarks, self.mp_holistic.FACE_CONNECTIONS)
