@@ -340,7 +340,7 @@ def generateReport(presId,includePresentation):
         figFP.add_hrect(y0=0.5, y1=1.5, line_width=0, fillcolor="purple", opacity=0.2)
         figFP.add_hrect(y0=0, y1=0.5, line_width=0, fillcolor="blue", opacity=0.2)
         figFP.add_scattergl(x=dfAudio.name, y=dfAudio.nrFP.where(dfAudio.nrFP < 1),
-                             line={"width": 0},
+                             line={"width": 1},
                              marker={"size": 12, "color": "blue"}, name="Excellent")
         figFP.add_scattergl(x=dfAudio.name, y=dfAudio.nrFP.where(
             (dfAudio.nrFP > 0) & (dfAudio.nrFP < 2)),
