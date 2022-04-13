@@ -269,8 +269,10 @@ def createGraphDashboard(x,y,name):
 def readData(file):
     lines = list(csv.reader(open(file)))
     header, values = lines[0], lines[1:]
-    data = {h: float(v) for h, v in zip(header, zip(*values))}
-    return pd.DataFrame.from_dict(data)
+    data = {h: v for h, v in zip(header, zip(*values))}
+    df = pd.DataFrame.from_dict(data)
+    df = df.apply(pd.to_numeric)
+    return df
 
 def generateReport(presId,includePresentation):
     if presId is None:
