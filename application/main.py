@@ -269,7 +269,7 @@ def createGraphDashboard(x,y,name):
 def readData(file):
     lines = list(csv.reader(open(file)))
     header, values = lines[0], lines[1:]
-    data = {h: v for h, v in zip(header, zip(*values))}
+    data = {h: float(v) for h, v in zip(header, zip(*values))}
     return pd.DataFrame.from_dict(data)
 
 def generateReport(presId,includePresentation):
