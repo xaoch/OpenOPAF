@@ -307,6 +307,7 @@ def generateReport(presId,includePresentation):
     graphJSONArticulation = None
     graphJSONFP = None
     if(AudioInfo):
+        dfAudio['nrFP'].fillna(0)
         figVol=go.Figure()
         figVol.update_layout(width=int(1500))
         figVol.add_hrect(y0=65, y1=45, line_width=0, fillcolor="blue", opacity=0.2)
