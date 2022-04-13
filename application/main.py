@@ -432,7 +432,7 @@ def shutdown():
 @login_required
 def update():
     os.system('git pull origin main')
-    return "Done"
+    return redirect(url_for('main.controls'))
 
 @main.route('/profile')
 @login_required
