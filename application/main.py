@@ -29,6 +29,7 @@ from application.scorer.slideFontSizeScorer import slideFontSizeScorer
 from application.scorer.slideTextLenghtScorer import slideTextLengthScorer
 from .models import Presentation
 import logging
+import csv
 
 
 logging.basicConfig(filename='opaf.log', level=logging.DEBUG)
@@ -265,6 +266,11 @@ def createGraphDashboard(x,y,name):
     fig.add_scattergl(x=x, y=y, line={"color": "black"}, marker={"size": 12}, name=name)
     return json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
 
+def readData(file):
+    lines = list(csv.reader(open(file)))
+    header, values = lines[0], lines[1:]
+    data = {h: v for h, v in zip(header, zip(*values))}
+    return pd.DataFrame.from_dict(data)
 
 def generateReport(presId,includePresentation):
     if presId is None:
@@ -279,14 +285,14 @@ def generateReport(presId,includePresentation):
     VideoInfo=False
     SlidesInfo=False
     try:
-        dfAudio = pd.read_csv(os.path.join(path,"Audio","result.csv"))
+        dfAudio = readData(os.path.join(path,"Audio","result.csv"))
         AudioInfo=True
     except Exception as e:
         logging.error("Exception occurred Reading Audio Information", exc_info=True)
         print(e)
         AudioInfo=False
     try:
-        dfVideo = pd.read_csv(os.path.join(path,"Video","result.csv"))
+        dfVideo = readData(os.path.join(path,"Video","result.csv"))
         VideoInfo=True
     except Exception as e:
         logging.error("Exception occurred in Reading Video Information", exc_info=True)
@@ -295,7 +301,7 @@ def generateReport(presId,includePresentation):
     SlidesInfo = False
     if (includePresentation):
         try:
-            dfSlides = pd.read_csv(os.path.join(path, "Slides", "result.csv"))
+            dfSlides = readData(os.path.join(path, "Slides", "result.csv"))
             SlidesInfo=True
         except Exception as e:
             logging.error("Exception occurred in Reading Slides Information", exc_info=True)
@@ -592,6 +598,35 @@ def view_report(presId):
                            graphJSONVolume=reportInfo["graphJSONVolume"],
                            graphJSONArticulation=reportInfo["graphJSONArticulation"],
                            graphJSONFP=reportInfo["graphJSONFP"])
+
+@main.route('/download_report/<presId>')
+@login_required
+def download_report(presId):
+    presentation = Presentation.query.filter_by(presId=presId).first()
+    includePresentation=presentation.slides
+    reportInfo = generateReport(presId, includePresentation)
+    reportHtml = render_template("report_download.html",
+                           name=current_user.name,
+                           presId=presId,
+                           summary=reportInfo["summary"],
+                           audioInfo=reportInfo["AudioInfo"],
+                           videoInfo=reportInfo["VideoInfo"],
+                           slidesInfo=reportInfo["SlidesInfo"],
+                           maxFrameAudio=reportInfo["maxFrameAudio"],
+                           maxFrameVideo=reportInfo["maxFrameVideo"],
+                           maxSlide=reportInfo["maxSlide"],
+                           includePresentation=includePresentation,
+                           graphJSONVolume=reportInfo["graphJSONVolume"],
+                           graphJSONArticulation=reportInfo["graphJSONArticulation"],
+                           graphJSONFP=reportInfo["graphJSONFP"])
+    app = Flask(__name__)
+    uploads_dir = os.path.join(app.root_path, 'presentations')
+    path = os.path.join(uploads_dir, presId)
+    filename = path =os.path.join(path,"index.html")
+    file = open(filename, "w")
+    file.write(reportHtml)
+    file.close()
+
 
 @main.route("/video_feed")
 def video_feed():
