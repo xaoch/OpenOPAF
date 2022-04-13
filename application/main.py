@@ -271,7 +271,7 @@ def readData(file):
     header, values = lines[0], lines[1:]
     data = {h: v for h, v in zip(header, zip(*values))}
     df = pd.DataFrame.from_dict(data)
-    df = df.apply(pd.to_numeric)
+    df = df.apply(pd.to_numeric,errors='coerce')
     return df
 
 def generateReport(presId,includePresentation):
