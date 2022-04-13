@@ -294,7 +294,7 @@ def generateReport(presId,includePresentation):
         print(e)
         AudioInfo=False
     try:
-        dfVideo = readData(os.path.join(path,"Video","result.csv"))
+        dfVideo = pd.read_csv(os.path.join(path,"Video","result.csv"))
         VideoInfo=True
     except Exception as e:
         logging.error("Exception occurred in Reading Video Information", exc_info=True)
@@ -303,7 +303,7 @@ def generateReport(presId,includePresentation):
     SlidesInfo = False
     if (includePresentation):
         try:
-            dfSlides = readData(os.path.join(path, "Slides", "result.csv"))
+            dfSlides = pd.read_csv(os.path.join(path, "Slides", "result.csv"))
             SlidesInfo=True
         except Exception as e:
             logging.error("Exception occurred in Reading Slides Information", exc_info=True)
