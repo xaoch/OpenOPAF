@@ -135,6 +135,7 @@ class VideoExtractor:
         logging.debug("Video Thread: starting")
         prev = 0
         while self.cam.isOpened():
+            logging.debug("Video Cam Working")
             time_elapsed = time.time() - prev
             if time_elapsed > 1. / self.frame_rate:
                 prev = time.time()

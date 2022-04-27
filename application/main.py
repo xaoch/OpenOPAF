@@ -502,6 +502,7 @@ def recording():
     if form.validate_on_submit():
         if controllerObject is not None:
             controllerObject.stop()
+            controllerObject = None
         return redirect(url_for('main.reportWaiting'))
     else:
         if session.get("controller") is None:
@@ -518,6 +519,7 @@ def stoping():
     global controllerObject
     if controllerObject is not None:
         controllerObject.stop()
+        controllerObject=None
         return redirect(url_for('main.reportWaiting'))
 
 @main.route('/reportWaiting', methods=['get','post'])
