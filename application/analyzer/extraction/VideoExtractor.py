@@ -14,6 +14,7 @@ import application.analyzer.extraction.GeometricBodyPostureExtractor as gbpe
 import time
 from imutils.video import VideoStream
 import threading
+import logging
 
 class VideoExtractor:
 
@@ -131,7 +132,7 @@ class VideoExtractor:
             return x, y, width, height
 
     def extract(self):
-        print("Video Thread: starting")
+        logging.debug("Video Thread: starting")
         prev = 0
         while self.cam.isOpened():
             time_elapsed = time.time() - prev
@@ -139,7 +140,7 @@ class VideoExtractor:
                 prev = time.time()
                 success, image = self.cam.read()
                 if not success:
-                    print("Ignoring empty camera frame.")
+                    logging.debug("Ignoring empty camera frame.")
                     # If loading a video, use 'break' instead of 'continue'.
                     continue
             else:
@@ -219,7 +220,7 @@ class VideoExtractor:
         self.csv_file.close()
         self.videoFile.release()
         self.cam.release()
-        print("Video Thread: finishing")
+        logging.debug("Video Thread: finishing")
 
 
     def captureGazeImages(self, frameNumber, img, gaze, lastGaze, x, y, width, height):
@@ -255,6 +256,8 @@ class VideoExtractor:
 
     def stop(self):
         self.stopSignal.set()
+
+    def join(self):
         self.t.join()
 
 

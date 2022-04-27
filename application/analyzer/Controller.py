@@ -47,7 +47,10 @@ class Controller:
             self.audioExtractor.stop()
             if (self.presentation):
                 self.slidesExtractor.stop()
-            sleep(5)
+            self.videoExtractor.join()
+            self.audioExtractor.join()
+            if (self.presentation):
+                self.slidesExtractor.join()
             self.recording=False
             print("End Recording")
 

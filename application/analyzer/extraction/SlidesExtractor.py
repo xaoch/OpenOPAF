@@ -103,6 +103,8 @@ class SlidesExtractor:
 
     def stop(self):
         self.stopSignal.set()
+
+    def join(self):
         self.t.join()
 
 
