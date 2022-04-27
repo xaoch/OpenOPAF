@@ -106,6 +106,7 @@ class AudioExtractor:
         print("Audio Thread: starting")
         self.time = -self.interval
         devices=sd.query_devices()
+        self.stopSignal.clear()
         #sd.default.device=11
         logging.debug("Audio - This are the devices: ")
         logging.debug(str(devices))

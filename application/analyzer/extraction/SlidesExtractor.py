@@ -43,6 +43,7 @@ class SlidesExtractor:
 
     def extract(self):
         print("Slides Thread: starting")
+        self.stopSignal.clear()
         fontErrors = [None] * len(self.prs.slides)
         textErrors = [None] * len(self.prs.slides)
         slides = 0
