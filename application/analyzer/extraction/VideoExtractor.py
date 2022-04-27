@@ -134,6 +134,7 @@ class VideoExtractor:
     def extract(self):
         logging.debug("Video Thread: starting")
         prev = 0
+        self.stopSignal.clear()
         while self.cam.isOpened():
             logging.debug("Video Cam Working")
             time_elapsed = time.time() - prev
