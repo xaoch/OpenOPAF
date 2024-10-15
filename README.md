@@ -1,11 +1,19 @@
-# OpenOPAF
- Multimodal Learning Analytics system to provide automated feedback for oral presentations
+![OpenOpafLogo](logo.png)
+Open Sourced Multimodal Learning Analytics system to provide automated feedback for oral presentations.
 
-Clone repository
+### Hardware Requirements
+Please check the [hardware section](hardware/hardware.md).
 
-git clone https://github.com/xaoch/OpenOPAF.git
+### OS Installation
+Follow the instructions [here](https://developer.nvidia.com/embedded/learn/get-started-jetson-nano-devkit#intro) 
 
-Update repositories and install pip
+### OpenOPAF System Installation
+
+#### Clone this Github repository
+
+    git clone https://github.com/xaoch/OpenOPAF.git
+
+#### Update repositories and install pip
     
     sudo apt-get update
     sudo apt-get install -y python3-pip
@@ -14,7 +22,7 @@ Update repositories and install pip
     pip3 install --upgrade pip
     cd OpenOPAF
 
-Install Requirements
+#### Install Requirements
 
     sudo apt-get install libxml2-dev libxslt-dev python-dev
     sudo apt-get install libjpeg-dev zlib1g-dev 
@@ -22,7 +30,7 @@ Install Requirements
     sudo apt-get install libffi-dev
     pip3 install -r requirements.txt
 
-Install Mediapipe
+#### Install Mediapipe
 
 
 export FLASK_APP=application
