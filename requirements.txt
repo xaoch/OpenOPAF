@@ -12,5 +12,5 @@ plotly
 python_pptx
 sounddevice
 SoundFile
-WerkzeugzoomH8bmbnearagain
+Werkzeug
 WTForms

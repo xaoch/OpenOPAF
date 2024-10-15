@@ -60,7 +60,7 @@ The system can be expanded with additional hardware components such as:
 
 ### 6. **Power Supply**
 
-A **20-watt power source** is required to power the Jetson Nano’s GPU. Here is an [example](https://www.amazon.com/gp/product/B078RT3ZPS/ref=ppx_yo_dt_b_search_asin_title?ie=UTF8&psc=1).
+A **20-watt power source** is required to power the Jetson Nano’s GPU. Here is an [example](https://www.amazon.com/gp/product/B078RT3ZPS/ref=ppx_yo_dt_b_search_asin_title?ie=UTF8&psc=1). You need to set a jumper in the hardware to use the power source as described [here](https://forums.developer.nvidia.com/t/power-supply-considerations-for-jetson-nano-developer-kit/71637).
 
 ---
 
