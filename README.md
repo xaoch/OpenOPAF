@@ -1,4 +1,5 @@
 ![OpenOpafLogo](logo.png)
+
 Open Sourced Multimodal Learning Analytics system to provide automated feedback for oral presentations.
 
 ### Hardware Requirements
