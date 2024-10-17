@@ -31,6 +31,73 @@ Follow the instructions [here](https://developer.nvidia.com/embedded/learn/get-s
 
 #### Install Mediapipe
 
+Follow the instructions [here](https://github.com/Melvinsajith/How-to-Install-Mediapipe-in-Jetson-Nano?tab=readme-ov-file). The process will take at least 2 hours.
 
-export FLASK_APP=application
-flask run
+#### Create User Database
+
+    cd
+    cd OpenOPAF
+    python3 create_database.py
+
+#### Run application to test it
+    export FLASK_APP=application
+    flask run --host=0.0.0.0
+
+#### Connect from frontal machine
+
+Get the IP from your device (or configure an alias in the router):
+    
+    ifconfig
+
+In the browser of the machine that will project the interface and the virtual audience access, set the web browser to http://ipNumber:5000
+
+If you are able to see the interface, the system is ready.  Kill the server to continue the installation.
+
+### Run the appplication as a server
+
+Install nano file editor and edit start.sh file
+    
+    sudo apt-get install nano
+    nano start.sh
+
+Change the following line in the start.sh file to reflect the location of the OpenOPAF directory.
+    
+    cd /home/augmented/OpenOPAF
+
+
+Now create the systemd service file:
+    
+    sudo nano /lib/systemd/system/openopaf.service
+
+The contents of the files should be:
+
+    [Unit]
+    Description=OpenOPAF Service
+    After=network.target
+
+    [Service]
+    Type=idle
+    Restart=on-failure
+    User=<the user that you created at OS Installation>
+    ExecStart=/path-to-OpenOPAF/start.sh
+
+    [Install]
+    WantedBy=multi-user.target
+
+Now restart the demon to start and enable the service
+
+    sudo systemctl daemon-reload
+    sudo systemctl enable openopaf.service
+
+Check if the service is active with:
+
+    sudo systemctl status openopaf.service
+
+Now every time that the Jetson Nano starts, it will start the OpenOPAF application after a few minutes.
+
+You can install the Jetson Nano inside the case and use it without a monitor.
+
+### Questions
+
+If you have any questions or problems running the project, contact [xavier.ochoa@nyu.edu](mailto:xavier.ochoa@nyu.edu). 
+

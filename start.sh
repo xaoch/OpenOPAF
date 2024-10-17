@@ -1,6 +1,5 @@
 #!/bin/sh
-cd /home/augmented/Code/OpenOPAF
-. opaf/bin/activate
+cd /home/augmented/OpenOPAF
 sleep 5
 export FLASK_APP=application
 export DISPLAY=:0
