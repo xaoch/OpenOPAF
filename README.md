@@ -33,10 +33,15 @@ Follow the instructions [here](https://developer.nvidia.com/embedded/learn/get-s
 
 Follow the instructions [here](https://github.com/Melvinsajith/How-to-Install-Mediapipe-in-Jetson-Nano?tab=readme-ov-file). The process will take at least 2 hours.
 
-#### Create User Database
+#### Create Virtual Environment
 
     cd
     cd OpenOPAF
+    sudo apt-get install python3-venv
+    python3 -m venv --system-site-packages ooEnv
+
+#### Create User Database
+
     python3 create_database.py
 
 #### Run application to test it
@@ -88,6 +93,7 @@ Now restart the demon to start and enable the service
 
     sudo systemctl daemon-reload
     sudo systemctl enable openopaf.service
+    sudo systemctl start openopaf.service
 
 Check if the service is active with:
 
